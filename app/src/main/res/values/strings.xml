@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PSNIProject</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_login_screen">LoginScreenActivity</string>
+    <string name="title_activity_admin_login_screen">AdminLoginScreenActivity</string>
+    <string name="login_button">Login</string>
+    <string name="admin_button">Admin Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
 </resources>
