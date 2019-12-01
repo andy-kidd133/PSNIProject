@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginScreenActivity">
+
 
     <ImageView
         android:id="@+id/splashBackground"
@@ -12,55 +13,43 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/splash_screen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:src="@drawable/splash_screen" />
 
     <Button
         android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="112dp"
-        android:text="@string/login_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/etPassword"
+        android:text="@string/login_button"/>
 
     <Button
         android:id="@+id/adminBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="456dp"
-        android:text="@string/admin_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.974"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_alignParentRight="true"
+        android:text="@string/admin_button" />
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="209dp"
+        android:layout_above="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="23dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="@string/username" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="22dp"
-        android:layout_marginEnd="1dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="@string/password"
-        app:layout_constraintBottom_toTopOf="@+id/loginBtn"
-        app:layout_constraintEnd_toEndOf="@+id/etUsername" />
+        android:text="@string/password" />
 
-
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

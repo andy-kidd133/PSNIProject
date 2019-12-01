@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginScreenActivity" />
+        <activity android:name=".LoginScreenActivity"></activity>
         <activity android:name=".AdminLoginScreenActivity"></activity>
     </application>
 
