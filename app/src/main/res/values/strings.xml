@@ -8,4 +8,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="back_button">Back</string>
+    <string name="title_activity_admin_register_user">AdminRegisterUserActivity</string>
 </resources>

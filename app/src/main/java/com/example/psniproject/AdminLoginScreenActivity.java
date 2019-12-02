@@ -7,15 +7,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminLoginScreenActivity extends AppCompatActivity {
 
-    Button backButton;
-    Button loginButton;
-    EditText username;
-    EditText password;
+    private Button backButton;
+    private Button loginButton;
+    private EditText username;
+    private EditText password;
+    private int counter = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,8 @@ public class AdminLoginScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_login_screen);
         backButton = findViewById(R.id.backBtn);
         loginButton = findViewById(R.id.loginBtn);
-        username = findViewById(R.id.etUsername);
-        password = findViewById(R.id.etPassword);
+        username = (EditText) findViewById(R.id.etUsername);
+        password = (EditText) findViewById(R.id.etPassword);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -37,6 +39,25 @@ public class AdminLoginScreenActivity extends AppCompatActivity {
             }
         });
 
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateCredentials(username.getText().toString(), password.getText().toString());
+            }
+        });
     }
 
+    private void validateCredentials(String adminUsername, String adminPassword) {
+        if((adminUsername.equals("Admin")) && (adminPassword.equals("admin1234"))) {
+            Intent intent = new Intent(AdminLoginScreenActivity.this, AdminRegisterUserActivity.class);
+            startActivity(intent);
+        }else {
+            counter --;
+            Toast.makeText(this, "You have: " + String.valueOf(counter) + " attempts remaining", Toast.LENGTH_SHORT).show();
+            if (counter == 0) {
+                loginButton.setEnabled(false);
+                Toast.makeText(this, "Too many incorrect attempts. Account Locked.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
