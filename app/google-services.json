@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "347893186046",
+    "firebase_url": "https://victimsupportdb.firebaseio.com",
+    "project_id": "victimsupportdb",
+    "storage_bucket": "victimsupportdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347893186046:android:bf69d3c756cceb813414af",
+        "android_client_info": {
+          "package_name": "com.example.psniproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "347893186046-2vqhgs0821503fmq95hib1gf0prlvps9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3naoP5pwqTSMRuOAOUuqb2h1PChf5cW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "347893186046-2vqhgs0821503fmq95hib1gf0prlvps9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
