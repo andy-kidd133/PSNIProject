@@ -12,13 +12,15 @@ import androidx.appcompat.app.AppCompatActivity;
 public class AdminRegisterUserActivity extends AppCompatActivity {
 
     private EditText firstName, surname, userName, email, password;
-    private Button regButton, backButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_register_user);
         setupUIViews();
+
+        Button backButton = findViewById(R.id.backBtn);
+        Button regButton = findViewById(R.id.regBtn);
 
         //registering user
         regButton.setOnClickListener(new View.OnClickListener() {

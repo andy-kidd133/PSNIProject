@@ -8,5 +8,10 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="back_button">Back</string>
+    <string name="reg_button">Register</string>
+    <string name="email">E-mail address</string>
+    <string name="first_name">First Name</string>
+    <string name="surname">Surname</string>
+    <string name="new_user_text">Register New User</string>
     <string name="title_activity_admin_register_user">AdminRegisterUserActivity</string>
 </resources>

@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class AdminLoginScreenActivity extends AppCompatActivity {
 
-    private Button backButton;
+    //private Button backButton;
     private Button loginButton;
     private EditText username;
     private EditText password;
@@ -27,7 +27,7 @@ public class AdminLoginScreenActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_admin_login_screen);
-        backButton = findViewById(R.id.backBtn);
+        Button backButton = findViewById(R.id.backBtn);
         loginButton = findViewById(R.id.loginBtn);
         username = (EditText) findViewById(R.id.etUsername);
         password = (EditText) findViewById(R.id.etPassword);

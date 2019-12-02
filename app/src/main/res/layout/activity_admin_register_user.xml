@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textSize="22dp"
-        android:text="Register New User" />
+        android:textSize="22sp"
+        android:text="@string/new_user_text" />
 
     <EditText
         android:id="@+id/etFirstName"
@@ -22,7 +22,7 @@
         android:layout_marginTop="150dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="First name" />
+        android:text="@string/first_name" />
 
     <EditText
         android:id="@+id/etSurname"
@@ -33,7 +33,7 @@
         android:layout_marginTop="23dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Surname" />
+        android:text="@string/surname" />
 
     <EditText
         android:id="@+id/etUsername"
@@ -44,7 +44,7 @@
         android:layout_marginTop="23dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Username" />
+        android:text="@string/username" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -55,7 +55,7 @@
         android:layout_marginTop="23dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:text="E-mail address"/>
+        android:text="@string/email"/>
 
     <EditText
         android:id="@+id/etPassword"
@@ -66,22 +66,22 @@
         android:layout_marginTop="23dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Password"/>
+        android:text="@string/password"/>
 
     <Button
-        android:id="@+id/btnRegister"
+        android:id="@+id/regBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/etPassword"
         android:layout_marginTop="23dp"
-        android:text="Register" />
+        android:text="@string/reg_button"/>
 
     <Button
         android:id="@+id/backBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:text="@string/back_button" />
 
