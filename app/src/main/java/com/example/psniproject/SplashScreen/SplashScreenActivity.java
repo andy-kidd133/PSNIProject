@@ -1,4 +1,4 @@
-package com.example.psniproject;
+package com.example.psniproject.SplashScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.example.psniproject.LoginScreen.LoginScreenActivity;
+import com.example.psniproject.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

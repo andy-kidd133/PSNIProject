@@ -14,4 +14,7 @@
     <string name="surname">Surname</string>
     <string name="new_user_text">Register New User</string>
     <string name="title_activity_admin_register_user">AdminRegisterUserActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

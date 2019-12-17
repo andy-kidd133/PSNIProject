@@ -1,35 +1,40 @@
-package com.example.psniproject;
+package com.example.psniproject.LoginScreen;
 
-import android.content.Intent;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AdminRegisterUserActivity extends AppCompatActivity {
+public class RegisterUserFragment extends Fragment {
 
     private EditText firstName, surname, userName, email, password;
     private FirebaseAuth firebaseAuth;
+    private View view;
+
+    public RegisterUserFragment() {
+
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_register_user);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        view  = inflater.inflate(R.layout.fragment_register_user, container, false);
         setupUIViews();
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        Button backButton = findViewById(R.id.backBtn);
-        Button regButton = findViewById(R.id.regBtn);
+        Button backButton = view.findViewById(R.id.backBtn);
+        Button regButton = view.findViewById(R.id.regBtn);
 
         //registering user
         regButton.setOnClickListener(new View.OnClickListener() {
@@ -45,9 +50,9 @@ public class AdminRegisterUserActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(AdminRegisterUserActivity.this, "Registration Successful.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Registration Successful.", Toast.LENGTH_SHORT).show();
                             }else {
-                                Toast.makeText(AdminRegisterUserActivity.this, "Registration Failed.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -60,17 +65,19 @@ public class AdminRegisterUserActivity extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(AdminRegisterUserActivity.this, AdminLoginScreenActivity.class));
+                ((LoginScreenActivity)getActivity()).setViewPager(1);
             }
         });
+        // Inflate the layout for this fragment
+        return view;
     }
 
     private void setupUIViews() {
-        firstName = findViewById(R.id.etFirstName);
-        surname = findViewById(R.id.etSurname);
-        userName = findViewById(R.id.etUsername);
-        email = findViewById(R.id.etEmail);
-        password = findViewById(R.id.etPassword);
+        firstName = view.findViewById(R.id.etFirstName);
+        surname = view.findViewById(R.id.etSurname);
+        userName = view.findViewById(R.id.etUsername);
+        email = view.findViewById(R.id.etEmail);
+        password = view.findViewById(R.id.etPassword);
     }
 
     private Boolean validateRegistration() {
@@ -83,7 +90,7 @@ public class AdminRegisterUserActivity extends AppCompatActivity {
         String pWord = password.getText().toString();
 
         if(fName.isEmpty() || sName.isEmpty() || uName.isEmpty() || eMail.isEmpty() || pWord.isEmpty()) {
-            Toast.makeText(this, "Please complete all fields.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
         }else {
             result = true;
         }

@@ -1,7 +1,9 @@
-package com.example.psniproject;
+package com.example.psniproject.MainApp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.psniproject.R;
 
 public class MainActivity extends AppCompatActivity {
 
