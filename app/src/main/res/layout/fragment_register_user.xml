@@ -6,13 +6,13 @@
     tools:context=".LoginScreen.LoginScreenActivity">
 
     <TextView
-        android:id="@+id/tvTitle"
-        android:layout_marginTop="80dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textSize="22sp"
-        android:text="@string/new_user_text" />
+    android:id="@+id/tvTitle"
+    android:layout_marginTop="80dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:textSize="22sp"
+    android:text="@string/new_user_text" />
 
     <EditText
         android:id="@+id/etFirstName"

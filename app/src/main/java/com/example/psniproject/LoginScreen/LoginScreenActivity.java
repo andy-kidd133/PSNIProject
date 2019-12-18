@@ -22,6 +22,8 @@ public class LoginScreenActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login_screen);
 
+        getSupportActionBar().hide();
+
         mLoginSectionStatePagerAdapter = new LoginSectionStatePagerAdapter(getSupportFragmentManager());
 
         mViewPager = findViewById(R.id.containter);

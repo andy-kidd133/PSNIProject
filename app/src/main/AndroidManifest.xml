@@ -9,15 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainApp.MainActivity" />
-        <activity android:name=".SplashScreen.SplashScreenActivity">
+
+        <!-- Initial splash activity -->
+        <activity
+            android:name=".SplashScreen.SplashScreenActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Login activity -->
         <activity android:name=".LoginScreen.LoginScreenActivity" />
+
+        <!-- Main app activity -->
+        <activity android:name=".MainApp.MainActivity" />
+
     </application>
 
 </manifest>

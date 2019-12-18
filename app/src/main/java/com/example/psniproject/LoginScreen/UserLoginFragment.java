@@ -86,7 +86,7 @@ public class UserLoginFragment extends Fragment {
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }else {
                     counter--;
-                    Toast.makeText(getActivity(), "You have: " + String.valueOf(counter) + " attempts remaining", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "You have: " + counter + " attempts remaining", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Username or Password incorrect.", Toast.LENGTH_SHORT).show();
                     if(counter==0) {

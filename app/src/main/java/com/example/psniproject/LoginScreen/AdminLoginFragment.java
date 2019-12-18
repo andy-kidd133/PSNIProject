@@ -53,7 +53,7 @@ public class AdminLoginFragment extends Fragment {
             ((LoginScreenActivity)getActivity()).setViewPager(2);
         }else {
             counter --;
-            Toast.makeText(getActivity(), "You have: " + String.valueOf(counter) + " attempts remaining", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "You have: " + counter + " attempts remaining", Toast.LENGTH_SHORT).show();
             if (counter == 0) {
                 loginButton.setEnabled(false);
                 Toast.makeText(getActivity(), "Too many incorrect attempts. Account Locked.", Toast.LENGTH_SHORT).show();

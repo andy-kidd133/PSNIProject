@@ -14,12 +14,16 @@ import com.example.psniproject.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private int SLEEP_TIMER = 6;
+    private int SLEEP_TIMER = 4;
     ImageView vsLogo;
     Animation fromTop;
+    Animation fadeIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        //setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,10 +53,10 @@ public class SplashScreenActivity extends AppCompatActivity {
             SplashScreenActivity.this.finish();
         }
 
-        public void logoLauncher() {
+        private void logoLauncher() {
             vsLogo = findViewById(R.id.vsLogo);
-            fromTop = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fromtop);
-            vsLogo.setAnimation(fromTop);
+            fadeIn = AnimationUtils.loadAnimation(SplashScreenActivity.this, R.anim.fadein);
+            vsLogo.setAnimation(fadeIn);
         }
     }
 }

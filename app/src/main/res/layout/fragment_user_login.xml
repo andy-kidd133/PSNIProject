@@ -5,13 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".LoginScreen.UserLoginFragment">
 
-    <ImageView
-        android:id="@+id/splashBackground"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/splash_screen" />
+  <TextView
+      android:id="@+id/tvTitle"
+      android:layout_marginTop="160dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:textSize="35sp"
+      android:text="User Login"/>
 
     <Button
         android:id="@+id/loginBtn"
@@ -26,7 +27,7 @@
         android:id="@+id/adminBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:text="@string/admin_button" />
 
     <EditText
