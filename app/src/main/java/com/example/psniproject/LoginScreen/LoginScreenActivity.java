@@ -6,6 +6,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.psniproject.MainApp.HomePageFragment;
 import com.example.psniproject.R;
 
 
@@ -28,6 +29,8 @@ public class LoginScreenActivity extends AppCompatActivity {
 
         mViewPager = findViewById(R.id.containter);
         setupViewPager(mViewPager);
+
+        mViewPager.beginFakeDrag();
     }
 
 
@@ -36,6 +39,7 @@ public class LoginScreenActivity extends AppCompatActivity {
         adapter.addFragment(new UserLoginFragment(), "UserLoginFragment");
         adapter.addFragment(new AdminLoginFragment(), "AdminLoginFragment");
         adapter.addFragment(new RegisterUserFragment(), "RegisterUserFragment");
+        //adapter.addFragment(new HomePageFragment(), "HomePageFragment");
         viewPager.setAdapter(adapter);
     }
 
