@@ -14,12 +14,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterUserFragment extends Fragment {
 
-    private EditText firstName, surname, userName, email, password;
+    private EditText firstName, surname, userName, email, password, userAge, userType;
     private FirebaseAuth firebaseAuth;
     private View view;
+    String fName, sName, eMail, uName, pWord, age, uType;
 
     public RegisterUserFragment() {
 
@@ -41,7 +44,7 @@ public class RegisterUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if(validateRegistration()) {
-                    //Upload data to "VictimSupportDB"
+
                     String user_email = email.getText().toString().trim();
                     String user_password = password.getText().toString().trim();
 
@@ -50,7 +53,9 @@ public class RegisterUserFragment extends Fragment {
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Registration Successful.", Toast.LENGTH_SHORT).show();
+                                //Upload data to "VictimSupportDB"
+                                sendUserData();
+                                Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
                             }else {
                                 Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
 
@@ -78,18 +83,22 @@ public class RegisterUserFragment extends Fragment {
         userName = view.findViewById(R.id.etUsername);
         email = view.findViewById(R.id.etEmail);
         password = view.findViewById(R.id.etPassword);
+        userAge = view.findViewById(R.id.etAge);
+        userType = view.findViewById(R.id.etUserType);
     }
 
     private Boolean validateRegistration() {
         Boolean result = false;
 
-        String fName = firstName.getText().toString();
-        String sName = surname.getText().toString();
-        String uName = userName.getText().toString();
-        String eMail = email.getText().toString();
-        String pWord = password.getText().toString();
+        fName = firstName.getText().toString();
+        sName = surname.getText().toString();
+        uName = userName.getText().toString();
+        eMail = email.getText().toString();
+        pWord = password.getText().toString();
+        age = userAge.getText().toString();
+        uType = userType.getText().toString();
 
-        if(fName.isEmpty() || sName.isEmpty() || uName.isEmpty() || eMail.isEmpty() || pWord.isEmpty()) {
+        if(fName.isEmpty() || sName.isEmpty() || uName.isEmpty() || eMail.isEmpty() || pWord.isEmpty() || age.isEmpty() || uType.isEmpty()) {
             Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
         }else {
             result = true;
@@ -98,4 +107,13 @@ public class RegisterUserFragment extends Fragment {
         return result;
     }
 
+
+    private void sendUserData() {
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
+        UserProfile userProfile = new UserProfile(userAge.toString(), fName, sName, userType.toString(), eMail);
+        myRef.setValue(userProfile);
+
+    }
 }

@@ -39,17 +39,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="23dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/username" />
+        android:hint="@string/username"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
         android:ems="10"
-        android:inputType="textPassword"
-        android:text="@string/password" />
+        android:hint="@string/password"
+        android:inputType="textPassword" />
 
 </RelativeLayout>
