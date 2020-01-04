@@ -2,53 +2,53 @@ package com.example.psniproject.LoginScreen;
 
 public class UserProfile {
 
-    private String age, fName, sName, userType, email;
+    private String Age, First, Surname, Usertype, Email;
 
-    public UserProfile(String age, String fName, String sName, String userType, String email) {
-        this.age = age;
-        this.fName = fName;
-        this.sName = sName;
-        this.userType = userType;
-        this.email = email;
+    public UserProfile(String Age, String First, String Surname, String Usertype, String Email) {
+        this.Age = Age;
+        this.First = First;
+        this.Surname = Surname;
+        this.Usertype = Usertype;
+        this.Email = Email;
     }
 
     public String getAge() {
-        return age;
+        return Age;
     }
 
     public void setAge(String age) {
-        this.age = age;
+        this.Age = age;
     }
 
     public String getfName() {
-        return fName;
+        return First;
     }
 
     public void setfName(String fName) {
-        this.fName = fName;
+        this.First = fName;
     }
 
     public String getsName() {
-        return sName;
+        return Surname;
     }
 
     public void setsName(String sName) {
-        this.sName = sName;
+        this.Surname = sName;
     }
 
     public String getUserType() {
-        return userType;
+        return Usertype;
     }
 
     public void setUserType(String userType) {
-        this.userType = userType;
+        this.Usertype = userType;
     }
 
     public String getEmail() {
-        return email;
+        return Email;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.Email = email;
     }
 }

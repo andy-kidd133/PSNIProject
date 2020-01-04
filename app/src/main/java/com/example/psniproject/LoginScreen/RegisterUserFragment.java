@@ -3,6 +3,8 @@ package com.example.psniproject.LoginScreen;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.List;
 
 public class RegisterUserFragment extends Fragment {
 
@@ -56,6 +60,7 @@ public class RegisterUserFragment extends Fragment {
                                 //Upload data to "VictimSupportDB"
                                 sendUserData();
                                 Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
+                                resetEditTexts();
                             }else {
                                 Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
 
@@ -112,8 +117,22 @@ public class RegisterUserFragment extends Fragment {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(userAge.toString(), fName, sName, userType.toString(), eMail);
+        UserProfile userProfile = new UserProfile(age, fName, sName, uType, eMail);
         myRef.setValue(userProfile);
+
+    }
+
+    List<View> edit_texts;
+
+    public void resetEditTexts() {
+
+        firstName.getText().clear();
+        surname.getText().clear();
+        email.getText().clear();
+        userName.getText().clear();
+        password.getText().clear();
+        userAge.getText().clear();
+        userType.getText().clear();
 
     }
 }

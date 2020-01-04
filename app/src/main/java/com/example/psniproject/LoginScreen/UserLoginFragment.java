@@ -83,6 +83,7 @@ public class UserLoginFragment extends Fragment {
                 if(task.isSuccessful()) {
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
+                    resetEditTexts();
                     startActivity(new Intent(getActivity(), MainActivity.class));
                 }else {
                     counter--;
@@ -95,6 +96,13 @@ public class UserLoginFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void resetEditTexts() {
+
+        username.getText().clear();
+        password.getText().clear();
+
     }
 
 }

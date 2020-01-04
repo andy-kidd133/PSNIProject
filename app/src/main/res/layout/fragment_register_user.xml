@@ -93,8 +93,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
         android:ems="10"
-        android:hint="Age"
-        android:inputType="number" />
+        android:hint="Age"/>
 
     <EditText
         android:id="@+id/etUserType"
@@ -104,7 +103,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
         android:ems="10"
-        android:hint="User type"
-        android:inputType="number" />
+        android:hint="User type"/>
 
 </RelativeLayout>

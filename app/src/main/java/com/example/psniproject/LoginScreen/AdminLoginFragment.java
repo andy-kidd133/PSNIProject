@@ -51,6 +51,7 @@ public class AdminLoginFragment extends Fragment {
     private void validateCredentials(String adminUsername, String adminPassword) {
         if((adminUsername.equals("Admin")) && (adminPassword.equals("admin1234"))) {
             ((LoginScreenActivity)getActivity()).setViewPager(2);
+            resetEditTexts();
         }else {
             counter --;
             Toast.makeText(getActivity(), "You have: " + counter + " attempts remaining", Toast.LENGTH_SHORT).show();
@@ -59,5 +60,10 @@ public class AdminLoginFragment extends Fragment {
                 Toast.makeText(getActivity(), "Too many incorrect attempts. Account Locked.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    private void resetEditTexts() {
+        username.getText().clear();
+        password.getText().clear();
     }
 }
