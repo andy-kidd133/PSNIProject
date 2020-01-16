@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.psniproject.LoginScreen.LoginScreenActivity;
 import com.example.psniproject.MainApp.MainActivity;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,7 +55,7 @@ public class UserLoginFragment extends Fragment {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginScreenActivity)getActivity()).setViewPager(1);
+                ((LoginActivity)getActivity()).setViewPager(1);
             }
         });
 

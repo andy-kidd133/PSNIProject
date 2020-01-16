@@ -33,7 +33,7 @@ public class AdminLoginFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginScreenActivity)getActivity()).setViewPager(0);
+                ((LoginActivity)getActivity()).setViewPager(0);
             }
         });
 
@@ -50,7 +50,7 @@ public class AdminLoginFragment extends Fragment {
 
     private void validateCredentials(String adminUsername, String adminPassword) {
         if((adminUsername.equals("Admin")) && (adminPassword.equals("admin1234"))) {
-            ((LoginScreenActivity)getActivity()).setViewPager(2);
+            ((LoginActivity)getActivity()).setViewPager(2);
             resetEditTexts();
         }else {
             counter --;

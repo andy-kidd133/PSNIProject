@@ -4,6 +4,10 @@ public class UserProfile {
 
     private String Age, First, Surname, Usertype, Email;
 
+    public UserProfile() {
+
+    }
+
     public UserProfile(String Age, String First, String Surname, String Usertype, String Email) {
         this.Age = Age;
         this.First = First;

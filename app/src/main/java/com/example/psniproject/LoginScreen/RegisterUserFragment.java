@@ -3,7 +3,6 @@ package com.example.psniproject.LoginScreen;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +57,7 @@ public class RegisterUserFragment extends Fragment {
 
                             if (task.isSuccessful()) {
                                 //Upload data to "VictimSupportDB"
+                                //firebaseAuth.signOut();
                                 sendUserData();
                                 Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
                                 resetEditTexts();
@@ -75,7 +75,7 @@ public class RegisterUserFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginScreenActivity)getActivity()).setViewPager(1);
+                ((LoginActivity)getActivity()).setViewPager(1);
             }
         });
         // Inflate the layout for this fragment
@@ -122,7 +122,7 @@ public class RegisterUserFragment extends Fragment {
 
     }
 
-    List<View> edit_texts;
+    //List<View> edit_texts;
 
     public void resetEditTexts() {
 

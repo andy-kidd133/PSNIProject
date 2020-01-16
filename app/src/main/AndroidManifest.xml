@@ -22,7 +22,7 @@
         </activity>
 
         <!-- Login activity -->
-        <activity android:name=".LoginScreen.LoginScreenActivity" />
+        <activity android:name=".LoginScreen.LoginActivity" />
 
         <!-- Main app activity -->
         <activity android:name=".MainApp.MainActivity" />

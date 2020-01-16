@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.psniproject.LoginScreen.LoginScreenActivity;
 import com.example.psniproject.R;
 
 /**

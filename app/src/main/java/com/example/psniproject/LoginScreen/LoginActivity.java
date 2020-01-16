@@ -10,7 +10,7 @@ import com.example.psniproject.MainApp.HomePageFragment;
 import com.example.psniproject.R;
 
 
-public class LoginScreenActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private LoginSectionStatePagerAdapter mLoginSectionStatePagerAdapter;
     private ViewPager mViewPager;

@@ -9,7 +9,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.example.psniproject.LoginScreen.LoginScreenActivity;
+import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -48,7 +48,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             //CHANGE TO LOGIN ACTIVITY
 
-            Intent intent = new Intent(SplashScreenActivity.this, LoginScreenActivity.class);
+            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
             startActivity(intent);
             SplashScreenActivity.this.finish();
         }
