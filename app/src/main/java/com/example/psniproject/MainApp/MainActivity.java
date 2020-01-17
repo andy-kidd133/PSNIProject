@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = findViewById(R.id.containter1);
         setupViewPager(mViewPager);
 
-        mViewPager.beginFakeDrag();
+        //mViewPager.beginFakeDrag();
 
     }
 
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         LoginSectionStatePagerAdapter adapter = new LoginSectionStatePagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomePageFragment(), "HomePageFragment");
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");
+        adapter.addFragment(new VictimFragment(), "VictimFragment");
+        adapter.addFragment(new WitnessFragment(), "WitnessFragment");
         viewPager.setAdapter(adapter);
     }
 

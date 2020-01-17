@@ -1,28 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFEDB3"
     tools:context=".MainApp.HomePageFragment">
 
+    <View
+        android:id="@+id/fakeView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true"/>
 
-    <TextView
-        android:id="@+id/textView"
+    <ImageButton
+        android:id="@+id/ibVictimTile"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:layout_alignRight="@id/fakeView"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="70dp"
-        android:layout_height="wrap_content"
-        android:text="Help for victim tile" />
+        android:src="@drawable/victim_tile"
+        android:background="#FFEDB3"/>
 
-    <TextView
-        android:id="@+id/textView1"
+    <ImageButton
+        android:id="@+id/ibWitnessTile"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside"
+        android:layout_alignLeft="@id/fakeView"
         android:layout_alignParentRight="true"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="70dp"
-        android:layout_height="wrap_content"
-        android:text="Help for witness tile" />
+        android:src="@drawable/witness_tile"
+        android:background="#FFEDB3"/>
 
     <Button
         android:id="@+id/myJButton"
@@ -31,4 +44,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="350dp"
         android:text="My Journey" />
+
 </RelativeLayout>

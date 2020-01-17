@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.psniproject.R;
 
@@ -18,6 +19,7 @@ import com.example.psniproject.R;
 public class HomePageFragment extends Fragment {
 
     private View view;
+
     //private Button myJButton;
 
     public HomePageFragment() {
@@ -32,6 +34,22 @@ public class HomePageFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
 
         Button myJButton = view.findViewById(R.id.myJButton);
+        ImageButton victimTile = view.findViewById(R.id.ibVictimTile);
+        ImageButton witnessTile = view.findViewById(R.id.ibWitnessTile);
+
+        victimTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setViewPager(2);
+            }
+        });
+
+        witnessTile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).setViewPager(3);
+            }
+        });
 
         myJButton.setOnClickListener(new View.OnClickListener() {
             @Override

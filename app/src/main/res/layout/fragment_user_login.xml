@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".LoginScreen.UserLoginFragment">
 
+
   <TextView
       android:id="@+id/tvTitle"
       android:layout_marginTop="160dp"
@@ -30,24 +31,44 @@
         android:layout_alignParentEnd="true"
         android:text="@string/admin_button" />
 
-  <EditText
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/etUsername"
-      android:layout_width="wrap_content"
+      android:layout_width="300dp"
       android:layout_height="wrap_content"
       android:layout_above="@+id/etPassword"
       android:layout_centerHorizontal="true"
       android:layout_marginBottom="23dp"
       android:ems="10"
-      android:hint="@string/username"
-      android:inputType="textPersonName" />
+      android:inputType="textPersonName" >
 
-  <EditText
+      <com.google.android.material.textfield.TextInputEditText
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/username" />
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/etPassword"
-      android:layout_width="wrap_content"
+      android:layout_width="300dp"
       android:layout_height="wrap_content"
       android:layout_centerInParent="true"
-      android:ems="10"
+      android:ems="10">
+
+  <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:hint="@string/password"
-      android:inputType="textPassword" />
+      android:inputType="textPassword"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <Button
+      android:id="@+id/skip"
+      android:layout_width="150dp"
+      android:layout_height="wrap_content"
+      android:text="Skip to app >>"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentRight="true" />
 
 </RelativeLayout>

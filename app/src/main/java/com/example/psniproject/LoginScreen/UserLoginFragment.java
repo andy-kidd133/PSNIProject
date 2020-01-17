@@ -18,6 +18,8 @@ import com.example.psniproject.MainApp.MainActivity;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +28,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class UserLoginFragment extends Fragment {
 
     private Button loginButton;
-    private EditText username, password;
+    private TextInputLayout username, password;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int counter = 5;
@@ -45,6 +47,7 @@ public class UserLoginFragment extends Fragment {
         username = view.findViewById(R.id.etUsername);
         password = view.findViewById(R.id.etPassword);
         Button adminButton = view.findViewById(R.id.adminBtn);
+        Button skipButton = view.findViewById(R.id.skip);
 
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getActivity());
@@ -62,7 +65,14 @@ public class UserLoginFragment extends Fragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validateCredentials(username.getText().toString(), password.getText().toString());
+                validateCredentials(username.getEditText().getText().toString(), password.getEditText().getText().toString());
+            }
+        });
+
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
             }
         });
 
@@ -99,8 +109,8 @@ public class UserLoginFragment extends Fragment {
 
     private void resetEditTexts() {
 
-        username.getText().clear();
-        password.getText().clear();
+        username.getEditText().getText().clear();
+        password.getEditText().getText().clear();
 
     }
 
