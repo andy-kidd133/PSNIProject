@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseDatabase firebaseDatabase;
     private TextView headerName, headerEmail;
     private String uid;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewPager = findViewById(R.id.container1);
         setupViewPager(mViewPager);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
@@ -133,6 +134,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.setViewPager(3);
                 break;
         }
+
+        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
