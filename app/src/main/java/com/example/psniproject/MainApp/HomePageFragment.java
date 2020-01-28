@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.psniproject.R;
 
@@ -32,6 +33,7 @@ public class HomePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_home_page, container, false);
+
 
         Button myJButton = view.findViewById(R.id.myJButton);
         ImageButton victimTile = view.findViewById(R.id.ibVictimTile);

@@ -55,6 +55,10 @@ public class UserLoginFragment extends Fragment {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
+        /*if (user != null) {
+            startActivity(new Intent(getActivity(), MainActivity.class));
+        }*/
+
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +98,7 @@ public class UserLoginFragment extends Fragment {
                     Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
                     resetEditTexts();
                     startActivity(new Intent(getActivity(), MainActivity.class));
+
                 }else {
                     counter--;
                     Toast.makeText(getActivity(), "You have: " + counter + " attempts remaining", Toast.LENGTH_SHORT).show();

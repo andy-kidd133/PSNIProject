@@ -40,6 +40,17 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //Mike Penz Navigation library
+    implementation("com.mikepenz:materialdrawer:6.0.9@aar") {
+        transitive = true
+    }
+
+    //required support lib modules
+    //implementation "com.android.support:appcompat-v7:${versions.supportLib}"
+    //implementation "com.android.support:recyclerview-v7:${versions.supportLib}"
+    //implementation "com.android.support:support-annotations:${versions.supportLib}"
+    implementation 'com.android.support:design:29.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -6,13 +6,12 @@ import androidx.viewpager.widget.ViewPager;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.example.psniproject.MainApp.HomePageFragment;
 import com.example.psniproject.R;
 
 
 public class LoginActivity extends AppCompatActivity {
 
-    private LoginSectionStatePagerAdapter mLoginSectionStatePagerAdapter;
+    private MyFragmentPagerAdapter mMyFragmentPagerAdapter;
     private ViewPager mViewPager;
 
     @Override
@@ -23,9 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login_screen);
 
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
 
-        mLoginSectionStatePagerAdapter = new LoginSectionStatePagerAdapter(getSupportFragmentManager());
+        mMyFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
         mViewPager = findViewById(R.id.containter);
         setupViewPager(mViewPager);
@@ -35,10 +34,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void setupViewPager(ViewPager viewPager){
-        LoginSectionStatePagerAdapter adapter = new LoginSectionStatePagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserLoginFragment(), "UserLoginFragment");
-        adapter.addFragment(new AdminLoginFragment(), "AdminLoginFragment");
-        adapter.addFragment(new RegisterUserFragment(), "RegisterUserFragment");
+        MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new UserLoginFragment(), "UserLoginFragment");          //0
+        adapter.addFragment(new AdminLoginFragment(), "AdminLoginFragment");        //1
+        adapter.addFragment(new RegisterUserFragment(), "RegisterUserFragment");    //2
         //adapter.addFragment(new HomePageFragment(), "HomePageFragment");
         viewPager.setAdapter(adapter);
     }

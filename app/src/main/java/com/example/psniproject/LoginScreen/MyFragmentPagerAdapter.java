@@ -8,12 +8,12 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginSectionStatePagerAdapter extends FragmentStatePagerAdapter {
+public class MyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    public LoginSectionStatePagerAdapter(@NonNull FragmentManager fm) {
+    public MyFragmentPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
     }
 

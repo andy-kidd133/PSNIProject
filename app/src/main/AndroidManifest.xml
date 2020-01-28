@@ -12,7 +12,8 @@
 
         <!-- Initial splash activity -->
         <activity
-            android:name=".SplashScreen.SplashScreenActivity">
+            android:name=".SplashScreen.SplashScreenActivity"
+            android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,10 +23,12 @@
         </activity>
 
         <!-- Login activity -->
-        <activity android:name=".LoginScreen.LoginActivity" />
+        <activity android:name=".LoginScreen.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
         <!-- Main app activity -->
-        <activity android:name=".MainApp.MainActivity" />
+        <activity android:name=".MainApp.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 

@@ -7,6 +7,12 @@
     android:background="#FFEDB3"
     tools:context=".MainApp.HomePageFragment">
 
+    <!--<androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:id="@+id/toolbarMain">
+    </androidx.appcompat.widget.Toolbar>-->
+
     <View
         android:id="@+id/fakeView"
         android:layout_width="0dp"

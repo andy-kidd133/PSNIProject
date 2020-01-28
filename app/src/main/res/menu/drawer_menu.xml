@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_victim"
+            android:icon="@drawable/ic_victim"
+            android:title="Victim Info" />
+        <item
+            android:id="@+id/nav_witness"
+            android:icon="@drawable/ic_witness"
+            android:title="Witness Info" />
+        <item
+            android:id="@+id/nav_journey"
+            android:icon="@drawable/ic_journey"
+            android:title="My Journey" />
+
+    </group>
+
+    <!--new section exmaple code, items here can only be pressed once rather than staying selected-->
+    <item android:title="New Section Title">
+
+        <menu>
+            <item
+                android:id="@+id/example"
+                android:icon="@drawable/victim_support_logo"
+                android:title="Example"></item>
+        </menu>
+    </item>
+
+</menu>
