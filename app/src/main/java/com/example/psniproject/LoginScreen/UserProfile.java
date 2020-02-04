@@ -2,27 +2,19 @@ package com.example.psniproject.LoginScreen;
 
 public class UserProfile {
 
-    private String Age, First, Surname, Usertype, Email;
+    private String First, Surname, Email;
 
     public UserProfile() {
 
     }
 
-    public UserProfile(String Age, String First, String Surname, String Usertype, String Email) {
-        this.Age = Age;
+    public UserProfile(String First, String Surname, String Email) {
         this.First = First;
         this.Surname = Surname;
-        this.Usertype = Usertype;
         this.Email = Email;
     }
 
-    public String getAge() {
-        return Age;
-    }
 
-    public void setAge(String age) {
-        this.Age = age;
-    }
 
     public String getfName() {
         return First;
@@ -38,14 +30,6 @@ public class UserProfile {
 
     public void setsName(String sName) {
         this.Surname = sName;
-    }
-
-    public String getUserType() {
-        return Usertype;
-    }
-
-    public void setUserType(String userType) {
-        this.Usertype = userType;
     }
 
     public String getEmail() {

@@ -18,7 +18,6 @@ import com.example.psniproject.MainApp.MainActivity;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,7 +40,7 @@ public class UserLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_user_login, container, false);
-
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.background));
 
         loginButton = view.findViewById(R.id.loginBtn);
         username = view.findViewById(R.id.etUsername);

@@ -17,7 +17,7 @@
 
     <style name="user_login">User Login</style>
 
-    <string name="new_user_text">Register New User</string>
+    <string name="new_user_text">New User Form</string>
     <string name="title_activity_admin_register_user">AdminRegisterUserActivity</string>
 
     <!-- TODO: Remove or change this placeholder text -->

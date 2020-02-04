@@ -57,7 +57,7 @@ public class MyJourneyFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
                 journeyName.setText("Hi " + userProfile.getfName());
-                journeyUserType.setText("You are a " + userProfile.getUserType());
+                //journeyUserType.setText("You are a " + userProfile.getUserType());
             }
 
             @Override

@@ -8,7 +8,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,9 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
-
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
 import com.example.psniproject.LoginScreen.UserLoginFragment;
 import com.example.psniproject.LoginScreen.UserProfile;

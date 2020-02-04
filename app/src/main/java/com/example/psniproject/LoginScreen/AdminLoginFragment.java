@@ -24,6 +24,8 @@ public class AdminLoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_admin_login, container, false);
+        getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.adminDark));
+
 
         Button backButton = view.findViewById(R.id.backBtn);
         loginButton = view.findViewById(R.id.loginBtn);

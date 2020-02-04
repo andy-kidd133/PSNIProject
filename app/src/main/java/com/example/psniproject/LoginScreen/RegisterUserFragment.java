@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -22,10 +24,10 @@ import java.util.List;
 
 public class RegisterUserFragment extends Fragment {
 
-    private EditText firstName, surname, userName, email, password, userAge, userType;
+    private TextInputLayout firstName, surname, email, password;
     private FirebaseAuth firebaseAuth;
     private View view;
-    String fName, sName, eMail, uName, pWord, age, uType;
+    String fName, sName, eMail, pWord;
 
     public RegisterUserFragment() {
 
@@ -40,16 +42,16 @@ public class RegisterUserFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
 
         Button backButton = view.findViewById(R.id.backBtn);
-        Button regButton = view.findViewById(R.id.regBtn);
+        //Button regButton = view.findViewById(R.id.regBtn);
 
         //registering user
-        regButton.setOnClickListener(new View.OnClickListener() {
+        /*regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(validateRegistration()) {
 
-                    String user_email = email.getText().toString().trim();
-                    String user_password = password.getText().toString().trim();
+                    String user_email = email.getEditText().getText().toString().trim();
+                    String user_password = password.getEditText().getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -69,7 +71,7 @@ public class RegisterUserFragment extends Fragment {
                     });
                 }
             }
-        });
+        });*/
 
         //back to admin login screen
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -85,25 +87,19 @@ public class RegisterUserFragment extends Fragment {
     private void setupUIViews() {
         firstName = view.findViewById(R.id.etFirstName);
         surname = view.findViewById(R.id.etSurname);
-        userName = view.findViewById(R.id.etUsername);
         email = view.findViewById(R.id.etEmail);
         password = view.findViewById(R.id.etPassword);
-        userAge = view.findViewById(R.id.etAge);
-        userType = view.findViewById(R.id.etUserType);
     }
 
     private Boolean validateRegistration() {
         Boolean result = false;
 
-        fName = firstName.getText().toString();
-        sName = surname.getText().toString();
-        uName = userName.getText().toString();
-        eMail = email.getText().toString();
-        pWord = password.getText().toString();
-        age = userAge.getText().toString();
-        uType = userType.getText().toString();
+        fName = firstName.getEditText().getText().toString();
+        sName = surname.getEditText().getText().toString();
+        eMail = email.getEditText().getText().toString();
+        pWord = password.getEditText().getText().toString();
 
-        if(fName.isEmpty() || sName.isEmpty() || uName.isEmpty() || eMail.isEmpty() || pWord.isEmpty() || age.isEmpty() || uType.isEmpty()) {
+        if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty() || pWord.isEmpty()) {
             Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
         }else {
             result = true;
@@ -117,7 +113,7 @@ public class RegisterUserFragment extends Fragment {
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(age, fName, sName, uType, eMail);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail);
         myRef.setValue(userProfile);
 
     }
@@ -126,13 +122,9 @@ public class RegisterUserFragment extends Fragment {
 
     public void resetEditTexts() {
 
-        firstName.getText().clear();
-        surname.getText().clear();
-        email.getText().clear();
-        userName.getText().clear();
-        password.getText().clear();
-        userAge.getText().clear();
-        userType.getText().clear();
-
+        firstName.getEditText().getText().clear();
+        surname.getEditText().getText().clear();
+        email.getEditText().getText().clear();
+        password.getEditText().getText().clear();
     }
 }
