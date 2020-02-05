@@ -25,12 +25,13 @@
         android:layout_below="@+id/etPassword"
         android:text="@string/login_button"/>
 
-    <Button
-        android:id="@+id/adminBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:text="@string/admin_button" />
+  <Button
+      android:id="@+id/adminBtn"
+      style="@style/Widget.AppCompat.Button.Borderless"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:text="@string/admin_button" />
 
   <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/etUsername"
@@ -66,10 +67,11 @@
 
   <Button
       android:id="@+id/skip"
+      style="@style/Widget.AppCompat.Button.Borderless.Colored"
       android:layout_width="150dp"
       android:layout_height="wrap_content"
-      android:text="Skip to app >>"
+      android:layout_alignParentRight="true"
       android:layout_alignParentBottom="true"
-      android:layout_alignParentRight="true" />
+      android:text="Skip to app >>" />
 
 </RelativeLayout>

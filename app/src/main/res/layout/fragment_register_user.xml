@@ -481,14 +481,15 @@
 
 
 
-        <!--<Button
+        <Button
             android:id="@+id/regBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_below="@id/etCourtHouse"
             android:layout_marginTop="23dp"
-            android:text="@string/reg_button" />-->
+            android:text="@string/reg_button" />
 
         <Button
             android:id="@+id/backBtn"

@@ -1,5 +1,6 @@
 package com.example.psniproject.MainApp;
 
+import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,13 +9,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
 import com.example.psniproject.LoginScreen.UserLoginFragment;
 import com.example.psniproject.LoginScreen.UserProfile;
@@ -60,21 +67,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewPager = findViewById(R.id.container1);
         setupViewPager(mViewPager);
 
+        setupMainPage();
+
+        mViewPager.beginFakeDrag();
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+
+        //when no user is signed in/present, there is a RunTimeException as null is being returned for
+        //DB reference Uid. Need to create
+
+        if (firebaseAuth.getCurrentUser() == null) {
+
+            headerName.setText("Please sign in");
+            headerEmail.setText("");
+
+            //make logout menu item invisible
+
+        } else {
+
+            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+
+                    headerName.setText(userProfile.getfName());
+                    headerEmail.setText(userProfile.getEmail());
+                    toolbar.getMenu().findItem(R.id.loginOption).setVisible(false);
+
+                    //make login menu item invisible
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void setupMainPage() {
+
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
 
-        headerName = (TextView)header.findViewById(R.id.drawer_name);
-        headerEmail = (TextView)header.findViewById(R.id.drawer_email);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-
-        //setUpNavigationDrawer();
-
-        mViewPager.beginFakeDrag();
-
+        headerName = (TextView) header.findViewById(R.id.drawer_name);
+        headerEmail = (TextView) header.findViewById(R.id.drawer_email);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,27 +131,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.material_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-
-                headerName.setText(userProfile.getfName());
-                headerEmail.setText(userProfile.getEmail());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 
@@ -137,15 +158,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+
+        firebaseAuth.signOut();
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
 
-    private void setupViewPager(ViewPager viewPager){
+    private void setupViewPager(ViewPager viewPager) {
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomePageFragment(), "HomePageFragment");        //0
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");      //1
@@ -154,87 +176,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(adapter);
     }
 
-    public void setViewPager(int fragmentNumber){
+    public void setViewPager(int fragmentNumber) {
         mViewPager.setCurrentItem(fragmentNumber);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
 
-    //set up the navigation drawer, pulling users, name and first name from FirebaseDB using userProfile
-    //reference and DatabaseReference
+        MenuItem logout = menu.findItem(R.id.logoutOption);
+        MenuItem login = menu.findItem(R.id.loginOption);
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            logout.setVisible(false);
+            login.setVisible(true);
+        }
+        else
+        {
+            logout.setVisible(true);
+            login.setVisible(false);
+        }
 
-    /*private void setUpNavigationDrawer() {
+        return true;
+    }
 
-        //set up toolbar
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.logoutOption:
+                firebaseAuth.signOut();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                return true;
+            case R.id.loginOption:
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            case R.id.refreshOption:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
-
-        //**************************************************
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getCurrentUser().getUid());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-
-                // Create the AccountHeader
-                AccountHeader headerResult = new AccountHeaderBuilder()
-                        .withActivity(MainActivity.this)
-                        .withHeaderBackground(R.drawable.header)
-                        .addProfiles(
-                                new ProfileDrawerItem().withName(userProfile.getfName()).withEmail(userProfile.getEmail()).withIcon(getResources().getDrawable(R.drawable.profile))
-                        )
-                        .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
-                            @Override
-                            public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
-                                return false;
-                            }
-                        })
-                        .build();
-
-                new DrawerBuilder().withActivity(MainActivity.this).build();
-
-                //if you want to update the items at a later time it is recommended to keep it in a variable
-                PrimaryDrawerItem item1 = new PrimaryDrawerItem().withIdentifier(1).withName("Home");
-                PrimaryDrawerItem item2 = new PrimaryDrawerItem().withIdentifier(2).withName("2nd page");
-
-                //create the drawer and remember the `Drawer` result object
-                Drawer result = new DrawerBuilder()
-                        .withActivity(MainActivity.this)
-                        .withAccountHeader(headerResult)
-                        .withToolbar(toolbar)
-                        .addDrawerItems(
-                                item1,
-                                //new DividerDrawerItem(),
-                                item2
-                                //new SecondaryDrawerItem().withName(R.string.drawer_item_settings)
-                        )
-                        .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-                            @Override
-                            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                                // do something with the clicked item :D
-                                switch(position) {
-                                    case 1: break;
-                                    case 2: break;
-                                }
-
-                                return true;
-                            }
-                        })
-                        .build();
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                //Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }*/
-
-
+    public boolean onPrepareOptionsMenu(Menu menu)
+    {
+        MenuItem logout = menu.findItem(R.id.logoutOption);
+        MenuItem login = menu.findItem(R.id.loginOption);
+        if(firebaseAuth.getCurrentUser() == null)
+        {
+            logout.setVisible(false);
+            login.setVisible(true);
+        }
+        else
+        {
+            logout.setVisible(true);
+            login.setVisible(false);
+        }
+        return true;
+    }
 }
-
 
 
 

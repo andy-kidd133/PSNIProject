@@ -50,22 +50,27 @@ public class MyJourneyFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        if (firebaseAuth.getCurrentUser() == null) {
+            journeyName.setText("Please login to use this feature");
+        }
+        else {
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                journeyName.setText("Hi " + userProfile.getfName());
-                //journeyUserType.setText("You are a " + userProfile.getUserType());
-            }
+            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                    journeyName.setText("Hi " + userProfile.getfName());
+                    //journeyUserType.setText("You are a " + userProfile.getUserType());
+                }
 
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         return view;
     }
