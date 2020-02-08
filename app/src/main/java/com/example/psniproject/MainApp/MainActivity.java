@@ -95,7 +95,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     headerName.setText(userProfile.getfName());
                     headerEmail.setText(userProfile.getEmail());
-                    toolbar.getMenu().findItem(R.id.loginOption).setVisible(false);
 
                     //make login menu item invisible
                 }
@@ -160,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
 
         firebaseAuth.signOut();
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -218,22 +218,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public boolean onPrepareOptionsMenu(Menu menu)
-    {
-        MenuItem logout = menu.findItem(R.id.logoutOption);
-        MenuItem login = menu.findItem(R.id.loginOption);
-        if(firebaseAuth.getCurrentUser() == null)
-        {
-            logout.setVisible(false);
-            login.setVisible(true);
-        }
-        else
-        {
-            logout.setVisible(true);
-            login.setVisible(false);
-        }
-        return true;
-    }
 }
 
 
