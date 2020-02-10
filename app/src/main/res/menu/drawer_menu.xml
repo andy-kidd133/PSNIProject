@@ -5,18 +5,71 @@
 
     <group android:checkableBehavior="single">
 
+        <!-- ********** Home ********** -->
+
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
             android:title="Home" />
+
+        <!-- ********** Victim ********** -->
+
         <item
             android:id="@+id/nav_victim"
             android:icon="@drawable/ic_victim"
             android:title="Victim Info" />
+
+        <item
+            android:id="@+id/victim_overview"
+            android:visible="false"
+            android:title="   Overview" />
+
+        <item
+            android:id="@+id/your_rights"
+            android:visible="false"
+            android:title="   Your Rights" />
+
+        <item
+            android:id="@+id/compensation"
+            android:visible="false"
+            android:title="   Compensation" />
+
+        <item
+            android:id="@+id/typesof_crime"
+            android:visible="false"
+            android:title="   Types of Crime" />
+
+
+        <!-- ********** Witness ********** -->
+
         <item
             android:id="@+id/nav_witness"
             android:icon="@drawable/ic_witness"
             android:title="Witness Info" />
+
+        <item
+            android:id="@+id/nav_witness1"
+            android:visible="false"
+            android:title="   Page1" />
+
+        <item
+            android:id="@+id/nav_witness2"
+            android:visible="false"
+            android:title="   Page2" />
+
+        <item
+            android:id="@+id/nav_witness3"
+            android:visible="false"
+            android:title="   Page3" />
+
+        <item
+            android:id="@+id/nav_witness4"
+            android:visible="false"
+            android:title="   Page4" />
+
+
+        <!-- ********** Journey ********** -->
+
         <item
             android:id="@+id/nav_journey"
             android:icon="@drawable/ic_journey"
@@ -24,8 +77,10 @@
 
     </group>
 
+
+
     <!--new section exmaple code, items here can only be pressed once rather than staying selected-->
-    <item android:title="New Section Title">
+    <item android:title="Other Links">
 
         <menu>
             <item

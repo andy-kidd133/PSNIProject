@@ -1,4 +1,4 @@
-package com.example.psniproject.MainApp;
+package com.example.psniproject.MainApp.WitnessPages;
 
 
 import android.os.Bundle;
@@ -14,12 +14,12 @@ import com.example.psniproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class WitnessFragment extends Fragment {
+public class WitnessOverview extends Fragment {
 
     private View view;
 
 
-    public WitnessFragment() {
+    public WitnessOverview() {
         // Required empty public constructor
     }
 
@@ -29,7 +29,7 @@ public class WitnessFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        view = inflater.inflate(R.layout.fragment_witness, container, false);
+        view = inflater.inflate(R.layout.witness_overview, container, false);
 
 
         return view;

@@ -1,49 +1,40 @@
 package com.example.psniproject.MainApp;
 
-import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
-import com.example.psniproject.LoginScreen.UserLoginFragment;
 import com.example.psniproject.LoginScreen.UserProfile;
+import com.example.psniproject.MainApp.VictimPages.Compensation;
+import com.example.psniproject.MainApp.VictimPages.TypesOfCrime;
+import com.example.psniproject.MainApp.VictimPages.VictimOverview;
+import com.example.psniproject.MainApp.VictimPages.YourRights;
+import com.example.psniproject.MainApp.WitnessPages.WitnessOverview;
 import com.example.psniproject.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IProfile;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -56,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
     private String uid;
     private NavigationView navigationView;
+    MenuItem victimChild1, victimChild2, victimChild3, victimChild4;
+    MenuItem witnessChild1, witnessChild2, witnessChild3, witnessChild4;
+    ArrayList<MenuItem> victimPages = new ArrayList<MenuItem>();
+    ArrayList<MenuItem> witnessPages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,44 +62,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mViewPager = findViewById(R.id.container1);
         setupViewPager(mViewPager);
 
-        setupMainPage();
-
-        mViewPager.beginFakeDrag();
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
-        //when no user is signed in/present, there is a RunTimeException as null is being returned for
-        //DB reference Uid. Need to create
+        setupMainPage();
+        checkUserSignedIn();
 
-        if (firebaseAuth.getCurrentUser() == null) {
+        victimChild1 = findViewById(R.id.victim_overview);
+        victimChild2 = findViewById(R.id.your_rights);
+        victimChild3 = findViewById(R.id.compensation);
+        victimChild4 = findViewById(R.id.typesof_crime);
 
-            headerName.setText("Please sign in");
-            headerEmail.setText("");
+        witnessChild1 = findViewById(R.id.nav_witness1);
+        witnessChild2 = findViewById(R.id.nav_witness2);
+        witnessChild3 = findViewById(R.id.nav_witness3);
+        witnessChild4 = findViewById(R.id.nav_witness4);
 
-            //make logout menu item invisible
+        preparePageLists();
 
-        } else {
+        mViewPager.beginFakeDrag();
 
-            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
-
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-
-                    headerName.setText(userProfile.getfName());
-                    headerEmail.setText(userProfile.getEmail());
-
-                    //make login menu item invisible
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     private void setupMainPage() {
@@ -114,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         View header = navigationView.getHeaderView(0);
 
-        headerName = (TextView) header.findViewById(R.id.drawer_name);
-        headerEmail = (TextView) header.findViewById(R.id.drawer_email);
+        headerName = header.findViewById(R.id.drawer_name);
+        headerEmail = header.findViewById(R.id.drawer_email);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -133,21 +110,84 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    public void preparePageLists(){
+
+        victimPages.add(victimChild1);
+        victimPages.add(victimChild2);
+        victimPages.add(victimChild3);
+        victimPages.add(victimChild4);
+
+        witnessPages.add(witnessChild1);
+        witnessPages.add(witnessChild2);
+        witnessPages.add(witnessChild3);
+        witnessPages.add(witnessChild4);
+    }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+        Menu m = navigationView.getMenu();
+        int id = menuItem.getItemId();
+
+        if (id == R.id.nav_victim) {
+            boolean b=!m.findItem(R.id.victim_overview).isVisible();
+
+            m.findItem(R.id.victim_overview).setVisible(b);
+            m.findItem(R.id.your_rights).setVisible(b);
+            m.findItem(R.id.compensation).setVisible(b);
+            m.findItem(R.id.typesof_crime).setVisible(b);
+
+            m.findItem(R.id.nav_witness1).setVisible(false);
+            m.findItem(R.id.nav_witness2).setVisible(false);
+            m.findItem(R.id.nav_witness3).setVisible(false);
+            m.findItem(R.id.nav_witness4).setVisible(false);
+            return false;
+        }
+        else if (id == R.id.nav_witness) {
+            boolean c=!m.findItem(R.id.nav_witness1).isVisible();
+
+            m.findItem(R.id.nav_witness1).setVisible(c);
+            m.findItem(R.id.nav_witness2).setVisible(c);
+            m.findItem(R.id.nav_witness3).setVisible(c);
+            m.findItem(R.id.nav_witness4).setVisible(c);
+
+            m.findItem(R.id.victim_overview).setVisible(false);
+            m.findItem(R.id.your_rights).setVisible(false);
+            m.findItem(R.id.compensation).setVisible(false);
+            m.findItem(R.id.typesof_crime).setVisible(false);
+            return false;
+        }
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 this.setViewPager(0);
                 break;
-            case R.id.nav_journey:
-                this.setViewPager(1);
-                break;
-            case R.id.nav_victim:
+
+      //*********** Victim Submenu **********//
+            case R.id.victim_overview:
                 this.setViewPager(2);
                 break;
-            case R.id.nav_witness:
+            case R.id.your_rights:
+                this.setViewPager(4);
+                break;
+            case R.id.compensation:
+                this.setViewPager(5);
+                break;
+            case R.id.typesof_crime:
+                this.setViewPager(6);
+                break;
+                //nested switch statements for selecting subMEnu items?
+                //creating ArrayList<MenuItem> to set all to visible/invisible?
+                //for loop to cycle through menu items?
+
+      //********** Witness Submenu **********//
+            case R.id.nav_witness1:
                 this.setViewPager(3);
+                break;
+
+
+            case R.id.nav_journey:
+                this.setViewPager(1);
                 break;
         }
 
@@ -158,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
 
-        firebaseAuth.signOut();
+        //firebaseAuth.signOut();
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -171,8 +211,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomePageFragment(), "HomePageFragment");        //0
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");      //1
-        adapter.addFragment(new VictimFragment(), "VictimFragment");            //2
-        adapter.addFragment(new WitnessFragment(), "WitnessFragment");          //3
+        adapter.addFragment(new VictimOverview(), "VictimOverview");            //2
+        adapter.addFragment(new WitnessOverview(), "WitnessOverview");          //3
+        adapter.addFragment(new YourRights(), "Your Rights");                   //4
+        adapter.addFragment(new Compensation(), "Compensation");                //5
+        adapter.addFragment(new TypesOfCrime(), "Types of Crime");              //6
         viewPager.setAdapter(adapter);
     }
 
@@ -215,6 +258,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void checkUserSignedIn() {
+
+        if (firebaseAuth.getCurrentUser() == null) {
+
+            headerName.setText("Please sign in");
+            headerEmail.setText("");
+
+            //make logout menu item invisible
+
+        } else {
+
+            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+
+                    headerName.setText(userProfile.getfName());
+                    headerEmail.setText(userProfile.getEmail());
+
+                    //make login menu item invisible
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.psniproject.MainApp;
+package com.example.psniproject.MainApp.VictimPages;
 
 
 import android.os.Bundle;
@@ -14,12 +14,12 @@ import com.example.psniproject.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class VictimFragment extends Fragment {
+public class VictimOverview extends Fragment {
 
     private View view;
 
 
-    public VictimFragment() {
+    public VictimOverview() {
         // Required empty public constructor
     }
 
@@ -29,7 +29,7 @@ public class VictimFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        view = inflater.inflate(R.layout.fragment_victim, container, false);
+        view = inflater.inflate(R.layout.victim_overview, container, false);
 
         return view;
     }
