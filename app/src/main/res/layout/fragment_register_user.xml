@@ -406,7 +406,7 @@
             android:layout_below="@id/tvCourtHeading"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
-            android:text="Has the trail taken place already?"
+            android:text="Has the trial taken place already?"
             android:textSize="16sp" />
 
         <RadioGroup

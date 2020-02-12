@@ -7,56 +7,57 @@
     android:background="#FFEDB3"
     tools:context=".MainApp.HomePageFragment">
 
-    <!--<androidx.appcompat.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="?android:attr/actionBarSize"
-        android:id="@+id/toolbarMain">
-    </androidx.appcompat.widget.Toolbar>-->
+    <ImageView
+        android:id="@+id/vsLogo"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/victim_support_logo"
 
-    <View
-        android:id="@+id/fakeView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true"/>
+        />
+
 
     <ImageView
+        android:id="@+id/supporting"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/vsLogo"
         android:scaleType="centerInside"
-        android:src="@drawable/supporting_people"
-        android:layout_marginTop="20dp">
-    </ImageView>
+        android:src="@drawable/supporting_people"></ImageView>
 
     <ImageButton
         android:id="@+id/ibVictimTile"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/supporting"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:adjustViewBounds="true"
+        android:background="#FFEDB3"
         android:scaleType="centerInside"
-        android:layout_alignRight="@id/fakeView"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/victim_tile"
-        android:background="#FFEDB3"/>
+        android:src="@drawable/victim_tile" />
 
     <ImageButton
         android:id="@+id/ibWitnessTile"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/ibVictimTile"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:adjustViewBounds="true"
+        android:background="#FFEDB3"
         android:scaleType="centerInside"
-        android:layout_alignLeft="@id/fakeView"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/witness_tile"
-        android:background="#FFEDB3"/>
+        android:src="@drawable/witness_tile" />
 
     <Button
         android:id="@+id/myJButton"
         android:layout_width="261dp"
         android:layout_height="107dp"
+        android:layout_below="@id/ibWitnessTile"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="350dp"
+        android:layout_marginTop="20dp"
         android:text="My Journey" />
 
 </RelativeLayout>
