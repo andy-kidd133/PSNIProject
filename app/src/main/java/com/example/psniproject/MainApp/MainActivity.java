@@ -20,11 +20,6 @@ import android.widget.Toast;
 import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
 import com.example.psniproject.LoginScreen.UserProfile;
-import com.example.psniproject.MainApp.VictimPages.Compensation;
-import com.example.psniproject.MainApp.VictimPages.TypesOfCrime;
-import com.example.psniproject.MainApp.VictimPages.VictimOverview;
-import com.example.psniproject.MainApp.VictimPages.YourRights;
-import com.example.psniproject.MainApp.WitnessPages.WitnessOverview;
 import com.example.psniproject.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,8 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
     private String uid;
     private NavigationView navigationView;
-    MenuItem victimChild1, victimChild2, victimChild3, victimChild4;
-    MenuItem witnessChild1, witnessChild2, witnessChild3, witnessChild4;
+    MenuItem miVictimSupport, miPPANI;
     ArrayList<MenuItem> victimPages = new ArrayList<MenuItem>();
     ArrayList<MenuItem> witnessPages = new ArrayList<>();
 
@@ -68,17 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setupMainPage();
         checkUserSignedIn();
 
-        victimChild1 = findViewById(R.id.victim_overview);
-        victimChild2 = findViewById(R.id.your_rights);
-        victimChild3 = findViewById(R.id.compensation);
-        victimChild4 = findViewById(R.id.typesof_crime);
-
-        witnessChild1 = findViewById(R.id.nav_witness1);
-        witnessChild2 = findViewById(R.id.nav_witness2);
-        witnessChild3 = findViewById(R.id.nav_witness3);
-        witnessChild4 = findViewById(R.id.nav_witness4);
-
-        preparePageLists();
+        miVictimSupport = findViewById(R.id.victim_support);
+        miPPANI = findViewById(R.id.PPANI);
 
         mViewPager.beginFakeDrag();
 
@@ -110,18 +95,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    public void preparePageLists(){
-
-        victimPages.add(victimChild1);
-        victimPages.add(victimChild2);
-        victimPages.add(victimChild3);
-        victimPages.add(victimChild4);
-
-        witnessPages.add(witnessChild1);
-        witnessPages.add(witnessChild2);
-        witnessPages.add(witnessChild3);
-        witnessPages.add(witnessChild4);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -129,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu m = navigationView.getMenu();
         int id = menuItem.getItemId();
 
-        if (id == R.id.nav_victim) {
+       /* if (id == R.id.nav_victim) {
             boolean b=!m.findItem(R.id.victim_overview).isVisible();
 
             m.findItem(R.id.victim_overview).setVisible(b);
@@ -156,35 +129,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             m.findItem(R.id.compensation).setVisible(false);
             m.findItem(R.id.typesof_crime).setVisible(false);
             return false;
-        }
+        }*/
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 this.setViewPager(0);
                 break;
 
-      //*********** Victim Submenu **********//
-            case R.id.victim_overview:
+      //*********** Victim Support **********//
+            case R.id.victim_support:
                 this.setViewPager(2);
                 break;
-            case R.id.your_rights:
-                this.setViewPager(4);
-                break;
-            case R.id.compensation:
-                this.setViewPager(5);
-                break;
-            case R.id.typesof_crime:
-                this.setViewPager(6);
-                break;
-                //nested switch statements for selecting subMEnu items?
-                //creating ArrayList<MenuItem> to set all to visible/invisible?
-                //for loop to cycle through menu items?
 
-      //********** Witness Submenu **********//
-            case R.id.nav_witness1:
+      //********** PPANI **********//
+            case R.id.PPANI:
                 this.setViewPager(3);
                 break;
 
+                //********** Journey **********//
 
             case R.id.nav_journey:
                 this.setViewPager(1);
@@ -211,11 +173,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomePageFragment(), "HomePageFragment");        //0
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");      //1
-        adapter.addFragment(new VictimOverview(), "VictimOverview");            //2
-        adapter.addFragment(new WitnessOverview(), "WitnessOverview");          //3
-        adapter.addFragment(new YourRights(), "Your Rights");                   //4
-        adapter.addFragment(new Compensation(), "Compensation");                //5
-        adapter.addFragment(new TypesOfCrime(), "Types of Crime");              //6
+        adapter.addFragment(new VictimSupport(), "VictimSupport");              //2
+        adapter.addFragment(new PPANI(), "PPANI");                              //3
         viewPager.setAdapter(adapter);
     }
 

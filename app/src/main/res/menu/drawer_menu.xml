@@ -12,81 +12,38 @@
             android:icon="@drawable/ic_home"
             android:title="Home" />
 
-        <!-- ********** Victim ********** -->
-
-        <item
-            android:id="@+id/nav_victim"
-            android:icon="@drawable/ic_victim"
-            android:title="Victim Info" />
-
-        <item
-            android:id="@+id/victim_overview"
-            android:visible="false"
-            android:title="   Overview" />
-
-        <item
-            android:id="@+id/your_rights"
-            android:visible="false"
-            android:title="   Your Rights" />
-
-        <item
-            android:id="@+id/compensation"
-            android:visible="false"
-            android:title="   Compensation" />
-
-        <item
-            android:id="@+id/typesof_crime"
-            android:visible="false"
-            android:title="   Types of Crime" />
-
-
-        <!-- ********** Witness ********** -->
-
-        <item
-            android:id="@+id/nav_witness"
-            android:icon="@drawable/ic_witness"
-            android:title="Witness Info" />
-
-        <item
-            android:id="@+id/nav_witness1"
-            android:visible="false"
-            android:title="   Page1" />
-
-        <item
-            android:id="@+id/nav_witness2"
-            android:visible="false"
-            android:title="   Page2" />
-
-        <item
-            android:id="@+id/nav_witness3"
-            android:visible="false"
-            android:title="   Page3" />
-
-        <item
-            android:id="@+id/nav_witness4"
-            android:visible="false"
-            android:title="   Page4" />
-
-
-        <!-- ********** Journey ********** -->
-
-        <item
-            android:id="@+id/nav_journey"
-            android:icon="@drawable/ic_journey"
-            android:title="My Journey" />
-
     </group>
 
+    <item android:title="Useful information">
 
+        <menu>
 
-    <!--new section exmaple code, items here can only be pressed once rather than staying selected-->
+            <!-- ********** Victim ********** -->
+
+            <item
+                android:id="@+id/victim_support"
+                android:icon="@drawable/ic_victim"
+                android:title="Victim Support " />
+
+            <!-- ********** Witness ********** -->
+
+            <item
+                android:id="@+id/nav_journey"
+                android:icon="@drawable/ic_journey"
+                android:title="My Journey" />
+
+        </menu>
+
+    </item>
+
+            <!--new section exmaple code, items here can only be pressed once rather than staying selected-->
     <item android:title="Other Links">
 
         <menu>
             <item
-                android:id="@+id/example"
-                android:icon="@drawable/victim_support_logo"
-                android:title="Example"></item>
+                android:id="@+id/PPANI"
+                android:icon="@drawable/ic_witness"
+                android:title="PPANI" ></item>
         </menu>
     </item>
 

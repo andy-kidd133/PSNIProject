@@ -3,12 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainApp.VictimPages.TypesOfCrime">
+    tools:context=".MainApp.VictimSupport"
+    android:background="@color/contentBGrey">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <WebView
+        android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Types of crime - Scrolling tabs" />
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

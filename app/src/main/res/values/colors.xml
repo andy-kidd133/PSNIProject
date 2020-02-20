@@ -5,4 +5,5 @@
     <color name="colorAccent">#A03AAA</color>
     <color name="background">#FFEDB3</color>
     <color name="adminDark">#424242</color>
+    <color name="contentBGrey">#F1F1F1</color>
 </resources>
