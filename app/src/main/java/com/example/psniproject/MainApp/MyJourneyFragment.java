@@ -29,7 +29,7 @@ import org.w3c.dom.Text;
 public class MyJourneyFragment extends Fragment {
 
     private View view;
-    private TextView journeyName, journeyUserType;
+    private TextView journeyName;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
@@ -45,7 +45,6 @@ public class MyJourneyFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_my_journey, container, false);
 
         journeyName = view.findViewById(R.id.jName);
-        journeyUserType = view.findViewById(R.id.jUserType);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();

@@ -278,24 +278,24 @@
             android:textSize="16sp" />
 
         <RadioGroup
-            android:id="@+id/rg1"
+            android:id="@+id/rgStatement"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvStatementHeading"
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:layout_marginRight="30dp"
-            android:checkedButton="@id/yesOption1"
+            android:checkedButton="@id/statementYes"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/noOption1"
+                android:id="@+id/statementNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No" />
 
             <RadioButton
-                android:id="@+id/yesOption1"
+                android:id="@+id/statementYes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes" />
@@ -363,24 +363,24 @@
 
 
         <RadioGroup
-            android:id="@+id/rg2"
+            android:id="@+id/rgPPS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/etMsgField"
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:layout_marginRight="30dp"
-            android:checkedButton="@id/noOption2"
+            android:checkedButton="@id/ppsNo"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/noOption2"
+                android:id="@+id/ppsNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No" />
 
             <RadioButton
-                android:id="@+id/yesOption2"
+                android:id="@+id/ppsYes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes" />
@@ -410,7 +410,7 @@
             android:textSize="16sp" />
 
         <RadioGroup
-            android:id="@+id/rg3"
+            android:id="@+id/rgTrail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvCourtHeading"
@@ -435,7 +435,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etCourtApp"
+            android:id="@+id/etCourtDate"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -459,7 +459,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etCourtApp"
+            android:layout_below="@+id/etCourtDate"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -472,14 +472,6 @@
                 android:hint="Courthouse (dropdown)" />
 
         </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-
-
-
-
 
         <Button
             android:id="@+id/regBtn"
@@ -498,6 +490,14 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/back_button" />
+
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="Edit" />
 
 
     </RelativeLayout>

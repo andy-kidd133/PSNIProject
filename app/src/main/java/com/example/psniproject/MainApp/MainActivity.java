@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
 import com.example.psniproject.LoginScreen.UserProfile;
@@ -29,7 +27,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -40,11 +37,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private TextView headerName, headerEmail;
-    private String uid;
     private NavigationView navigationView;
     MenuItem miVictimSupport, miPPANI;
-    ArrayList<MenuItem> victimPages = new ArrayList<MenuItem>();
-    ArrayList<MenuItem> witnessPages = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,8 +140,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.setViewPager(3);
                 break;
 
-                //********** Journey **********//
-
+      //********** Journey **********//
             case R.id.nav_journey:
                 this.setViewPager(1);
                 break;

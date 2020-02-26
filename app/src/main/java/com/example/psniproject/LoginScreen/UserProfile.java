@@ -92,5 +92,6 @@ public class UserProfile {
     public void setDOB(String DOB) {
         this.DOB = DOB;
     }
+
 }
 
