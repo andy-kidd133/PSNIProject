@@ -18,6 +18,7 @@ public class UserProfile {
         this.Address = Address;
         this.City = City;
         this.County = County;
+        this.Postcode = Postcode;
         this.DOB = DOB;
     }
 

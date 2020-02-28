@@ -96,35 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Menu m = navigationView.getMenu();
         int id = menuItem.getItemId();
 
-       /* if (id == R.id.nav_victim) {
-            boolean b=!m.findItem(R.id.victim_overview).isVisible();
-
-            m.findItem(R.id.victim_overview).setVisible(b);
-            m.findItem(R.id.your_rights).setVisible(b);
-            m.findItem(R.id.compensation).setVisible(b);
-            m.findItem(R.id.typesof_crime).setVisible(b);
-
-            m.findItem(R.id.nav_witness1).setVisible(false);
-            m.findItem(R.id.nav_witness2).setVisible(false);
-            m.findItem(R.id.nav_witness3).setVisible(false);
-            m.findItem(R.id.nav_witness4).setVisible(false);
-            return false;
-        }
-        else if (id == R.id.nav_witness) {
-            boolean c=!m.findItem(R.id.nav_witness1).isVisible();
-
-            m.findItem(R.id.nav_witness1).setVisible(c);
-            m.findItem(R.id.nav_witness2).setVisible(c);
-            m.findItem(R.id.nav_witness3).setVisible(c);
-            m.findItem(R.id.nav_witness4).setVisible(c);
-
-            m.findItem(R.id.victim_overview).setVisible(false);
-            m.findItem(R.id.your_rights).setVisible(false);
-            m.findItem(R.id.compensation).setVisible(false);
-            m.findItem(R.id.typesof_crime).setVisible(false);
-            return false;
-        }*/
-
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 this.setViewPager(0);

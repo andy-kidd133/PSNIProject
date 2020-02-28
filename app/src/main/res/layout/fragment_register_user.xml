@@ -37,7 +37,7 @@
             android:textSize="20sp" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etFirstName"
+            android:id="@+id/tiFirstName"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
@@ -49,6 +49,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/first_name" />
@@ -56,7 +57,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etSurname"
+            android:id="@+id/tiSurname"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="195dp"
             android:layout_height="wrap_content"
@@ -69,6 +70,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSurname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/surname" />
@@ -77,11 +79,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPhoneNum"
+            android:id="@+id/tiPhoneNum"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etFirstName"
+            android:layout_below="@+id/tiFirstName"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -89,6 +91,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPhoneNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Phone number" />
@@ -97,11 +100,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etAddress"
+            android:id="@+id/tiAddress"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etPhoneNum"
+            android:layout_below="@+id/tiPhoneNum"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -109,6 +112,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Address" />
@@ -117,11 +121,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etCity"
+            android:id="@+id/tiCity"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etAddress"
+            android:layout_below="@+id/tiAddress"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -129,6 +133,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="City" />
@@ -137,11 +142,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etCounty"
+            android:id="@+id/tiCounty"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etCity"
+            android:layout_below="@+id/tiCity"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -149,6 +154,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCounty"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="County" />
@@ -157,11 +163,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPostcode"
+            android:id="@+id/tiPostcode"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etCity"
+            android:layout_below="@+id/tiCity"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
             android:layout_marginRight="50dp"
@@ -170,6 +176,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPostcode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Postcode" />
@@ -177,11 +184,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etDOB"
+            android:id="@+id/tiDOB"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etCounty"
+            android:layout_below="@+id/tiCounty"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -189,6 +196,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDOB"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="DOB (dd/mm/yyy)" />
@@ -196,11 +204,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etEmail"
+            android:id="@+id/tiEmail"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etDOB"
+            android:layout_below="@+id/tiDOB"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -208,6 +216,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email" />
@@ -216,11 +225,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPassword"
+            android:id="@+id/tiPassword"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etEmail"
+            android:layout_below="@+id/tiEmail"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -228,6 +237,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password" />
@@ -235,11 +245,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etPasswordConfirm"
+            android:id="@+id/tiPasswordConfirm"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etPassword"
+            android:layout_below="@+id/tiPassword"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -247,6 +257,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPasswordConfirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Confirm password" />
@@ -261,7 +272,7 @@
             android:id="@+id/tvStatementHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etPasswordConfirm"
+            android:layout_below="@id/tiPasswordConfirm"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:text="2. Statement Infomation"
@@ -303,7 +314,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etDateSubmitted"
+            android:id="@+id/tiDateSubmitted"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -315,6 +326,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDateSubmitted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Date submitted (dd/mm/yyyy)" />
@@ -325,14 +337,14 @@
             android:id="@+id/browseBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/etDateSubmitted"
+            android:layout_below="@id/tiDateSubmitted"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:text="Browse for file"/>
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etMsgField"
+            android:id="@+id/tiMsgField"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="180dp"
@@ -344,6 +356,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMsgField"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Enter a message for the user" />
@@ -355,7 +368,7 @@
             android:id="@+id/tvPPSConfirm"
             android:layout_width="250dp"
             android:layout_height="40dp"
-            android:layout_below="@id/etMsgField"
+            android:layout_below="@id/tiMsgField"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:text="Statement submitted to the public prosecution service?"
@@ -366,7 +379,7 @@
             android:id="@+id/rgPPS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etMsgField"
+            android:layout_below="@+id/tiMsgField"
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:layout_marginRight="30dp"
@@ -435,7 +448,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etCourtDate"
+            android:id="@+id/tiCourtDate"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
@@ -447,6 +460,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCourtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Court date (dd/mm/yyyy)" />
@@ -455,11 +469,11 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/etCourtHouse"
+            android:id="@+id/tiCourtHouse"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/etCourtDate"
+            android:layout_below="@+id/tiCourtDate"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
@@ -467,6 +481,7 @@
             app:boxStrokeColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCourtHouse"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Courthouse (dropdown)" />
@@ -474,12 +489,23 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tiCourtHouse"
+            android:layout_marginTop="23dp"
+            android:visibility="invisible"
+            android:text="Save" />
+
+        <Button
             android:id="@+id/regBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/etCourtHouse"
+            android:layout_below="@id/tiCourtHouse"
             android:layout_marginTop="23dp"
             android:text="@string/reg_button" />
 

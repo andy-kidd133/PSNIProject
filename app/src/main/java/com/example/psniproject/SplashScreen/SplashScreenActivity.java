@@ -63,9 +63,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+            startActivity(intent);
+            SplashScreenActivity.this.finish();
+
             //CHANGE TO LOGIN ACTIVITY
 
-            if (firebaseAuth.getCurrentUser() == null) {
+            /*if (firebaseAuth.getCurrentUser() == null) {
                 Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 startActivity(intent);
                 SplashScreenActivity.this.finish();
@@ -89,7 +93,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 });
                 SplashScreenActivity.this.finish();
-            }
+            }*/
 
         }
 

@@ -17,24 +17,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class RegisterUserFragment extends Fragment {
-
-    private TextInputLayout tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
+    
+    private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
             tiAddress, tiCity, tiCounty, tiPostcode, tiDOB, dateSubmitted, mMsg, courtDate, courtHouse;
+
     private TextView tvPPS, tvTrail;
     private RadioGroup rgStatement, rgPPS, rgTrail;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
     private View view;
-    private Button mBackButton, mRegButton, mBrowse, mEditButton;
+    private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
     private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB;
+    public String uidEntered;
 
+    ArrayList<UserProfile> profileList = new ArrayList<>();
 
     public RegisterUserFragment() {
 
@@ -47,6 +59,7 @@ public class RegisterUserFragment extends Fragment {
         setupUIViews();
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
 
         //method to listen for radio button Yes/No for statement
         //if no, call collapseForm method & display message "PSNI will be in contact"
@@ -75,8 +88,8 @@ public class RegisterUserFragment extends Fragment {
             public void onClick(View v) {
                 if(validateRegistration() && checkPasswordMatch(pWord1, pWord2)) {
 
-                    String user_email = tiEmail.getEditText().getText().toString().trim();
-                    String user_password = tiPassword.getEditText().getText().toString().trim();
+                    String user_email = tiEmail.getText().toString().trim();
+                    String user_password = tiPassword.getText().toString().trim();
 
                     firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -113,10 +126,37 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DatabaseReference databaseReference = firebaseDatabase.getReference(uidEntered);
+
+                fName = tiFirstName.getText().toString();
+                sName = tiSurname.getText().toString();
+                eMail = tiEmail.getText().toString();
+                pWord1 = tiPassword.getText().toString();
+                pWord2 = tiPasswordCon.getText().toString();
+                eMail = tiEmail.getText().toString();
+                pNum = tiPhoneNum.getText().toString();
+                address = tiAddress.getText().toString();
+                city = tiCity.getText().toString();
+                county = tiCounty.getText().toString();
+                postcode = tiPostcode.getText().toString();
+                DOB = tiDOB.getText().toString();
+
+                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB);
+                databaseReference.setValue(userProfile);
+
+                resetEditTexts();
+                Toast.makeText(getActivity(), "Details updated for " + userProfile.getfName() + " " + userProfile.getsName(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         return view;
     }
 
-    private void displayEditAlert() {
+    public void displayEditAlert() {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
@@ -126,9 +166,55 @@ public class RegisterUserFragment extends Fragment {
 
         alert.setView(userToEdit);
 
+
         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                String userID = userToEdit.getText().toString();
+
+                uidEntered = userToEdit.getText().toString();
+
+                final DatabaseReference databaseReference = firebaseDatabase.getReference(uidEntered);
+
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        showSaveButton();
+
+                        UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                        tiFirstName.setText(userProfile.getfName());
+                        tiSurname.setText(userProfile.getsName());
+                        tiEmail.setText(userProfile.getEmail());
+                        tiPhoneNum.setText(userProfile.getPhoneNum());
+                        tiAddress.setText(userProfile.getAddress());
+                        tiCity.setText(userProfile.getCity());
+                        tiCounty.setText(userProfile.getCounty());
+                        tiPostcode.setText(userProfile.getPostcode());
+                        tiDOB.setText(userProfile.getDOB());
+
+                        //save button will allow the email to be 'overwritten'
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+                /*UserProfile profileReturned = null;
+
+
+                for (UserProfile userProfile : profileList) {
+                    if (userProfile.getEmail().equalsIgnoreCase(emailEntered)) {
+                        profileReturned = userProfile;
+                        break;
+                    }
+                }
+
+                tietFirstName.setText(profileReturned.getfName());
+
+                //check the email entered matches one from my list of UserProfiles
+                //return the UserProfile with the associated email address*/
             }
         });
 
@@ -146,6 +232,8 @@ public class RegisterUserFragment extends Fragment {
     //String fName, sName, eMail, pWord,pNum, address, city, county, postcode, DOB;
 
     private void setupUIViews() {
+
+        //TextInputLayouts for
         tiFirstName = view.findViewById(R.id.etFirstName);
         tiSurname = view.findViewById(R.id.etSurname);
         tiEmail = view.findViewById(R.id.etEmail);
@@ -159,6 +247,7 @@ public class RegisterUserFragment extends Fragment {
         tiDOB = view.findViewById(R.id.etDOB);
         mBackButton = view.findViewById(R.id.backBtn);
         mEditButton = view.findViewById(R.id.editBtn);
+        mSaveButton = view.findViewById(R.id.saveBtn);
 
         rgStatement = view.findViewById(R.id.rgStatement);
         dateSubmitted = view.findViewById(R.id.etDateSubmitted);
@@ -178,18 +267,18 @@ public class RegisterUserFragment extends Fragment {
     private Boolean validateRegistration() {
         Boolean result = false;
 
-        fName = tiFirstName.getEditText().getText().toString();
-        sName = tiSurname.getEditText().getText().toString();
-        eMail = tiEmail.getEditText().getText().toString();
-        pWord1 = tiPassword.getEditText().getText().toString();
-        pWord2 = tiPasswordCon.getEditText().getText().toString();
-        eMail = tiEmail.getEditText().getText().toString();
-        pNum = tiPhoneNum.getEditText().getText().toString();
-        address = tiAddress.getEditText().getText().toString();
-        city = tiCity.getEditText().getText().toString();
-        county = tiCounty.getEditText().getText().toString();
-        postcode = tiPostcode.getEditText().getText().toString();
-        DOB = tiDOB.getEditText().getText().toString();
+        fName = tiFirstName.getText().toString();
+        sName = tiSurname.getText().toString();
+        eMail = tiEmail.getText().toString();
+        pWord1 = tiPassword.getText().toString();
+        pWord2 = tiPasswordCon.getText().toString();
+        eMail = tiEmail.getText().toString();
+        pNum = tiPhoneNum.getText().toString();
+        address = tiAddress.getText().toString();
+        city = tiCity.getText().toString();
+        county = tiCounty.getText().toString();
+        postcode = tiPostcode.getText().toString();
+        DOB = tiDOB.getText().toString();
 
         //checkPasswordMatch(pWord1, pWord2);
 
@@ -210,22 +299,27 @@ public class RegisterUserFragment extends Fragment {
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
         UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB);
         myRef.setValue(userProfile);
+        profileList.add(userProfile);
+    }
 
+    public void showSaveButton() {
+        mSaveButton.setVisibility(View.VISIBLE);
+        mRegButton.setVisibility(View.GONE);
     }
 
     public void resetEditTexts() {
 
-        tiFirstName.getEditText().getText().clear();
-        tiSurname.getEditText().getText().clear();
-        tiEmail.getEditText().getText().clear();
-        tiPassword.getEditText().getText().clear();
-        tiPasswordCon.getEditText().getText().clear();
-        tiPhoneNum.getEditText().getText().clear();
-        tiAddress.getEditText().getText().clear();
-        tiCity.getEditText().getText().clear();
-        tiPostcode.getEditText().getText().clear();
-        tiCounty.getEditText().getText().clear();
-        tiDOB.getEditText().getText().clear();
+        tiFirstName.getText().clear();
+        tiSurname.getText().clear();
+        tiEmail.getText().clear();
+        tiPassword.getText().clear();
+        tiPasswordCon.getText().clear();
+        tiPhoneNum.getText().clear();
+        tiAddress.getText().clear();
+        tiCity.getText().clear();
+        tiPostcode.getText().clear();
+        tiCounty.getText().clear();
+        tiDOB.getText().clear();
 
     }
 
