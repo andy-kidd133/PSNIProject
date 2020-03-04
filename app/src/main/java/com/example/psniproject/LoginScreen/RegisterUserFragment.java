@@ -31,7 +31,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.RemoteMessage;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,9 +42,8 @@ import static android.app.Activity.RESULT_OK;
 public class RegisterUserFragment extends Fragment {
     
     private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
-            tiAddress, tiCity, tiCounty, tiPostcode, tiDOB;
-
-    private TextInputLayout tiDateSubmitted, mMsg, courtDate, courtHouse;
+            tiAddress, tiCity, tiCounty, tiPostcode, tiDOB, tiDateSubmitted, tiMsg, tiCourtDate, tiCourtHouse;
+    private TextInputLayout etDateSubmitted, etMsg, etCourtDate, etCourtHouse;
     private TextView tvPPS, tvTrail, tvFileName;
     private RadioGroup rgStatement, rgPPS, rgTrail;
     private FirebaseAuth firebaseAuth;
@@ -53,12 +51,13 @@ public class RegisterUserFragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private View view;
     private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
-    private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateSubmitted;
-    public String uidEntered, fileName;
+    private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate;
+    private String uidEntered, fileName;
     private Context mCtx;
     private static int PICK_DOC = 123;
-    Uri docPath;
+    private Uri docPath;
     private StorageReference storageReference;
+    private boolean clicked = false;
 
     ArrayList<UserProfile> profileList = new ArrayList<>();
 
@@ -86,7 +85,6 @@ public class RegisterUserFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
 
         storageReference = firebaseStorage.getReference();
-        //StorageReference myRef1 = storageReference.child(firebaseAuth.getUid());
 
         mBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +93,7 @@ public class RegisterUserFragment extends Fragment {
                 intent.setType("application/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select document"), PICK_DOC);
+                clicked = true;
             }
         });
 
@@ -184,15 +183,39 @@ public class RegisterUserFragment extends Fragment {
                 county = tiCounty.getText().toString();
                 postcode = tiPostcode.getText().toString();
                 DOB = tiDOB.getText().toString();
-                dateSubmitted = tiDateSubmitted.getEditText().getText().toString();
+                dateSubmitted = tiDateSubmitted.getText().toString();
+                message = tiMsg.getText().toString();
+                courtDate = tiCourtDate.getText().toString();
 
-                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted);
+                resetEditTexts();
+
+                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
+
+                //if there is a new file to replace then do this
+                if (clicked){
+                    StorageReference docReference = storageReference.child(uidEntered).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
+                    UploadTask uploadTask = docReference.putFile(docPath);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getActivity(), "Upload Fail", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
                 databaseReference.setValue(userProfile);
 
                 //if current firebaseAuth users.getUID -- uid entered &&
                 //if the court date field for example has been changed then send this certain notification
 
-                resetEditTexts();
+                //when 'SAVE', therefore for e.g. adding to either:
+                        //statement
+                        //message
+                        //courtDate or
+                        //courtHouse
+                //and having them input into Firebase fields,
+                //will this produce a notification through the Database Triggers in the same
+                //way it will if it was input through the console?
+
                 showRegButton();
                 Toast.makeText(getActivity(), "Details updated for " + userProfile.getfName() + " " + userProfile.getsName(), Toast.LENGTH_SHORT).show();
             }
@@ -237,14 +260,17 @@ public class RegisterUserFragment extends Fragment {
 
                         if (userProfile.getDateSubmitted().isEmpty()) {
                             //do nothing
-                            tiDateSubmitted.getEditText().setText("");
+                            tiDateSubmitted.setText("");
                         }else {
                             enableFields();
-                            tiDateSubmitted.getEditText().setText(userProfile.getDateSubmitted());
+                            tiDateSubmitted.setText(userProfile.getDateSubmitted());
                         }
 
-                        //create method to check fields from 2. onwards to see if they have data
-                        //.setText if they areNotEmpty
+                        //also get statement (Professor DK) retrieving from Firebase Storage
+
+                        //do the same for message, courtDate and courtHouse ^^
+                        //if they have a value, get them.
+
 
                     }
 
@@ -254,21 +280,6 @@ public class RegisterUserFragment extends Fragment {
                     }
                 });
 
-
-                /*UserProfile profileReturned = null;
-
-
-                for (UserProfile userProfile : profileList) {
-                    if (userProfile.getEmail().equalsIgnoreCase(emailEntered)) {
-                        profileReturned = userProfile;
-                        break;
-                    }
-                }
-
-                tietFirstName.setText(profileReturned.getfName());
-
-                //check the email entered matches one from my list of UserProfiles
-                //return the UserProfile with the associated email address*/
             }
         });
 
@@ -304,16 +315,20 @@ public class RegisterUserFragment extends Fragment {
         mSaveButton = view.findViewById(R.id.saveBtn);
 
         rgStatement = view.findViewById(R.id.rgStatement);
-        tiDateSubmitted = view.findViewById(R.id.tiDateSubmitted);
+        tiDateSubmitted = view.findViewById(R.id.etDateSubmitted);
+        etDateSubmitted = view.findViewById(R.id.tiDateSubmitted);
         mBrowse = view.findViewById(R.id.browseBtn);
         tvFileName = view.findViewById(R.id.fileName);
-        mMsg = view.findViewById(R.id.tiMsgField);
+        tiMsg = view.findViewById(R.id.etMsgField);
+        etMsg = view.findViewById(R.id.tiMsgField);
         tvPPS = view.findViewById(R.id.tvPPSConfirm);
         rgPPS = view.findViewById(R.id.rgPPS);
         tvTrail = view.findViewById(R.id.tvCourtConfirm);
         rgTrail = view.findViewById(R.id.rgTrail);
-        courtDate = view.findViewById(R.id.tiCourtDate);
-        courtHouse = view.findViewById(R.id.tiCourtHouse);
+        tiCourtDate = view.findViewById(R.id.etCourtDate);
+        etCourtDate = view.findViewById(R.id.tiCourtDate);
+        tiCourtHouse = view.findViewById(R.id.etCourtHouse);
+        etCourtHouse = view.findViewById(R.id.tiCourtHouse);
 
         mRegButton = view.findViewById(R.id.regBtn);
 
@@ -335,8 +350,9 @@ public class RegisterUserFragment extends Fragment {
         postcode = tiPostcode.getText().toString();
         DOB = tiDOB.getText().toString();
 
-        dateSubmitted = tiDateSubmitted.getEditText().getText().toString();
-
+        dateSubmitted = tiDateSubmitted.getText().toString();
+        message = tiMsg.getText().toString();
+        courtDate = tiCourtDate.getText().toString();
 
         if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty() || pWord1.isEmpty()) {
             Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
@@ -349,8 +365,8 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private String generateFileName () {
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted);
-        StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
+        StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
         fileName = docReference.getName();
         return fileName;
     }
@@ -358,9 +374,8 @@ public class RegisterUserFragment extends Fragment {
 
     private void sendUserData() {
 
-        //FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
         StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement"+ userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
         UploadTask uploadTask = docReference.putFile(docPath);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -390,64 +405,65 @@ public class RegisterUserFragment extends Fragment {
 
     public void resetEditTexts() {
 
-        tiFirstName.getText().clear();
-        tiSurname.getText().clear();
-        tiEmail.getText().clear();
-        tiPassword.getText().clear();
-        tiPasswordCon.getText().clear();
-        tiPhoneNum.getText().clear();
-        tiAddress.getText().clear();
-        tiCity.getText().clear();
-        tiPostcode.getText().clear();
-        tiCounty.getText().clear();
-        tiDOB.getText().clear();
-
+        tiFirstName.setText("");
+        tiSurname.setText("");
+        tiEmail.setText("");
+        tiPassword.setText("");
+        tiPasswordCon.setText("");
+        tiPhoneNum.setText("");
+        tiAddress.setText("");
+        tiCity.setText("");
+        tiPostcode.setText("");
+        tiCounty.setText("");
+        tiDOB.setText("");
+        tvFileName.setText("");
     }
 
     private void disableFields() {
 
-        tiDateSubmitted.setAlpha(0.4f);
+        etDateSubmitted.setAlpha(0.4f);
         mBrowse.setAlpha(0.4f);
-        mMsg.setAlpha(0.4f);
+        etMsg.setAlpha(0.4f);
         tvPPS.setAlpha(0.4f);
         rgPPS.setAlpha(0.4f);
         tvTrail.setAlpha(0.4f);
         rgTrail.setAlpha(0.4f);
-        courtDate.setAlpha(0.4f);
-        courtHouse.setAlpha(0.4f);
+        etCourtDate.setAlpha(0.4f);
+        etCourtHouse.setAlpha(0.4f);
+
 
         tiDateSubmitted.setEnabled(false);
         mBrowse.setEnabled(false);
-        mMsg.setEnabled(false);
+        tiMsg.setEnabled(false);
         tvPPS.setEnabled(false);
         rgPPS.setEnabled(false);
         tvTrail.setEnabled(false);
         rgTrail.setEnabled(false);
-        courtDate.setEnabled(false);
-        courtHouse.setEnabled(false);
+        tiCourtDate.setEnabled(false);
+        tiCourtHouse.setEnabled(false);
     }
 
     private void enableFields() {
 
-        tiDateSubmitted.setAlpha(1f);
+        etDateSubmitted.setAlpha(1f);
         mBrowse.setAlpha(1f);
-        mMsg.setAlpha(1f);
+        etMsg.setAlpha(1f);
         tvPPS.setAlpha(1f);
         rgPPS.setAlpha(1f);
         tvTrail.setAlpha(1f);
         rgTrail.setAlpha(1f);
-        courtDate.setAlpha(1f);
-        courtHouse.setAlpha(1f);
+        etCourtDate.setAlpha(1f);
+        etCourtHouse.setAlpha(1f);
 
         tiDateSubmitted.setEnabled(true);
         mBrowse.setEnabled(true);
-        mMsg.setEnabled(true);
+        tiMsg.setEnabled(true);
         tvPPS.setEnabled(true);
         rgPPS.setEnabled(true);
         tvTrail.setEnabled(true);
         rgTrail.setEnabled(true);
-        courtDate.setEnabled(true);
-        courtHouse.setEnabled(true);
+        tiCourtDate.setEnabled(true);
+        tiCourtHouse.setEnabled(true);
     }
 
     public boolean checkPasswordMatch(String password1, String password2) {

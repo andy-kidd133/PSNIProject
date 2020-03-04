@@ -3,14 +3,17 @@ package com.example.psniproject.LoginScreen;
 public class UserProfile {
 
     private String First, Surname, Email, phoneNum, Address, City,
-                    County, Postcode, DOB, dateSubmitted;
+                    County, Postcode, DOB, dateSubmitted, message, courtDate;
+
+    private Courthouse mCourthouse;
 
     public UserProfile() {
 
     }
 
     public UserProfile(String First, String Surname, String Email, String phoneNum,
-                       String Address, String City, String County, String Postcode, String DOB, String dateSubmitted) {
+                       String Address, String City, String County, String Postcode,
+                       String DOB, String dateSubmitted, String message, String courtDate) {
         this.First = First;
         this.Surname = Surname;
         this.Email = Email;
@@ -21,6 +24,8 @@ public class UserProfile {
         this.Postcode = Postcode;
         this.DOB = DOB;
         this.dateSubmitted = dateSubmitted;
+        this.message = message;
+        this.courtDate = courtDate;
     }
 
     public String getfName() {
@@ -101,6 +106,30 @@ public class UserProfile {
 
     public void setDateSubmitted(String dateSubmitted) {
         this.dateSubmitted = dateSubmitted;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getCourtDate() {
+        return courtDate;
+    }
+
+    public void setCourtDate(String courtDate) {
+        this.courtDate = courtDate;
+    }
+
+    public Courthouse getmCourthouse() {
+        return mCourthouse;
+    }
+
+    public void setmCourthouse(Courthouse mCourthouse) {
+        this.mCourthouse = mCourthouse;
     }
 }
 
