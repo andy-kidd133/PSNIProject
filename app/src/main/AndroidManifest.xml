@@ -27,9 +27,17 @@
         <activity android:name=".LoginScreen.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <service android:name=".LoginScreen.Notifications.MyFirebaseMessagingService"
+            android:stopWithTask="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <!-- Main app activity -->
         <activity android:name=".MainApp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+
 
     </application>
 

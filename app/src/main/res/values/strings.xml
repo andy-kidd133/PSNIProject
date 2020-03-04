@@ -29,19 +29,6 @@
     
     <!-- ********** Victim Overview **********  -->
     
-    <string name="victim_OContent"><b>Crime affects different people in different ways, which is why our services are tailored to individual needs.</b>\n\n
-        Our specially trained staff and volunteers are based across Northern Ireland and give people the emotional and practical help they need to recover from the impact of crime.\n\n
-
-We deal with all crime types – from crimes such as theft or criminal damage right through to murder/manslaughter.  What matters to us is how our clients have been affected by the impact of crime, and how we can help them.\n\n
-
-Our support is based on the World Health Organisation’s ‘psychological first aid’ model, which is used worldwide to support people in the aftermath of a stressful event.  We can also offer help to relatives and friends.
-Research shows that for a lot of people, to talk about the impact of crime is a help in itself. In addition, we have an extensive database of other services which are available to those who have experienced crime.\n\n
-
-We’re an independent charity, so you can talk to us whether or not you reported the crime to the police, and our support is free and confidential. It doesn’t matter when the crime took place – you can access our services when you feel ready.\n\n
-
-If you would like to make an appointment to speak to someone from Victim Support NI, please call us at the Hub closest to you:\n\n
-
-Belfast 02890 243133
-Foyle 02871 370086</string>
+    <string name="msg_token_fmt">Token</string>
 
 </resources>

@@ -14,7 +14,6 @@ import android.webkit.WebViewClient;
 
 import com.example.psniproject.R;
 
-import uk.co.deanwild.flowtextview.FlowTextView;
 
 /**
  * A simple {@link Fragment} subclass.

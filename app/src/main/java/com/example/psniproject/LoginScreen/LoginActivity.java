@@ -1,14 +1,24 @@
 package com.example.psniproject.LoginScreen;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
-import android.view.Window;
-import android.view.WindowManager;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.psniproject.LoginScreen.Notifications.Constants;
 import com.example.psniproject.R;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,9 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login_screen);
-        //getWindow().setStatusBarColor(getResources().getColor(R.color.background));
 
-        //getSupportActionBar().hide();
 
         mMyFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
 
@@ -33,6 +41,40 @@ public class LoginActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         mViewPager.beginFakeDrag();
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("tag", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+                        Log.d("FCMToken", token);
+                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationChannel mNotificationChannel =
+                new NotificationChannel(Constants.CHANNEL_ID,
+                        Constants.CHANNEL_NAME,
+                        NotificationManager.IMPORTANCE_HIGH);
+
+        mNotificationChannel.setDescription(Constants.CHANNEL_DESCRIPTION);
+        mNotificationChannel.enableLights(true);
+        mNotificationChannel.setLightColor(Color.CYAN);
+        mNotificationChannel.enableVibration(true);
+        mNotificationChannel.setVibrationPattern(new long [] {100,100,200,200,100,100,500});
+
+        mNotificationManager.createNotificationChannel(mNotificationChannel);
+
     }
 
 
