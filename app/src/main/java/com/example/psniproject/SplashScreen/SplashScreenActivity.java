@@ -27,7 +27,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private int SLEEP_TIMER = 4;
     ImageView vsLogo;
-    Animation fromTop;
     Animation fadeIn;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -63,13 +62,13 @@ public class SplashScreenActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-            Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+            /*Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
             startActivity(intent);
-            SplashScreenActivity.this.finish();
+            SplashScreenActivity.this.finish();*/
 
             //CHANGE TO LOGIN ACTIVITY
 
-            /*if (firebaseAuth.getCurrentUser() == null) {
+            if (firebaseAuth.getCurrentUser() == null) {
                 Intent intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 startActivity(intent);
                 SplashScreenActivity.this.finish();
@@ -93,7 +92,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                     }
                 });
                 SplashScreenActivity.this.finish();
-            }*/
+            }
 
         }
 

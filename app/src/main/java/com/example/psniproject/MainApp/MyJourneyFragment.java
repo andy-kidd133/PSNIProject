@@ -1,27 +1,44 @@
 package com.example.psniproject.MainApp;
 
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.psniproject.LoginScreen.RegisterUserFragment;
 import com.example.psniproject.LoginScreen.UserProfile;
 import com.example.psniproject.R;
+import com.example.psniproject.SplashScreen.SplashScreenActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Text;
+
+import static android.os.Environment.DIRECTORY_DOWNLOADS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,9 +46,15 @@ import org.w3c.dom.Text;
 public class MyJourneyFragment extends Fragment {
 
     private View view;
-    private TextView journeyName;
+    private TextView tvName, tvCrimeDate, tvReportDate, tvStatementHeading, tvDateSubmitted, tvJFileName, tvCourtDate;
+    private ImageView ivGreenTick;
+    private Button btnDownload;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseStorage firebaseStorage;
+    private Animation fadeIn;
+    RecyclerView.ViewHolder myRecyclerView;
+    StorageReference storageReference;
 
 
     public MyJourneyFragment() {
@@ -44,13 +67,28 @@ public class MyJourneyFragment extends Fragment {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_my_journey, container, false);
 
-        journeyName = view.findViewById(R.id.jName);
+        tvName = view.findViewById(R.id.tvName);
+        tvCrimeDate = view.findViewById(R.id.tvCrimeDate);
+        tvReportDate = view.findViewById(R.id.tvReportDate);
+        tvStatementHeading = view.findViewById(R.id.tvJStatementHeading);
+        ivGreenTick = view.findViewById(R.id.ivGreenTick);
+        tvDateSubmitted = view.findViewById(R.id.tvJDateSubmitted);
+        tvJFileName = view.findViewById(R.id.tvJFileName);
+        btnDownload = view.findViewById(R.id.btnDownload);
+
+        tvCourtDate = view.findViewById(R.id.tvCourtDate);
+
+        fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+
+        storageReference = firebaseStorage.getReference();
 
         if (firebaseAuth.getCurrentUser() == null) {
-            journeyName.setText("Please login to use this feature");
+            tvName.setText("Please login to use this feature");
+            tvName.setTextSize(20);
         }
         else {
 
@@ -59,9 +97,73 @@ public class MyJourneyFragment extends Fragment {
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                    journeyName.setText("Hi " + userProfile.getfName());
-                    //journeyUserType.setText("You are a " + userProfile.getUserType());
+                    final UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+
+                    //********** DETAILS **********//
+
+                    tvName.setText("Hi " + userProfile.getfName() + ",");
+                    tvCrimeDate.setText("We have record of the crime which took place on " +
+                                                    userProfile.getCrimeDate() + ". Below you will find immediate updates on your case as they happen.");
+                    tvReportDate.setText("You reported the crime to the PSNI on " + userProfile.getReportDate() + ".");
+
+                    //********** STATEMENT INFO **********//
+
+                    if (userProfile.getDateSubmitted().isEmpty()) {
+
+                        //remove these statements into sep method taking away other subsequent
+                        //details from Journey
+                        tvStatementHeading.setVisibility(View.VISIBLE);
+                        ivGreenTick.setVisibility(View.GONE);
+                        btnDownload.setVisibility(View.GONE);
+                        tvJFileName.setVisibility(View.GONE);
+                        tvDateSubmitted.setText("The PSNI will be in contact to arrange a date and time for giving your statement");
+                    }
+                    else {
+                        ivGreenTick.setVisibility(View.VISIBLE);
+                        ivGreenTick.setAnimation(fadeIn);
+                        tvDateSubmitted.setText("Your statement was given to the PSNI on " + userProfile.getDateSubmitted() + ". You can view it here:");
+                        btnDownload.setVisibility(View.VISIBLE);
+
+                        final String statementFileName = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName()).toString();
+
+                        storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                tvJFileName.setText("statement" + userProfile.getsName() + userProfile.getfName());
+                            }
+                        });
+
+                        btnDownload.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
+                                docReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        String url = uri.toString();
+                                        downloadFile(getActivity(), statementFileName, ".pdf,", DIRECTORY_DOWNLOADS, url);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+
+
+                    //********** COURT INFO **********//
+
+                    if (userProfile.getCourtDate().isEmpty()) {
+                        tvCourtDate.setVisibility(View.GONE);
+                    }
+                    else {
+                        tvCourtDate.setVisibility(View.VISIBLE);
+                        tvCourtDate.setText("Your court date has been set for " + userProfile.getCourtDate() + ".");
+                    }
                 }
 
                 @Override
@@ -72,6 +174,19 @@ public class MyJourneyFragment extends Fragment {
         }
 
         return view;
+    }
+
+    public void downloadFile(Context context, String fileName, String fileExtension,
+                             String destinationDirectory, String url) {
+
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+        downloadManager.enqueue(request);
+
     }
 
 }

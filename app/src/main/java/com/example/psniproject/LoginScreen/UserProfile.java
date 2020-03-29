@@ -3,7 +3,7 @@ package com.example.psniproject.LoginScreen;
 public class UserProfile {
 
     private String First, Surname, Email, phoneNum, Address, City,
-                    County, Postcode, DOB, dateSubmitted, message, courtDate;
+                    County, Postcode, DOB, crimeDate, reportDate, dateSubmitted, message, courtDate;
 
     private Courthouse mCourthouse;
 
@@ -13,7 +13,8 @@ public class UserProfile {
 
     public UserProfile(String First, String Surname, String Email, String phoneNum,
                        String Address, String City, String County, String Postcode,
-                       String DOB, String dateSubmitted, String message, String courtDate) {
+                       String DOB, String crimeDate, String reportDate,
+                       String dateSubmitted, String message, String courtDate) {
         this.First = First;
         this.Surname = Surname;
         this.Email = Email;
@@ -23,6 +24,8 @@ public class UserProfile {
         this.County = County;
         this.Postcode = Postcode;
         this.DOB = DOB;
+        this.crimeDate = crimeDate;
+        this.reportDate = reportDate;
         this.dateSubmitted = dateSubmitted;
         this.message = message;
         this.courtDate = courtDate;
@@ -98,6 +101,22 @@ public class UserProfile {
 
     public void setDOB(String DOB) {
         this.DOB = DOB;
+    }
+
+    public String getCrimeDate() {
+        return crimeDate;
+    }
+
+    public void setCrimeDate(String crimeDate) {
+        this.crimeDate = crimeDate;
+    }
+
+    public String getReportDate() {
+        return reportDate;
+    }
+
+    public void setReportDate(String reportDate) {
+        this.reportDate = reportDate;
     }
 
     public String getDateSubmitted() {

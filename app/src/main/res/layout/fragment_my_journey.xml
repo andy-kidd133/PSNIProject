@@ -1,22 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainApp.MyJourneyFragment">
+    android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/jName"
-        android:layout_width="117dp"
-        android:layout_height="39dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"/>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainApp.MyJourneyFragment">
 
 
-    <TextView
-        android:id="@+id/jUserType"
-        android:layout_width="117dp"
-        android:layout_height="39dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"/>
-</RelativeLayout>
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:fontFamily="@font/laca_text_medium"
+            android:text=""
+            android:textSize="45sp" />
+
+        <TextView
+            android:id="@+id/tvCrimeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvName"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/laca_text_light"
+            android:textSize="25sp"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/tvReportDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvCrimeDate"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/laca_text_light"
+            android:textSize="25sp"
+            android:text=""/>
+
+
+        <!--******************* STATEMENT INFO *******************-->
+
+        <TextView
+            android:id="@+id/tvJStatementHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvReportDate"
+            android:fontFamily="@font/laca_text_medium"
+            android:text="1. Statement Information"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ivGreenTick"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvReportDate"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="105dp"
+            android:src="@drawable/green_tick"/>
+
+        <TextView
+            android:id="@+id/tvJDateSubmitted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvJStatementHeading"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/laca_text_light"
+            android:textSize="18sp"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Download"
+            android:layout_below="@id/tvJDateSubmitted"
+            android:layout_marginRight="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="12dp"/>
+
+
+        <TextView
+            android:id="@+id/tvJFileName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvJDateSubmitted"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="12dp"
+            android:text=""/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <TextView
+            android:id="@+id/tvCourtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/laca_text_book_italic"
+            android:textSize="25sp"
+            android:text=""/>
+
+
+
+
+    </RelativeLayout>
+
+</ScrollView>

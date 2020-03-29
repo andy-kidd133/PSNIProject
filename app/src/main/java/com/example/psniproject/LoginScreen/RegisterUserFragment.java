@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -42,7 +41,9 @@ import static android.app.Activity.RESULT_OK;
 public class RegisterUserFragment extends Fragment {
     
     private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
-            tiAddress, tiCity, tiCounty, tiPostcode, tiDOB, tiDateSubmitted, tiMsg, tiCourtDate, tiCourtHouse;
+            tiAddress, tiCity, tiCounty, tiPostcode, tiDOB,
+            tiDateOfCrime, tiDateReported,
+            tiDateSubmitted, tiMsg, tiCourtDate, tiCourtHouse;
     private TextInputLayout etDateSubmitted, etMsg, etCourtDate, etCourtHouse;
     private TextView tvPPS, tvTrail, tvFileName;
     private RadioGroup rgStatement, rgPPS, rgTrail;
@@ -51,11 +52,10 @@ public class RegisterUserFragment extends Fragment {
     private FirebaseStorage firebaseStorage;
     private View view;
     private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
-    private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate;
+    private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate;
     private String uidEntered, fileName;
-    private Context mCtx;
     private static int PICK_DOC = 123;
-    private Uri docPath;
+    Uri docPath;
     private StorageReference storageReference;
     private boolean clicked = false;
 
@@ -135,6 +135,7 @@ public class RegisterUserFragment extends Fragment {
                             if (task.isSuccessful()) {
                                 //firebaseAuth.signOut();
                                 sendUserData();
+                                firebaseAuth.signOut();
                                 Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
                                 resetEditTexts();
                                 ((LoginActivity)getActivity()).setViewPager(0);
@@ -145,6 +146,8 @@ public class RegisterUserFragment extends Fragment {
                         }
                     });
                 }
+
+                firebaseAuth.signOut();
 
                 //possibly send an email to registered user with login details?
             }
@@ -183,13 +186,15 @@ public class RegisterUserFragment extends Fragment {
                 county = tiCounty.getText().toString();
                 postcode = tiPostcode.getText().toString();
                 DOB = tiDOB.getText().toString();
+                dateOfCrime = tiDateOfCrime.getText().toString();
+                dateReported = tiDateReported.getText().toString();
                 dateSubmitted = tiDateSubmitted.getText().toString();
                 message = tiMsg.getText().toString();
                 courtDate = tiCourtDate.getText().toString();
 
                 resetEditTexts();
 
-                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
+                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
 
                 //if there is a new file to replace then do this
                 if (clicked){
@@ -229,7 +234,7 @@ public class RegisterUserFragment extends Fragment {
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
         final EditText userToEdit = new EditText(getActivity());
-        alert.setMessage("Enter the email address of the user:");
+        alert.setMessage("Enter the User's ID:");
         alert.setTitle("Edit a User's Profile");
 
         alert.setView(userToEdit);
@@ -257,6 +262,9 @@ public class RegisterUserFragment extends Fragment {
                         tiCounty.setText(userProfile.getCounty());
                         tiPostcode.setText(userProfile.getPostcode());
                         tiDOB.setText(userProfile.getDOB());
+                        tiDateOfCrime.setText(userProfile.getCrimeDate());
+                        tiDateReported.setText(userProfile.getReportDate());
+                        tvFileName.setText(generateFileName());
 
                         if (userProfile.getDateSubmitted().isEmpty()) {
                             //do nothing
@@ -264,6 +272,22 @@ public class RegisterUserFragment extends Fragment {
                         }else {
                             enableFields();
                             tiDateSubmitted.setText(userProfile.getDateSubmitted());
+                        }
+
+                        if (userProfile.getMessage().isEmpty()) {
+                            //do nothing
+                            tiMsg.setText("");
+                        }else {
+                            enableFields();
+                            tiMsg.setText(userProfile.getMessage());
+                        }
+
+                        if (userProfile.getCourtDate().isEmpty()) {
+                            //do nothing
+                            tiCourtDate.setText("");
+                        }else {
+                            enableFields();
+                            tiCourtDate.setText(userProfile.getCourtDate());
                         }
 
                         //also get statement (Professor DK) retrieving from Firebase Storage
@@ -310,9 +334,9 @@ public class RegisterUserFragment extends Fragment {
         tiCounty = view.findViewById(R.id.etCounty);
         tiPostcode = view.findViewById(R.id.etPostcode);
         tiDOB = view.findViewById(R.id.etDOB);
-        mBackButton = view.findViewById(R.id.backBtn);
-        mEditButton = view.findViewById(R.id.editBtn);
-        mSaveButton = view.findViewById(R.id.saveBtn);
+
+        tiDateOfCrime = view.findViewById(R.id.etDateOfCrime);
+        tiDateReported = view.findViewById(R.id.etDateReported);
 
         rgStatement = view.findViewById(R.id.rgStatement);
         tiDateSubmitted = view.findViewById(R.id.etDateSubmitted);
@@ -323,6 +347,7 @@ public class RegisterUserFragment extends Fragment {
         etMsg = view.findViewById(R.id.tiMsgField);
         tvPPS = view.findViewById(R.id.tvPPSConfirm);
         rgPPS = view.findViewById(R.id.rgPPS);
+
         tvTrail = view.findViewById(R.id.tvCourtConfirm);
         rgTrail = view.findViewById(R.id.rgTrail);
         tiCourtDate = view.findViewById(R.id.etCourtDate);
@@ -331,6 +356,9 @@ public class RegisterUserFragment extends Fragment {
         etCourtHouse = view.findViewById(R.id.tiCourtHouse);
 
         mRegButton = view.findViewById(R.id.regBtn);
+        mBackButton = view.findViewById(R.id.backBtn);
+        mEditButton = view.findViewById(R.id.editBtn);
+        mSaveButton = view.findViewById(R.id.saveBtn);
 
     }
 
@@ -349,6 +377,9 @@ public class RegisterUserFragment extends Fragment {
         county = tiCounty.getText().toString();
         postcode = tiPostcode.getText().toString();
         DOB = tiDOB.getText().toString();
+        dateOfCrime = tiDateOfCrime.getText().toString();
+        dateReported = tiDateReported.getText().toString();
+
 
         dateSubmitted = tiDateSubmitted.getText().toString();
         message = tiMsg.getText().toString();
@@ -365,7 +396,7 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private String generateFileName () {
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
         StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
         fileName = docReference.getName();
         return fileName;
@@ -375,15 +406,17 @@ public class RegisterUserFragment extends Fragment {
     private void sendUserData() {
 
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateSubmitted, message, courtDate);
-        StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement"+ userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
-        UploadTask uploadTask = docReference.putFile(docPath);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Upload Fail", Toast.LENGTH_SHORT).show();
-            }
-        });
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
+        if (clicked){
+            StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
+            UploadTask uploadTask = docReference.putFile(docPath);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getActivity(), "Upload Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
         myRef.setValue(userProfile);
     }
 
@@ -416,7 +449,13 @@ public class RegisterUserFragment extends Fragment {
         tiPostcode.setText("");
         tiCounty.setText("");
         tiDOB.setText("");
+        tiDateOfCrime.setText("");
+        tiDateReported.setText("");
         tvFileName.setText("");
+        tiDateSubmitted.setText("");
+        tiMsg.setText("");
+        tiCourtDate.setText("");
+
     }
 
     private void disableFields() {
@@ -476,5 +515,13 @@ public class RegisterUserFragment extends Fragment {
             result = true;
         }
         return result;
+    }
+
+    public Uri getDocPath() {
+        return docPath;
+    }
+
+    public void setDocPath(Uri docPath) {
+        this.docPath = docPath;
     }
 }
