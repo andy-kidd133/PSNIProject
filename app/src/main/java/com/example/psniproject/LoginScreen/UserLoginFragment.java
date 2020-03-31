@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.psniproject.MainApp.MainActivity;
+import com.example.psniproject.MainApp.MyJourneyFragment;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
 
 
 public class UserLoginFragment extends Fragment {
@@ -31,9 +34,26 @@ public class UserLoginFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int counter = 5;
+    public boolean alreadyExecuted = false;
 
     public UserLoginFragment() {
         // Required empty public constructor
+    }
+
+    //method to remove duplicate courthouses if Activity is restarted and
+    //courthouses are recreated
+
+    private static ArrayList<Courthouse> removeDuplicates(ArrayList<Courthouse> list) {
+
+        ArrayList<Courthouse> newList = new ArrayList<>();
+
+        for (Courthouse courthouse : list) {
+            if(!newList.contains(courthouse)) {
+                newList.add(courthouse);
+            }
+        }
+        list = newList;
+        return list;
     }
 
     @Override
@@ -41,6 +61,13 @@ public class UserLoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view  = inflater.inflate(R.layout.fragment_user_login, container, false);
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.background));
+
+        //add courthouses to ArrayList only once
+        if(!alreadyExecuted) {
+            MyJourneyFragment.setCourthouseData();
+            MyJourneyFragment.courthouses = removeDuplicates(MyJourneyFragment.courthouses);
+            alreadyExecuted = true;
+        }
 
         loginButton = view.findViewById(R.id.loginBtn);
         username = view.findViewById(R.id.etUsername);
@@ -50,7 +77,6 @@ public class UserLoginFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(getActivity());
-
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 

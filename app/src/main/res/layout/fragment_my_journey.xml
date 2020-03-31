@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:text="Download"
             android:layout_below="@id/tvJDateSubmitted"
-            android:layout_marginRight="25dp"
+            android:layout_marginRight="100dp"
             android:layout_alignParentRight="true"
             android:layout_marginTop="12dp"/>
 
@@ -101,6 +101,41 @@
             android:text=""/>
 
 
+        <!--********** PPS **********-->
+
+        <TextView
+            android:id="@+id/tvJPPSHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvJFileName"
+            android:fontFamily="@font/laca_text_medium"
+            android:text="2. Public Prosecution Service"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ivGreenTick1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="35dp"
+            android:layout_below="@id/tvJFileName"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="70dp"
+            android:src="@drawable/green_tick"/>
+
+
+        <com.example.psniproject.MainApp.CustomMapView
+            android:id="@+id/mapViewHolder"
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_below="@id/tvJCourtDate"
+            android:layout_marginTop="30dp"/>
+
+
 
 
 
@@ -114,14 +149,17 @@
 
 
         <TextView
-            android:id="@+id/tvCourtDate"
+            android:id="@+id/tvJCourtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginBottom="20dp"
+            android:layout_below="@id/tvJPPSHeading"
             android:fontFamily="@font/laca_text_book_italic"
             android:textSize="25sp"
             android:text=""/>
+
+
 
 
 

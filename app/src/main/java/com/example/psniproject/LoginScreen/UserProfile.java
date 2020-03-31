@@ -5,7 +5,7 @@ public class UserProfile {
     private String First, Surname, Email, phoneNum, Address, City,
                     County, Postcode, DOB, crimeDate, reportDate, dateSubmitted, message, courtDate;
 
-    private Courthouse mCourthouse;
+    private Courthouse courtHouse;
 
     public UserProfile() {
 
@@ -14,7 +14,8 @@ public class UserProfile {
     public UserProfile(String First, String Surname, String Email, String phoneNum,
                        String Address, String City, String County, String Postcode,
                        String DOB, String crimeDate, String reportDate,
-                       String dateSubmitted, String message, String courtDate) {
+                       String dateSubmitted, String message, String courtDate,
+                       Courthouse courtHouse) {
         this.First = First;
         this.Surname = Surname;
         this.Email = Email;
@@ -29,6 +30,7 @@ public class UserProfile {
         this.dateSubmitted = dateSubmitted;
         this.message = message;
         this.courtDate = courtDate;
+        this.courtHouse = courtHouse;
     }
 
     public String getfName() {
@@ -143,12 +145,12 @@ public class UserProfile {
         this.courtDate = courtDate;
     }
 
-    public Courthouse getmCourthouse() {
-        return mCourthouse;
+    public Courthouse getCourtHouse() {
+        return courtHouse;
     }
 
-    public void setmCourthouse(Courthouse mCourthouse) {
-        this.mCourthouse = mCourthouse;
+    public void setCourtHouse(Courthouse courtHouse) {
+        this.courtHouse = courtHouse;
     }
 }
 

@@ -1,7 +1,6 @@
 package com.example.psniproject.LoginScreen;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -12,11 +11,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.psniproject.MainApp.MyJourneyFragment;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,8 +47,8 @@ public class RegisterUserFragment extends Fragment {
     private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
             tiAddress, tiCity, tiCounty, tiPostcode, tiDOB,
             tiDateOfCrime, tiDateReported,
-            tiDateSubmitted, tiMsg, tiCourtDate, tiCourtHouse;
-    private TextInputLayout etDateSubmitted, etMsg, etCourtDate, etCourtHouse;
+            tiDateSubmitted, tiMsg, tiCourtDate;
+    private TextInputLayout etDateSubmitted, etMsg, etCourtDate;
     private TextView tvPPS, tvTrail, tvFileName;
     private RadioGroup rgStatement, rgPPS, rgTrail;
     private FirebaseAuth firebaseAuth;
@@ -53,13 +57,13 @@ public class RegisterUserFragment extends Fragment {
     private View view;
     private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
     private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate;
+    private Courthouse courtHouse;
     private String uidEntered, fileName;
     private static int PICK_DOC = 123;
     Uri docPath;
     private StorageReference storageReference;
     private boolean clicked = false;
-
-    ArrayList<UserProfile> profileList = new ArrayList<>();
+    private Spinner spinCourthouse;
 
     public RegisterUserFragment() {
 
@@ -83,8 +87,14 @@ public class RegisterUserFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
-
         storageReference = firebaseStorage.getReference();
+
+        spinCourthouse = view.findViewById(R.id.spinCourtHouse);
+
+        //fill data in spinner
+        ArrayAdapter<Courthouse> adapter = new ArrayAdapter<Courthouse>(getContext(), android.R.layout.simple_spinner_dropdown_item, MyJourneyFragment.courthouses);
+        spinCourthouse.setAdapter(adapter);
+
 
         mBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,6 +163,21 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
+        spinCourthouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Courthouse courthouse = (Courthouse) parent.getSelectedItem();
+                courtHouse = courthouse;
+                Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         //back to admin login screen
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +219,7 @@ public class RegisterUserFragment extends Fragment {
 
                 resetEditTexts();
 
-                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
+                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
 
                 //if there is a new file to replace then do this
                 if (clicked){
@@ -288,13 +313,8 @@ public class RegisterUserFragment extends Fragment {
                         }else {
                             enableFields();
                             tiCourtDate.setText(userProfile.getCourtDate());
+                            spinCourthouse.setSelection(userProfile.getCourtHouse().getId());
                         }
-
-                        //also get statement (Professor DK) retrieving from Firebase Storage
-
-                        //do the same for message, courtDate and courtHouse ^^
-                        //if they have a value, get them.
-
 
                     }
 
@@ -352,8 +372,6 @@ public class RegisterUserFragment extends Fragment {
         rgTrail = view.findViewById(R.id.rgTrail);
         tiCourtDate = view.findViewById(R.id.etCourtDate);
         etCourtDate = view.findViewById(R.id.tiCourtDate);
-        tiCourtHouse = view.findViewById(R.id.etCourtHouse);
-        etCourtHouse = view.findViewById(R.id.tiCourtHouse);
 
         mRegButton = view.findViewById(R.id.regBtn);
         mBackButton = view.findViewById(R.id.backBtn);
@@ -396,7 +414,7 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private String generateFileName () {
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
         StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
         fileName = docReference.getName();
         return fileName;
@@ -406,7 +424,7 @@ public class RegisterUserFragment extends Fragment {
     private void sendUserData() {
 
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
         if (clicked){
             StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
             UploadTask uploadTask = docReference.putFile(docPath);
@@ -468,8 +486,6 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setAlpha(0.4f);
         rgTrail.setAlpha(0.4f);
         etCourtDate.setAlpha(0.4f);
-        etCourtHouse.setAlpha(0.4f);
-
 
         tiDateSubmitted.setEnabled(false);
         mBrowse.setEnabled(false);
@@ -479,7 +495,6 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setEnabled(false);
         rgTrail.setEnabled(false);
         tiCourtDate.setEnabled(false);
-        tiCourtHouse.setEnabled(false);
     }
 
     private void enableFields() {
@@ -492,7 +507,6 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setAlpha(1f);
         rgTrail.setAlpha(1f);
         etCourtDate.setAlpha(1f);
-        etCourtHouse.setAlpha(1f);
 
         tiDateSubmitted.setEnabled(true);
         mBrowse.setEnabled(true);
@@ -502,7 +516,6 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setEnabled(true);
         rgTrail.setEnabled(true);
         tiCourtDate.setEnabled(true);
-        tiCourtHouse.setEnabled(true);
     }
 
     public boolean checkPasswordMatch(String password1, String password2) {
@@ -524,4 +537,9 @@ public class RegisterUserFragment extends Fragment {
     public void setDocPath(Uri docPath) {
         this.docPath = docPath;
     }
+
+    //***************** COURTHOUSE EXAMPLE CODE ******************//
+
+
+
 }
