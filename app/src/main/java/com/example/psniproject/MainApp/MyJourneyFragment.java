@@ -68,7 +68,9 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
     StorageReference storageReference;
     CustomMapView mapView;
     GoogleMap mapToBeLoaded;
-    static GoogleMap antrimMap, armaghMap, ballymenaMap;
+    static GoogleMap antrimMap, armaghMap, ballymenaMap, belfastLaganMap, belfastRoyalMap, colerianeMap,
+                    craigavonMap, downpatrickMap, dungannonMap, enniskillenMap, lisburnMap, limavadyMap, londonderryMap,
+                    magherafeltMap, newryMap, newtownardsMap, omaghMap, strbaneMap;
     boolean signedIn;
 
     public static int courthouseIndex;
@@ -277,21 +279,21 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         courthouses.add(new Courthouse(0, "Antrim Courthouse", antrimMap, 54.715206, -6.214654));
         courthouses.add(new Courthouse(1, "Armagh Courthouse", armaghMap, 54.350656, -6.652744));
         courthouses.add(new Courthouse(2, "Ballymena Courthouse", ballymenaMap, 54.866335, -6.279012));
-        /*courthouses.add(new Courthouse("04", "Belfast Laganside"));
-        courthouses.add(new Courthouse("05", "Belfast Royal COJ"));
-        courthouses.add(new Courthouse("06", "Coleraine"));
-        courthouses.add(new Courthouse("07", "Craigavon"));
-        courthouses.add(new Courthouse("08", "Downpatrick"));
-        courthouses.add(new Courthouse("09", "Dungannon"));
-        courthouses.add(new Courthouse("10", "Enniskillen"));
-        courthouses.add(new Courthouse("11", "Lisburn"));
-        courthouses.add(new Courthouse("12", "Limavady"));
-        courthouses.add(new Courthouse("13", "Londonderry"));
-        courthouses.add(new Courthouse("14", "Magherafelt"));
-        courthouses.add(new Courthouse("15", "Newry"));
-        courthouses.add(new Courthouse("16", "Newtownards"));
-        courthouses.add(new Courthouse("17", "Omagh"));
-        courthouses.add(new Courthouse("18", "Strabane"));*/
+        courthouses.add(new Courthouse(3, "Belfast Laganside Courthouse", belfastLaganMap, 54.598187, -5.922387));
+        courthouses.add(new Courthouse(4, "Belfast Royal Court of Justice", belfastRoyalMap, 54.597600, -5.922891));
+        courthouses.add(new Courthouse(5, "Coleraine Courthouse", colerianeMap, 55.122000, -6.662956));
+        courthouses.add(new Courthouse(6, "Craigavon Courthouse", craigavonMap, 54.449825, -6.395116));
+        courthouses.add(new Courthouse(7, "Downpatrick Courthouse", downpatrickMap, 54.328971, -5.718954));
+        courthouses.add(new Courthouse(8, "Dungannon Courthouse", dungannonMap, 54.504938, -6.758475));
+        courthouses.add(new Courthouse(9, "Enniskillen Courthouse", enniskillenMap, 54.343821, -7.636276));
+        courthouses.add(new Courthouse(10, "Lisburn Courthouse", lisburnMap, 54.513818, -6.044280));
+        courthouses.add(new Courthouse(11, "Limavady Courthouse", limavadyMap, 55.051362, -6953526));
+        courthouses.add(new Courthouse(12, "Londonderry Courthouse", londonderryMap, 54.994015, -7.323963));
+        courthouses.add(new Courthouse(13, "Magherafelt Courthouse", magherafeltMap, 54.758746, -6.610652));
+        courthouses.add(new Courthouse(14, "Newry Courthouse", newryMap, 54.179267, -6.334976));
+        courthouses.add(new Courthouse(15, "Newtownards Courthouse", newtownardsMap, 54.594337, -5.701970));
+        courthouses.add(new Courthouse(16, "Omagh Courthouse", omaghMap, 54.600089, -7.302879));
+        courthouses.add(new Courthouse(17, "Strabane Courthouse", strbaneMap, 54.829635, -7.463193));
 
     }
     public void hideMap() {
