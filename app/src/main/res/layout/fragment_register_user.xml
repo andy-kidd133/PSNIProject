@@ -3,7 +3,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -11,6 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:id="@+id/scrollView"
         tools:context=".LoginScreen.LoginActivity">
 
         <TextView
@@ -492,17 +492,17 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:layout_marginRight="30dp"
-            android:checkedButton="@id/noOption3"
+            android:checkedButton="@id/trailNo"
             android:orientation="horizontal">
 
             <RadioButton
-                android:id="@+id/noOption3"
+                android:id="@+id/trailNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No" />
 
             <RadioButton
-                android:id="@+id/yesOption3"
+                android:id="@+id/trailYes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Yes" />
@@ -529,16 +529,50 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/tvSelectCourthouse"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/tiCourtDate"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="Select a courthouse from the dropdown:"
+            android:textSize="16sp" />
+
 
         <Spinner
             android:id="@+id/spinCourtHouse"
             android:layout_width="270dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tiCourtDate"
+            android:layout_below="@+id/tvSelectCourthouse"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:ems="10"
             app:boxStrokeColor="@color/colorPrimary"/>
+
+        <RadioGroup
+            android:id="@+id/rgConviction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinCourtHouse"
+            android:layout_marginTop="22dp"
+            android:layout_centerHorizontal="true"
+            android:checkedButton="@id/notConvicted"
+            android:orientation="horizontal"
+            android:visibility="invisible">
+
+            <RadioButton
+                android:id="@+id/notConvicted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not convicted" />
+
+            <RadioButton
+                android:id="@+id/convicted"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Convicted" />
+        </RadioGroup>
 
         <Button
             android:id="@+id/saveBtn"
@@ -546,7 +580,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/spinCourtHouse"
+            android:layout_below="@id/rgConviction"
             android:layout_marginTop="23dp"
             android:visibility="invisible"
             android:text="Save" />
@@ -557,7 +591,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/spinCourtHouse"
+            android:layout_below="@id/rgConviction"
             android:layout_marginTop="23dp"
             android:text="@string/reg_button" />
 

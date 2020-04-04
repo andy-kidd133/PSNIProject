@@ -4,7 +4,8 @@ public class UserProfile {
 
     private String First, Surname, Email, phoneNum, Address, City,
                     County, Postcode, DOB, crimeDate, reportDate, dateSubmitted, message, courtDate;
-
+    private boolean pps;
+    private int convicted;
     private Courthouse courtHouse;
 
     public UserProfile() {
@@ -14,8 +15,8 @@ public class UserProfile {
     public UserProfile(String First, String Surname, String Email, String phoneNum,
                        String Address, String City, String County, String Postcode,
                        String DOB, String crimeDate, String reportDate,
-                       String dateSubmitted, String message, String courtDate,
-                       Courthouse courtHouse) {
+                       String dateSubmitted, String message, boolean pps, String courtDate,
+                       Courthouse courtHouse, int convicted) {
         this.First = First;
         this.Surname = Surname;
         this.Email = Email;
@@ -29,8 +30,10 @@ public class UserProfile {
         this.reportDate = reportDate;
         this.dateSubmitted = dateSubmitted;
         this.message = message;
+        this.pps = pps;
         this.courtDate = courtDate;
         this.courtHouse = courtHouse;
+        this.convicted = convicted;
     }
 
     public String getfName() {
@@ -121,6 +124,14 @@ public class UserProfile {
         this.reportDate = reportDate;
     }
 
+    public boolean isPps() {
+        return pps;
+    }
+
+    public void setPps(boolean pps) {
+        this.pps = pps;
+    }
+
     public String getDateSubmitted() {
         return dateSubmitted;
     }
@@ -152,5 +163,15 @@ public class UserProfile {
     public void setCourtHouse(Courthouse courtHouse) {
         this.courtHouse = courtHouse;
     }
+
+    public int getConvicted() {
+        return convicted;
+    }
+
+    public void setConvicted(int convicted) {
+        this.convicted = convicted;
+    }
+
+
 }
 

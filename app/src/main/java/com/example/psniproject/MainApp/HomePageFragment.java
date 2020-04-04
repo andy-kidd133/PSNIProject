@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.psniproject.LoginScreen.UserLoginFragment;
 import com.example.psniproject.R;
 
 /**
@@ -38,6 +39,12 @@ public class HomePageFragment extends Fragment {
         Button myJButton = view.findViewById(R.id.myJButton);
         ImageButton victimTile = view.findViewById(R.id.ibVictimTile);
         ImageButton witnessTile = view.findViewById(R.id.ibWitnessTile);
+
+        if(!UserLoginFragment.alreadyExecuted) {
+            MyJourneyFragment.setCourthouseData();
+            MyJourneyFragment.courthouses = UserLoginFragment.removeDuplicates(MyJourneyFragment.courthouses);
+            UserLoginFragment.alreadyExecuted = true;
+        }
 
         victimTile.setOnClickListener(new View.OnClickListener() {
             @Override

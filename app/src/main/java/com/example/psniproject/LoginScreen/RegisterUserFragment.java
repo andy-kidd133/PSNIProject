@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,8 +50,8 @@ public class RegisterUserFragment extends Fragment {
             tiDateOfCrime, tiDateReported,
             tiDateSubmitted, tiMsg, tiCourtDate;
     private TextInputLayout etDateSubmitted, etMsg, etCourtDate;
-    private TextView tvPPS, tvTrail, tvFileName;
-    private RadioGroup rgStatement, rgPPS, rgTrail;
+    private TextView tvPPS, tvTrail, tvFileName, tvSelectCourthouse;
+    private RadioGroup rgStatement, rgPPS, rgTrail,rgConviction;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
@@ -58,7 +59,10 @@ public class RegisterUserFragment extends Fragment {
     private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
     private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate;
     private Courthouse courtHouse;
+    private boolean pps;
+    private int convicted;
     private String uidEntered, fileName;
+    private ScrollView scrollView;
     private static int PICK_DOC = 123;
     Uri docPath;
     private StorageReference storageReference;
@@ -89,10 +93,8 @@ public class RegisterUserFragment extends Fragment {
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
 
-        spinCourthouse = view.findViewById(R.id.spinCourtHouse);
-
         //fill data in spinner
-        ArrayAdapter<Courthouse> adapter = new ArrayAdapter<Courthouse>(getContext(), android.R.layout.simple_spinner_dropdown_item, MyJourneyFragment.courthouses);
+        ArrayAdapter<Courthouse> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, MyJourneyFragment.courthouses);
         spinCourthouse.setAdapter(adapter);
 
 
@@ -112,22 +114,7 @@ public class RegisterUserFragment extends Fragment {
         //if no, call collapseForm method & display message "PSNI will be in contact"
         //if yes, activate rest of form
 
-        rgStatement.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-                switch(checkedId) {
-                    case R.id.statementYes:
-                        //expandForm
-                        enableFields();
-                        break;
-                    case R.id.statementNo:
-                        //collapseForm
-                        disableFields();
-                        break;
-                }
-            }
-        });
+        setRadioGroupListeners();
 
         //registering user
         mRegButton.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +156,7 @@ public class RegisterUserFragment extends Fragment {
 
                 Courthouse courthouse = (Courthouse) parent.getSelectedItem();
                 courtHouse = courthouse;
-                Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -217,9 +204,7 @@ public class RegisterUserFragment extends Fragment {
                 message = tiMsg.getText().toString();
                 courtDate = tiCourtDate.getText().toString();
 
-                resetEditTexts();
-
-                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
+                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
 
                 //if there is a new file to replace then do this
                 if (clicked){
@@ -233,18 +218,7 @@ public class RegisterUserFragment extends Fragment {
                     });
                 }
                 databaseReference.setValue(userProfile);
-
-                //if current firebaseAuth users.getUID -- uid entered &&
-                //if the court date field for example has been changed then send this certain notification
-
-                //when 'SAVE', therefore for e.g. adding to either:
-                        //statement
-                        //message
-                        //courtDate or
-                        //courtHouse
-                //and having them input into Firebase fields,
-                //will this produce a notification through the Database Triggers in the same
-                //way it will if it was input through the console?
+                resetEditTexts();
 
                 showRegButton();
                 Toast.makeText(getActivity(), "Details updated for " + userProfile.getfName() + " " + userProfile.getsName(), Toast.LENGTH_SHORT).show();
@@ -252,6 +226,73 @@ public class RegisterUserFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void setRadioGroupListeners() {
+
+        rgStatement.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch(checkedId) {
+                    case R.id.statementYes:
+                        enableFieldsStatementGiven();
+                        break;
+                    case R.id.statementNo:
+                        disableFieldsNoStatement();
+                        break;
+                }
+            }
+        });
+
+
+        rgPPS.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch(checkedId) {
+                    case R.id.ppsYes:
+                        pps = true;
+                        break;
+                    case R.id.ppsNo:
+                        pps = false;
+                        break;
+
+                }
+            }
+        });
+
+        rgTrail.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch(checkedId) {
+                    case R.id.trailNo:
+                        enableTrailFields();
+                        rgConviction.setVisibility(View.GONE);
+                        convicted = 2;
+                        break;
+                    case R.id.trailYes:
+                        disableTrailFields();
+                        rgConviction.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
+
+        rgConviction.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                 switch(checkedId) {
+                     case R.id.convicted:
+                         convicted = 1;
+                         break;
+                     case R.id.notConvicted:
+                         convicted = 0;
+                         break;
+                 }
+            }
+        });
     }
 
     public void displayEditAlert() {
@@ -295,7 +336,7 @@ public class RegisterUserFragment extends Fragment {
                             //do nothing
                             tiDateSubmitted.setText("");
                         }else {
-                            enableFields();
+                            enableFieldsStatementGiven();
                             tiDateSubmitted.setText(userProfile.getDateSubmitted());
                         }
 
@@ -303,15 +344,27 @@ public class RegisterUserFragment extends Fragment {
                             //do nothing
                             tiMsg.setText("");
                         }else {
-                            enableFields();
+                            enableFieldsStatementGiven();
                             tiMsg.setText(userProfile.getMessage());
+                        }
+
+                        if(userProfile.isPps()) {
+                            rgPPS.check(R.id.ppsYes);
+                        }else {
+                            rgPPS.check(R.id.ppsNo);
+                        }
+
+                        if (userProfile.getConvicted() == 1) {
+                            rgConviction.check(R.id.convicted);
+                        }else {
+                            rgConviction.check(R.id.notConvicted);
                         }
 
                         if (userProfile.getCourtDate().isEmpty()) {
                             //do nothing
                             tiCourtDate.setText("");
                         }else {
-                            enableFields();
+                            enableFieldsStatementGiven();
                             tiCourtDate.setText(userProfile.getCourtDate());
                             spinCourthouse.setSelection(userProfile.getCourtHouse().getId());
                         }
@@ -372,11 +425,15 @@ public class RegisterUserFragment extends Fragment {
         rgTrail = view.findViewById(R.id.rgTrail);
         tiCourtDate = view.findViewById(R.id.etCourtDate);
         etCourtDate = view.findViewById(R.id.tiCourtDate);
+        tvSelectCourthouse = view.findViewById(R.id.tvSelectCourthouse);
+        spinCourthouse = view.findViewById(R.id.spinCourtHouse);
+        rgConviction = view.findViewById(R.id.rgConviction);
 
         mRegButton = view.findViewById(R.id.regBtn);
         mBackButton = view.findViewById(R.id.backBtn);
         mEditButton = view.findViewById(R.id.editBtn);
         mSaveButton = view.findViewById(R.id.saveBtn);
+
 
     }
 
@@ -414,7 +471,7 @@ public class RegisterUserFragment extends Fragment {
     }
 
     private String generateFileName () {
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
         StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
         fileName = docReference.getName();
         return fileName;
@@ -424,7 +481,7 @@ public class RegisterUserFragment extends Fragment {
     private void sendUserData() {
 
         DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate, courtHouse);
+        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
         if (clicked){
             StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
             UploadTask uploadTask = docReference.putFile(docPath);
@@ -476,7 +533,7 @@ public class RegisterUserFragment extends Fragment {
 
     }
 
-    private void disableFields() {
+    private void disableFieldsNoStatement() {
 
         etDateSubmitted.setAlpha(0.4f);
         mBrowse.setAlpha(0.4f);
@@ -486,6 +543,8 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setAlpha(0.4f);
         rgTrail.setAlpha(0.4f);
         etCourtDate.setAlpha(0.4f);
+        tvSelectCourthouse.setAlpha(0.4f);
+        spinCourthouse.setAlpha(0.4f);
 
         tiDateSubmitted.setEnabled(false);
         mBrowse.setEnabled(false);
@@ -495,9 +554,11 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setEnabled(false);
         rgTrail.setEnabled(false);
         tiCourtDate.setEnabled(false);
+        tvSelectCourthouse.setEnabled(false);
+        spinCourthouse.setEnabled(false);
     }
 
-    private void enableFields() {
+    private void enableFieldsStatementGiven() {
 
         etDateSubmitted.setAlpha(1f);
         mBrowse.setAlpha(1f);
@@ -507,6 +568,8 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setAlpha(1f);
         rgTrail.setAlpha(1f);
         etCourtDate.setAlpha(1f);
+        tvSelectCourthouse.setAlpha(1f);
+        spinCourthouse.setAlpha(1f);
 
         tiDateSubmitted.setEnabled(true);
         mBrowse.setEnabled(true);
@@ -516,9 +579,33 @@ public class RegisterUserFragment extends Fragment {
         tvTrail.setEnabled(true);
         rgTrail.setEnabled(true);
         tiCourtDate.setEnabled(true);
+        tvSelectCourthouse.setEnabled(true);
+        spinCourthouse.setEnabled(true);
     }
 
-    public boolean checkPasswordMatch(String password1, String password2) {
+    public void disableTrailFields() {
+
+        etCourtDate.setAlpha(0.4f);
+        tvSelectCourthouse.setAlpha(0.4f);
+        spinCourthouse.setAlpha(0.4f);
+
+        tiCourtDate.setEnabled(false);
+        tvSelectCourthouse.setEnabled(false);
+        spinCourthouse.setEnabled(false);
+    }
+
+    public void enableTrailFields() {
+
+        etCourtDate.setAlpha(1f);
+        tvSelectCourthouse.setAlpha(1f);
+        spinCourthouse.setAlpha(1f);
+
+        tiCourtDate.setEnabled(true);
+        tvSelectCourthouse.setEnabled(true);
+        spinCourthouse.setEnabled(true);
+    }
+
+    private boolean checkPasswordMatch(String password1, String password2) {
 
         boolean result = false;
 
@@ -538,7 +625,9 @@ public class RegisterUserFragment extends Fragment {
         this.docPath = docPath;
     }
 
-    //***************** COURTHOUSE EXAMPLE CODE ******************//
+    private void setScrollBottom() {
+
+    }
 
 
 

@@ -58,8 +58,9 @@ import static android.os.Environment.DIRECTORY_DOWNLOADS;
 public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
     private View view;
-    private TextView tvName, tvCrimeDate, tvReportDate, tvStatementHeading, tvDateSubmitted, tvJFileName, tvJPPSHeading, tvJCourtDate;
-    private ImageView ivGreenTick, ivGreenTick1;
+    private TextView tvName, tvCrimeDate, tvReportDate, tvStatementHeading, tvDateSubmitted, tvJFileName,
+            tvJPPSHeading, tvJPPSUpdate, tvJCourtHeading, tvJCourtDate, tvJCourtName, tvJCourtAddress, tvJVerdictHeading, tvJVerdict, tvJVerdictResult;
+    private ImageView ivGreenTick, ivGreenTick1, ivGreenTick2, ivGreenTick3;
     private Button btnDownload;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
@@ -141,8 +142,16 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         btnDownload = view.findViewById(R.id.btnDownload);
         tvJPPSHeading = view.findViewById(R.id.tvJPPSHeading);
         ivGreenTick1 = view.findViewById(R.id.ivGreenTick1);
-
+        tvJPPSUpdate = view.findViewById(R.id.tvJPPSUpdate);
+        tvJCourtHeading = view.findViewById(R.id.tvJCourtHeading);
+        ivGreenTick2 = view.findViewById(R.id.ivGreenTick2);
+        tvJCourtName = view.findViewById(R.id.tvJCourtName);
         tvJCourtDate = view.findViewById(R.id.tvJCourtDate);
+        tvJCourtAddress = view.findViewById(R.id.tvJCourtAddress);
+        tvJVerdictHeading = view.findViewById(R.id.tvJVerdictHeading);
+        tvJVerdict = view.findViewById(R.id.tvJVerdict);
+        tvJVerdictResult = view.findViewById(R.id.tvJVerdictResult);
+        ivGreenTick3 = view.findViewById(R.id.ivGreenTick3);
 
         fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
 
@@ -160,7 +169,10 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
             btnDownload.setVisibility(View.GONE);
             tvJPPSHeading.setVisibility(View.GONE);
             ivGreenTick1.setVisibility(View.GONE);
-
+            tvJCourtHeading.setVisibility(View.GONE);
+            ivGreenTick2.setVisibility(View.GONE);
+            tvJVerdictHeading.setVisibility(View.GONE);
+            tvJVerdict.setVisibility(View.GONE);
         }
         else {
 
@@ -186,13 +198,15 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                         //details from Journey
                         tvStatementHeading.setVisibility(View.VISIBLE);
                         ivGreenTick.setVisibility(View.GONE);
+                        ivGreenTick1.setVisibility(View.GONE);
+                        ivGreenTick2.setVisibility(View.GONE);
+                        ivGreenTick3.setVisibility(View.GONE);
                         btnDownload.setVisibility(View.GONE);
                         tvJFileName.setVisibility(View.GONE);
                         tvDateSubmitted.setText("The PSNI will be in contact to arrange a date and time for giving your statement");
                     }
                     else {
                         ivGreenTick.setVisibility(View.VISIBLE);
-                        ivGreenTick.setAnimation(fadeIn);
                         tvDateSubmitted.setText("Your statement was given to the PSNI on " + userProfile.getDateSubmitted() + ". You can view it here:");
                         btnDownload.setVisibility(View.VISIBLE);
 
@@ -228,14 +242,20 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
                     //********** PPS **********//
 
-
-
-
+                    if (userProfile.isPps()) {
+                        tvJPPSUpdate.setText("Your statement has been submitted to the Public Prosecution Service NI.");
+                        ivGreenTick1.setVisibility(View.VISIBLE);
+                    }else {
+                        tvJPPSUpdate.setText("Enquiries are still ongoing within your case.");
+                        ivGreenTick1.setVisibility(View.GONE);
+                        ivGreenTick2.setVisibility(View.GONE);
+                    }
 
                     //********** COURT INFO **********//
 
                     if (userProfile.getCourtDate().isEmpty()) {
                         tvJCourtDate.setVisibility(View.GONE);
+                        tvJCourtDate.setText("Any court arrangements will appear here and you will be notified.");
 
                         //also set map to invisible
                         mapView.setVisibility(View.GONE);
@@ -243,12 +263,26 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                     else {
                         tvJCourtDate.setVisibility(View.VISIBLE);
                         tvJCourtDate.setText("Your court date has been set for " + userProfile.getCourtDate() + ".");
+                        ivGreenTick2.setVisibility(View.VISIBLE);
 
                         //******** DISPLAY COURTHOUSE INFO *********
 
+                        tvJCourtName.setText(userProfile.getCourtHouse().getName());
+                        tvJCourtAddress.setText(userProfile.getCourtHouse().getAddress());
                         mapToBeLoaded = userProfile.getCourtHouse().getGoogleMap();
                         courthouseIndex = userProfile.getCourtHouse().getId();
                     }
+
+
+                    //********** CONVICTION INFO **********//
+
+                    if (userProfile.getConvicted() == 1) {
+                        ivGreenTick3.setVisibility(View.VISIBLE);
+
+                    }
+
+
+
                 }
 
                 @Override
@@ -276,24 +310,24 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
     public static void setCourthouseData() {
 
-        courthouses.add(new Courthouse(0, "Antrim Courthouse", antrimMap, 54.715206, -6.214654));
-        courthouses.add(new Courthouse(1, "Armagh Courthouse", armaghMap, 54.350656, -6.652744));
-        courthouses.add(new Courthouse(2, "Ballymena Courthouse", ballymenaMap, 54.866335, -6.279012));
-        courthouses.add(new Courthouse(3, "Belfast Laganside Courthouse", belfastLaganMap, 54.598187, -5.922387));
-        courthouses.add(new Courthouse(4, "Belfast Royal Court of Justice", belfastRoyalMap, 54.597600, -5.922891));
-        courthouses.add(new Courthouse(5, "Coleraine Courthouse", colerianeMap, 55.122000, -6.662956));
-        courthouses.add(new Courthouse(6, "Craigavon Courthouse", craigavonMap, 54.449825, -6.395116));
-        courthouses.add(new Courthouse(7, "Downpatrick Courthouse", downpatrickMap, 54.328971, -5.718954));
-        courthouses.add(new Courthouse(8, "Dungannon Courthouse", dungannonMap, 54.504938, -6.758475));
-        courthouses.add(new Courthouse(9, "Enniskillen Courthouse", enniskillenMap, 54.343821, -7.636276));
-        courthouses.add(new Courthouse(10, "Lisburn Courthouse", lisburnMap, 54.513818, -6.044280));
-        courthouses.add(new Courthouse(11, "Limavady Courthouse", limavadyMap, 55.051362, -6953526));
-        courthouses.add(new Courthouse(12, "Londonderry Courthouse", londonderryMap, 54.994015, -7.323963));
-        courthouses.add(new Courthouse(13, "Magherafelt Courthouse", magherafeltMap, 54.758746, -6.610652));
-        courthouses.add(new Courthouse(14, "Newry Courthouse", newryMap, 54.179267, -6.334976));
-        courthouses.add(new Courthouse(15, "Newtownards Courthouse", newtownardsMap, 54.594337, -5.701970));
-        courthouses.add(new Courthouse(16, "Omagh Courthouse", omaghMap, 54.600089, -7.302879));
-        courthouses.add(new Courthouse(17, "Strabane Courthouse", strbaneMap, 54.829635, -7.463193));
+        courthouses.add(new Courthouse(0, "Antrim Courthouse", "The Courthouse\n30 Castle Way\nAntrim\nVT41 4AQ\n\nPhone: 0300 200 7812", antrimMap, 54.715206, -6.214654));
+        courthouses.add(new Courthouse(1, "Armagh Courthouse", "The Courthouse\nThe Mall\nArmagh\nBT61 9DJ\nPhone: 0300 200 7812", armaghMap, 54.350656, -6.652744));
+        courthouses.add(new Courthouse(2, "Ballymena Courthouse", "The Courthouse\nAlbert Place\nBallymena\nBT43 5BS\nPhone: 0300 200 7812", ballymenaMap, 54.866335, -6.279012));
+        courthouses.add(new Courthouse(3, "Belfast Laganside Courthouse", "Oxford Street\nBelfast\nBT1 3LL\nPhone: 0300 200 7812", belfastLaganMap, 54.598187, -5.922387));
+        courthouses.add(new Courthouse(4, "Belfast Royal Court of Justice", "Chichester Street\nBelfast\nBT1 3JF\nPhone: 0300 200 7812", belfastRoyalMap, 54.597600, -5.922891));
+        courthouses.add(new Courthouse(5, "Coleraine Courthouse", "The Courthouse\n46a Mountsandel Road\nColeraine\nBT52 1NY\nPhone: 0300 200 7812", colerianeMap, 55.122000, -6.662956));
+        courthouses.add(new Courthouse(6, "Craigavon Courthouse", "The Courthouse\nCentral Way\nCraigavon\nBT64 1AP\nPhone: 0300 200 7812", craigavonMap, 54.449825, -6.395116));
+        courthouses.add(new Courthouse(7, "Downpatrick Courthouse", "The Courthouse\nEnglish Street\nDownpatrick\nBT30 6AB\nPhone: 0300 200 7812", downpatrickMap, 54.328971, -5.718954));
+        courthouses.add(new Courthouse(8, "Dungannon Courthouse", "The Courthouse\n46 Killyman Road\nDungannon\nBT71 6DE\nPhone: 0300 200 7812", dungannonMap, 54.504938, -6.758475));
+        courthouses.add(new Courthouse(9, "Enniskillen Courthouse", "The Courthouse\nEast Bridge Street\nEnniskillen\nBT74 7BW\nPhone: 0300 200 7812", enniskillenMap, 54.343821, -7.636276));
+        courthouses.add(new Courthouse(10, "Lisburn Courthouse", "The Courthouse\nRailway Street\nLisburn\nBT28 1XR\nPhone: 0300 200 7812", lisburnMap, 54.513818, -6.044280));
+        courthouses.add(new Courthouse(11, "Limavady Courthouse", "The Courthouse\nMain Street\nLimavady\nBT49 0EY\nPhone: 0300 200 7812", limavadyMap, 55.051362, -6953526));
+        courthouses.add(new Courthouse(12, "Londonderry Courthouse", "The Courthouse\nBishop Street\nLondonderry\nBT48 6PQ\nPhone: 0300 200 7812", londonderryMap, 54.994015, -7.323963));
+        courthouses.add(new Courthouse(13, "Magherafelt Courthouse", "The Courthouse\nHospital Road\nMagherafelt\nBT45 5DG\nPhone: 0300 200 7812", magherafeltMap, 54.758746, -6.610652));
+        courthouses.add(new Courthouse(14, "Newry Courthouse", "The Courthouse\n23 New Street\nNewry\nBT35 6AD\nPhone: 0300 200 7812", newryMap, 54.179267, -6.334976));
+        courthouses.add(new Courthouse(15, "Newtownards Courthouse", "The Courthouse\nRegent Street\nNewtownards\nBT23 4LP\nPhone: 0300 200 7812", newtownardsMap, 54.594337, -5.701970));
+        courthouses.add(new Courthouse(16, "Omagh Courthouse", "The Courthouse\nHigh Street\nOmagh\nBT78 1DU\nPhone: 0300 200 7812", omaghMap, 54.600089, -7.302879));
+        courthouses.add(new Courthouse(17, "Strabane Courthouse", "The Courthouse\nDerry Road\nStrabane\nBT82 8DT\nPhone: 0300 200 7812", strbaneMap, 54.829635, -7.463193));
 
     }
     public void hideMap() {

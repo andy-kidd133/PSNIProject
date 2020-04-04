@@ -34,7 +34,7 @@ public class UserLoginFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int counter = 5;
-    public boolean alreadyExecuted = false;
+    public static boolean alreadyExecuted = false;
 
     public UserLoginFragment() {
         // Required empty public constructor
@@ -43,7 +43,7 @@ public class UserLoginFragment extends Fragment {
     //method to remove duplicate courthouses if Activity is restarted and
     //courthouses are recreated
 
-    private static ArrayList<Courthouse> removeDuplicates(ArrayList<Courthouse> list) {
+    public static ArrayList<Courthouse> removeDuplicates(ArrayList<Courthouse> list) {
 
         ArrayList<Courthouse> newList = new ArrayList<>();
 

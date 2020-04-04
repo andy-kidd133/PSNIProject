@@ -14,6 +14,8 @@
         tools:context=".MainApp.MyJourneyFragment">
 
 
+        <!--*************** DETAILS **************-->
+
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
@@ -97,11 +99,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvJDateSubmitted"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="22dp"
             android:text=""/>
 
 
-        <!--********** PPS **********-->
+        <!--*************** PPS ***************-->
 
         <TextView
             android:id="@+id/tvJPPSHeading"
@@ -124,41 +126,143 @@
             android:layout_marginRight="70dp"
             android:src="@drawable/green_tick"/>
 
-
-        <com.example.psniproject.MainApp.CustomMapView
-            android:id="@+id/mapViewHolder"
-            android:layout_width="200dp"
-            android:layout_height="300dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="30dp"
-            android:layout_below="@id/tvJCourtDate"
-            android:layout_marginTop="30dp"/>
-
-
+        <TextView
+            android:id="@+id/tvJPPSUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvJPPSHeading"
+            android:fontFamily="@font/laca_text_light"
+            android:text=""
+            android:textSize="18sp" />
 
 
+        <!--*************** COURT HEADING ***************-->
 
 
+        <TextView
+            android:id="@+id/tvJCourtHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvJPPSUpdate"
+            android:fontFamily="@font/laca_text_medium"
+            android:text="3. Court Hearing"
+            android:textSize="20sp" />
 
-
-
-
-
-
-
+        <ImageView
+            android:id="@+id/ivGreenTick2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@id/tvJPPSUpdate"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="185dp"
+            android:visibility="invisible"
+            android:src="@drawable/green_tick"/>
 
         <TextView
             android:id="@+id/tvJCourtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            android:layout_below="@id/tvJPPSHeading"
-            android:fontFamily="@font/laca_text_book_italic"
-            android:textSize="25sp"
+            android:layout_below="@id/tvJCourtHeading"
+            android:fontFamily="@font/laca_text_light"
+            android:textSize="18sp"
             android:text=""/>
 
+        <TextView
+            android:id="@+id/tvJCourtName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="10dp"
+            android:layout_below="@id/tvJCourtDate"
+            android:fontFamily="@font/laca_text_light"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text=""/>
+
+        <TextView
+            android:id="@+id/tvJCourtAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@id/tvJCourtName"
+            android:fontFamily="@font/laca_text_light"
+            android:textSize="18sp"
+            android:text=""/>
+
+        <com.example.psniproject.MainApp.CustomMapView
+            android:id="@+id/mapViewHolder"
+            android:layout_width="150dp"
+            android:layout_height="225dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginBottom="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:layout_below="@id/tvJCourtDate"
+            android:layout_marginTop="30dp"/>
+
+
+        <!--*************** CONVICTION HEADING ***************-->
+
+
+        <TextView
+            android:id="@+id/tvJVerdictHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@id/tvJCourtAddress"
+            android:fontFamily="@font/laca_text_medium"
+            android:text="4. Verdict"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/ivGreenTick3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="90dp"
+            android:layout_below="@id/tvJCourtAddress"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="210dp"
+            android:visibility="invisible"
+            android:src="@drawable/green_tick"/>
+
+        <TextView
+            android:id="@+id/tvJVerdict"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:layout_below="@id/tvJVerdictHeading"
+            android:fontFamily="@font/laca_text_light"
+            android:textColor="@color/md_red_500"
+            android:textSize="18sp"
+            android:text="The defendant has been:"/>
+
+        <TextView
+            android:id="@+id/tvJVerdictResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="40dp"
+            android:layout_below="@id/tvJVerdict"
+            android:fontFamily="@font/laca_text_medium"
+            android:textColor="@color/md_red_500"
+            android:textSize="22sp"
+            android:layout_centerHorizontal="true"
+            android:textStyle="bold"
+            android:text=""/>
 
 
 
