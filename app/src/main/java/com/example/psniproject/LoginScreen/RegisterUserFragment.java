@@ -109,11 +109,6 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
-
-        //method to listen for radio button Yes/No for statement
-        //if no, call collapseForm method & display message "PSNI will be in contact"
-        //if yes, activate rest of form
-
         setRadioGroupListeners();
 
         //registering user
@@ -186,23 +181,7 @@ public class RegisterUserFragment extends Fragment {
 
                 DatabaseReference databaseReference = firebaseDatabase.getReference(uidEntered);
 
-                fName = tiFirstName.getText().toString();
-                sName = tiSurname.getText().toString();
-                eMail = tiEmail.getText().toString();
-                pWord1 = tiPassword.getText().toString();
-                pWord2 = tiPasswordCon.getText().toString();
-                eMail = tiEmail.getText().toString();
-                pNum = tiPhoneNum.getText().toString();
-                address = tiAddress.getText().toString();
-                city = tiCity.getText().toString();
-                county = tiCounty.getText().toString();
-                postcode = tiPostcode.getText().toString();
-                DOB = tiDOB.getText().toString();
-                dateOfCrime = tiDateOfCrime.getText().toString();
-                dateReported = tiDateReported.getText().toString();
-                dateSubmitted = tiDateSubmitted.getText().toString();
-                message = tiMsg.getText().toString();
-                courtDate = tiCourtDate.getText().toString();
+                returnFieldValues();
 
                 UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
 
@@ -330,7 +309,6 @@ public class RegisterUserFragment extends Fragment {
                         tiDOB.setText(userProfile.getDOB());
                         tiDateOfCrime.setText(userProfile.getCrimeDate());
                         tiDateReported.setText(userProfile.getReportDate());
-                        tvFileName.setText(generateFileName());
 
                         if (userProfile.getDateSubmitted().isEmpty()) {
                             //do nothing
@@ -338,6 +316,7 @@ public class RegisterUserFragment extends Fragment {
                         }else {
                             enableFieldsStatementGiven();
                             tiDateSubmitted.setText(userProfile.getDateSubmitted());
+                            tvFileName.setText(generateFileName());
                         }
 
                         if (userProfile.getMessage().isEmpty()) {
@@ -440,25 +419,7 @@ public class RegisterUserFragment extends Fragment {
     private Boolean validateRegistration() {
         Boolean result = false;
 
-        fName = tiFirstName.getText().toString();
-        sName = tiSurname.getText().toString();
-        eMail = tiEmail.getText().toString();
-        pWord1 = tiPassword.getText().toString();
-        pWord2 = tiPasswordCon.getText().toString();
-        eMail = tiEmail.getText().toString();
-        pNum = tiPhoneNum.getText().toString();
-        address = tiAddress.getText().toString();
-        city = tiCity.getText().toString();
-        county = tiCounty.getText().toString();
-        postcode = tiPostcode.getText().toString();
-        DOB = tiDOB.getText().toString();
-        dateOfCrime = tiDateOfCrime.getText().toString();
-        dateReported = tiDateReported.getText().toString();
-
-
-        dateSubmitted = tiDateSubmitted.getText().toString();
-        message = tiMsg.getText().toString();
-        courtDate = tiCourtDate.getText().toString();
+        returnFieldValues();
 
         if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty() || pWord1.isEmpty()) {
             Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
@@ -493,6 +454,27 @@ public class RegisterUserFragment extends Fragment {
             });
         }
         myRef.setValue(userProfile);
+    }
+
+    private void returnFieldValues() {
+
+        fName = tiFirstName.getText().toString();
+        sName = tiSurname.getText().toString();
+        eMail = tiEmail.getText().toString();
+        pWord1 = tiPassword.getText().toString();
+        pWord2 = tiPasswordCon.getText().toString();
+        eMail = tiEmail.getText().toString();
+        pNum = tiPhoneNum.getText().toString();
+        address = tiAddress.getText().toString();
+        city = tiCity.getText().toString();
+        county = tiCounty.getText().toString();
+        postcode = tiPostcode.getText().toString();
+        DOB = tiDOB.getText().toString();
+        dateOfCrime = tiDateOfCrime.getText().toString();
+        dateReported = tiDateReported.getText().toString();
+        dateSubmitted = tiDateSubmitted.getText().toString();
+        message = tiMsg.getText().toString();
+        courtDate = tiCourtDate.getText().toString();
     }
 
     private boolean isNotEmpty(TextInputEditText etText) {

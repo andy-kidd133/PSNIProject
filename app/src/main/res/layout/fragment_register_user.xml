@@ -350,7 +350,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="22dp"
             android:layout_marginRight="30dp"
-            android:checkedButton="@id/statementYes"
+            android:checkedButton="@id/statementNo"
             android:orientation="horizontal">
 
             <RadioButton

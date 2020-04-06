@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 
@@ -120,6 +125,7 @@ public class UserLoginFragment extends Fragment {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()) {
                     progressDialog.dismiss();
+                    pushDeviceToken();
                     Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
                     resetEditTexts();
                     startActivity(new Intent(getActivity(), MainActivity.class));
@@ -141,6 +147,34 @@ public class UserLoginFragment extends Fragment {
 
         username.getEditText().getText().clear();
         password.getEditText().getText().clear();
+
+    }
+
+    private void pushDeviceToken() {
+
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("tag", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Tokens");
+                        ref.child(firebaseAuth.getCurrentUser().getUid()).setValue(token);
+
+                        //DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(firebaseAuth.getUid());
+                        //myRef.child("Token").setValue(token);
+
+                        // Log and toast
+                        Log.d("FCMToken", token);
+                        //Toast.makeText(LoginActivity.this, token, Toast.LENGTH_LONG).show();
+                    }
+                });
 
     }
 

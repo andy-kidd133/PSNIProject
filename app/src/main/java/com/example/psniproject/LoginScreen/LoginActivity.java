@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mViewPager.beginFakeDrag();
 
-        FirebaseInstanceId.getInstance().getInstanceId()
+       /* FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
@@ -54,11 +54,12 @@ public class LoginActivity extends AppCompatActivity {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
+
                         // Log and toast
                         Log.d("FCMToken", token);
                         //Toast.makeText(LoginActivity.this, token, Toast.LENGTH_LONG).show();
                     }
-                });
+                });*/
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 

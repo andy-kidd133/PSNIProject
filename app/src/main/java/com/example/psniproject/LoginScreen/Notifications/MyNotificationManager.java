@@ -29,7 +29,7 @@ public class MyNotificationManager {
     public void displayNotification(String title, String body) {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mCtx, Constants.CHANNEL_ID)
-                .setSmallIcon(R.drawable.lock_icon)
+                .setSmallIcon(R.drawable.ic_mail_black_24dp)
                 .setContentTitle(title)
                 .setContentText(body);
 
@@ -42,8 +42,6 @@ public class MyNotificationManager {
         if(mNotificationManager != null) {
             mNotificationManager.notify(1, mBuilder.build());
         }
-
-
 
     }
 
