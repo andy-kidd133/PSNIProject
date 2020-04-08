@@ -65,7 +65,6 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
-    private Animation fadeIn;
     StorageReference storageReference;
     CustomMapView mapView;
     GoogleMap mapToBeLoaded;
@@ -153,7 +152,6 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         tvJVerdictResult = view.findViewById(R.id.tvJVerdictResult);
         ivGreenTick3 = view.findViewById(R.id.ivGreenTick3);
 
-        fadeIn = AnimationUtils.loadAnimation(getActivity(), R.anim.fadein);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -264,6 +262,7 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                         tvJCourtDate.setVisibility(View.VISIBLE);
                         tvJCourtDate.setText("Your court date has been set for " + userProfile.getCourtDate() + ".");
                         ivGreenTick2.setVisibility(View.VISIBLE);
+                        tvJVerdictHeading.setVisibility(View.VISIBLE);
 
                         //******** DISPLAY COURTHOUSE INFO *********
 
@@ -278,10 +277,14 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
                     if (userProfile.getConvicted() == 1) {
                         ivGreenTick3.setVisibility(View.VISIBLE);
-
+                        tvJVerdict.setVisibility(View.VISIBLE);
+                        tvJVerdictResult.setText("CONVICTED");
                     }
-
-
+                    else if(userProfile.getConvicted() == 0){
+                        ivGreenTick3.setVisibility(View.VISIBLE);
+                        tvJVerdict.setVisibility(View.VISIBLE);
+                        tvJVerdictResult.setText("NOT CONVICTED");
+                    }
 
                 }
 

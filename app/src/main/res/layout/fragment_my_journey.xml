@@ -223,6 +223,7 @@
             android:layout_marginLeft="15dp"
             android:layout_below="@id/tvJCourtAddress"
             android:fontFamily="@font/laca_text_medium"
+            android:visibility="invisible"
             android:text="4. Verdict"
             android:textSize="20sp" />
 
@@ -246,8 +247,8 @@
             android:layout_marginBottom="20dp"
             android:layout_below="@id/tvJVerdictHeading"
             android:fontFamily="@font/laca_text_light"
-            android:textColor="@color/md_red_500"
             android:textSize="18sp"
+            android:visibility="invisible"
             android:text="The defendant has been:"/>
 
         <TextView
@@ -258,10 +259,10 @@
             android:layout_marginBottom="40dp"
             android:layout_below="@id/tvJVerdict"
             android:fontFamily="@font/laca_text_medium"
-            android:textColor="@color/md_red_500"
             android:textSize="22sp"
             android:layout_centerHorizontal="true"
             android:textStyle="bold"
+            android:textColor="@color/md_red_500"
             android:text=""/>
 
 

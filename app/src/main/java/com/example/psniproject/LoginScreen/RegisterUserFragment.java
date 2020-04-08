@@ -4,10 +4,13 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.psniproject.LoginScreen.Emails.GMailSender;
 import com.example.psniproject.MainApp.MyJourneyFragment;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -115,33 +120,31 @@ public class RegisterUserFragment extends Fragment {
         mRegButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validateRegistration() && checkPasswordMatch(pWord1, pWord2)) {
+                if(validateRegistration()) {
 
-                    String user_email = tiEmail.getText().toString().trim();
-                    String user_password = tiPassword.getText().toString().trim();
+                    eMail = tiEmail.getText().toString().trim();
+                    pWord1 = generatePassword(10);
 
-                    firebaseAuth.createUserWithEmailAndPassword(user_email, user_password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    firebaseAuth.createUserWithEmailAndPassword(eMail, pWord1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
 
                             if (task.isSuccessful()) {
-                                //firebaseAuth.signOut();
                                 sendUserData();
+                                clicked = false;
                                 firebaseAuth.signOut();
+                                sendLoginDetailsEmail(eMail);
                                 Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
                                 resetEditTexts();
                                 ((LoginActivity)getActivity()).setViewPager(0);
                             }else {
                                 Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
-
                             }
                         }
                     });
                 }
 
                 firebaseAuth.signOut();
-
-                //possibly send an email to registered user with login details?
             }
         });
 
@@ -189,6 +192,7 @@ public class RegisterUserFragment extends Fragment {
                 if (clicked){
                     StorageReference docReference = storageReference.child(uidEntered).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
                     UploadTask uploadTask = docReference.putFile(docPath);
+                    clicked = false;
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -205,6 +209,31 @@ public class RegisterUserFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private String generatePassword(int length) {
+
+        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789£/@#%".toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+        for(int i =0; i< length; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            stringBuilder.append(c);
+        }
+        return stringBuilder.toString();
+    }
+
+    private void sendLoginDetailsEmail(String recipient) {
+
+        try {
+            GMailSender sender = new GMailSender("andrew-kidd@outlook.com", "Newpc180");
+            sender.sendMail("VictimSupport Login Details",
+                    "Hi,\n\nHere are your details:\n\nUsername: " + eMail + "\nPassword: " + pWord1 + "\n\n Please log in to the Victim Support App now to activate your account.\n\nMany thanks.\n\nVictim Support Team",
+                    "andrewkidd21234@gmail.com",
+                    recipient);
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
     }
 
     private void setRadioGroupListeners() {
@@ -421,7 +450,7 @@ public class RegisterUserFragment extends Fragment {
 
         returnFieldValues();
 
-        if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty() || pWord1.isEmpty()) {
+        if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty()) {
             Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
         }
         else {
@@ -610,7 +639,6 @@ public class RegisterUserFragment extends Fragment {
     private void setScrollBottom() {
 
     }
-
 
 
 }
