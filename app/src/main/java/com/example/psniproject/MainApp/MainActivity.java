@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.psniproject.LoginScreen.LoginActivity;
 import com.example.psniproject.LoginScreen.MyFragmentPagerAdapter;
-import com.example.psniproject.LoginScreen.UserProfile;
+import com.example.psniproject.LoginScreen.Models.OfficerProfile;
+import com.example.psniproject.LoginScreen.Models.VictimProfile;
+import com.example.psniproject.LoginScreen.Models.UserType;
+import com.example.psniproject.MainApp.Messages.MessagesFragment;
 import com.example.psniproject.R;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +31,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import static com.example.psniproject.LoginScreen.UserLoginFragment.officerIDs;
+import static com.example.psniproject.LoginScreen.UserLoginFragment.victimIDs;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView headerName, headerEmail;
     private NavigationView navigationView;
     MenuItem miVictimSupport, miPPANI;
+    public static UserType userType;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
+        retrieveUserType(firebaseAuth.getUid());
         setupMainPage();
         checkUserSignedIn();
 
@@ -116,6 +126,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_journey:
                 this.setViewPager(1);
                 break;
+
+      //********** Journey **********//
+            case R.id.nav_messages:
+                this.setViewPager(4);
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);
@@ -140,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");      //1
         adapter.addFragment(new VictimSupport(), "VictimSupport");              //2
         adapter.addFragment(new PPANI(), "PPANI");                              //3
+        adapter.addFragment(new MessagesFragment(), "Messages");                //4
         viewPager.setAdapter(adapter);
     }
 
@@ -192,29 +208,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             headerName.setText("Please sign in");
             headerEmail.setText("");
 
-            //make logout menu item invisible
-
         } else {
 
-            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+            DatabaseReference databaseReference = null;
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+            if (userType == UserType.VICTIM) {
+                databaseReference = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
 
-                    headerName.setText(userProfile.getfName());
-                    headerEmail.setText(userProfile.getEmail());
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
 
-                    //make login menu item invisible
-                }
+                        headerName.setText(victimProfile.getfName());
+                        headerEmail.setText(victimProfile.getEmail());
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            else if (userType == UserType.OFFICER) {
+                databaseReference = firebaseDatabase.getReference("officers/" + firebaseAuth.getUid());
+
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        OfficerProfile officerProfile = dataSnapshot.getValue(OfficerProfile.class);
+
+                        headerName.setText(officerProfile.getmFirstName());
+                        headerEmail.setText(officerProfile.getmEmail());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(MainActivity.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
+    }
+
+
+    private void retrieveUserType(String firebaseAuthUID) {
+
+        if(victimIDs.contains(firebaseAuthUID)) {
+            userType = UserType.VICTIM;
+            Log.e("Usertype....", userType.toString());
+        }
+        else if(officerIDs.contains(firebaseAuthUID)) {
+            userType = UserType.OFFICER;
+            Log.e("Usertype....", userType.toString());
+        }
+
     }
 }
 

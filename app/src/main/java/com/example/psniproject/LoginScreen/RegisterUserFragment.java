@@ -4,10 +4,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -25,6 +25,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.psniproject.LoginScreen.Emails.GMailSender;
+import com.example.psniproject.LoginScreen.Models.Courthouse;
+import com.example.psniproject.LoginScreen.Models.OfficerProfile;
+import com.example.psniproject.LoginScreen.Models.VictimProfile;
+import com.example.psniproject.LoginScreen.Models.UserType;
 import com.example.psniproject.MainApp.MyJourneyFragment;
 import com.example.psniproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -44,26 +48,32 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static android.app.Activity.RESULT_OK;
 
 public class RegisterUserFragment extends Fragment {
     
-    private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPassword, tiPasswordCon, tiPhoneNum,
+    private TextInputEditText tiFirstName, tiSurname, tiEmail, tiPhoneNum,
             tiAddress, tiCity, tiCounty, tiPostcode, tiDOB,
             tiDateOfCrime, tiDateReported,
             tiDateSubmitted, tiMsg, tiCourtDate;
+    private TextInputEditText tiFirstNameOfficer, tiSurnameOfficer, tiEmailOfficer;
     private TextInputLayout etDateSubmitted, etMsg, etCourtDate;
-    private TextView tvPPS, tvTrail, tvFileName, tvSelectCourthouse;
+    private TextView tvTitle, tvPPS, tvTrail, tvFileName, tvSelectCourthouse;
+    private CardView userCard, officerCard;
     private RadioGroup rgStatement, rgPPS, rgTrail,rgConviction;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
     private FirebaseStorage firebaseStorage;
     private View view;
     private Button mBackButton, mRegButton, mSaveButton, mBrowse, mEditButton;
-    private String fName, sName, eMail, pWord1, pWord2, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate;
+    private String uIDVictim, fName, sName, eMail, pWord1, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, courtDate;
+    private String uIDOfficer, fNameOfficer, surnameOfficer, emailOfficer;
+    private ArrayList<String> victimIds;
     private Courthouse courtHouse;
+    private OfficerProfile officerProfile;
     private boolean pps;
     private int convicted;
     private String uidEntered, fileName;
@@ -72,7 +82,10 @@ public class RegisterUserFragment extends Fragment {
     Uri docPath;
     private StorageReference storageReference;
     private boolean clicked = false;
-    private Spinner spinCourthouse;
+    private UserType formState = UserType.VICTIM;
+    private UserType userType;
+    private Spinner spinCourthouse, spinOfficer;
+
 
     public RegisterUserFragment() {
 
@@ -92,15 +105,37 @@ public class RegisterUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         view  = inflater.inflate(R.layout.fragment_register_user, container, false);
         setupUIViews();
+        userType = UserType.VICTIM;
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         storageReference = firebaseStorage.getReference();
+        victimIds = new ArrayList<>();
 
-        //fill data in spinner
-        ArrayAdapter<Courthouse> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, MyJourneyFragment.courthouses);
-        spinCourthouse.setAdapter(adapter);
+        //fill courthouse spinner
+        ArrayAdapter<Courthouse> courthouseAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, MyJourneyFragment.courthouses);
+        spinCourthouse.setAdapter(courthouseAdapter);
+
+        //fill officer spinner
+        final ArrayAdapter<String> officerProfileArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, UserLoginFragment.officerNames);
+        spinOfficer.setAdapter(officerProfileArrayAdapter);
+
+        tvTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(formState == UserType.VICTIM) {
+                    userCard.setVisibility(View.GONE);
+                    officerCard.setVisibility(View.VISIBLE);
+                    formState = UserType.OFFICER;
+                }else if(formState == UserType.OFFICER) {
+                    officerCard.setVisibility(View.GONE);
+                    userCard.setVisibility(View.VISIBLE);
+                    formState = UserType.VICTIM;
+                }
+            }
+        });
 
 
         mBrowse.setOnClickListener(new View.OnClickListener() {
@@ -122,36 +157,80 @@ public class RegisterUserFragment extends Fragment {
             public void onClick(View v) {
                 if(validateRegistration()) {
 
-                    eMail = tiEmail.getText().toString().trim();
-                    pWord1 = generatePassword(10);
+                    if(formState == UserType.VICTIM) {
 
-                    firebaseAuth.createUserWithEmailAndPassword(eMail, pWord1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
+                        eMail = tiEmail.getText().toString().trim();
+                        pWord1 = generatePassword(10);
+                        userType = UserType.VICTIM;
 
-                            if (task.isSuccessful()) {
-                                sendUserData();
-                                clicked = false;
-                                firebaseAuth.signOut();
-                                sendLoginDetailsEmail(eMail);
-                                Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
-                                resetEditTexts();
-                                ((LoginActivity)getActivity()).setViewPager(0);
-                            }else {
-                                Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
+                        firebaseAuth.createUserWithEmailAndPassword(eMail, pWord1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    sendVictimData();
+                                    clicked = false;
+                                    firebaseAuth.signOut();
+                                    sendLoginDetailsEmail(eMail);
+                                    Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
+                                    resetEditTexts();
+                                    ((LoginActivity) getActivity()).setViewPager(0);
+                                } else {
+                                    Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
+                    else if (formState == UserType.OFFICER) {
+
+                        eMail = tiEmailOfficer.getText().toString().trim();
+                        pWord1 = generatePassword(10);
+                        userType = UserType.OFFICER;
+
+                        firebaseAuth.createUserWithEmailAndPassword(eMail, pWord1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()) {
+                                    sendOfficerData();
+                                    firebaseAuth.signOut();
+                                    sendLoginDetailsEmail(eMail);
+                                    Toast.makeText(getActivity(), "Registration Successful & upload complete.", Toast.LENGTH_SHORT).show();
+                                    resetEditTexts();
+                                    ((LoginActivity) getActivity()).setViewPager(0);
+                                }else {
+                                    Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
                 }
 
                 firebaseAuth.signOut();
             }
         });
 
+        spinOfficer.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String officer = (String) parent.getSelectedItem();
+                System.out.println("Officer's name selected......" + officer);
+                officerProfile = matchOfficerWithName(officer, UserLoginFragment.officerProfiles);
+
+                //also add this victim being registered to an ArrayList of Victims for the officer
+                //officer can have more than one victim at the same time
+
+                if(officerProfile != null) {
+                    System.out.println("Officer's profile matched......" + officerProfile.getmFirstName());
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         spinCourthouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 Courthouse courthouse = (Courthouse) parent.getSelectedItem();
                 courtHouse = courthouse;
                 //Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
@@ -182,15 +261,15 @@ public class RegisterUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                DatabaseReference databaseReference = firebaseDatabase.getReference(uidEntered);
+                DatabaseReference databaseReference = firebaseDatabase.getReference("victims/" + uidEntered);
 
                 returnFieldValues();
 
-                UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
+                VictimProfile victimProfile = new VictimProfile(uIDVictim, fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, officerProfile, dateSubmitted, message, pps, courtDate, courtHouse, convicted, userType);
 
                 //if there is a new file to replace then do this
                 if (clicked){
-                    StorageReference docReference = storageReference.child(uidEntered).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
+                    StorageReference docReference = storageReference.child(uidEntered).child("statement" + victimProfile.getsName() + victimProfile.getfName());      //can create more children for additional file types
                     UploadTask uploadTask = docReference.putFile(docPath);
                     clicked = false;
                     uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -200,11 +279,11 @@ public class RegisterUserFragment extends Fragment {
                         }
                     });
                 }
-                databaseReference.setValue(userProfile);
+                databaseReference.setValue(victimProfile);
                 resetEditTexts();
 
                 showRegButton();
-                Toast.makeText(getActivity(), "Details updated for " + userProfile.getfName() + " " + userProfile.getsName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Details updated for " + victimProfile.getfName() + " " + victimProfile.getsName(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -228,7 +307,7 @@ public class RegisterUserFragment extends Fragment {
         try {
             GMailSender sender = new GMailSender("andrew-kidd@outlook.com", "Newpc180");
             sender.sendMail("VictimSupport Login Details",
-                    "Hi,\n\nHere are your details:\n\nUsername: " + eMail + "\nPassword: " + pWord1 + "\n\n Please log in to the Victim Support App now to activate your account.\n\nMany thanks.\n\nVictim Support Team",
+                    "Hi,\n\nHere are your details:\n\nUsername: " + eMail + "\nPassword: " + pWord1 + "\n\nPlease log in to the Victim Support App now to activate your account.\n\nMany thanks.\n\nVictim Support Team",
                     "andrewkidd21234@gmail.com",
                     recipient);
         } catch (Exception e) {
@@ -247,6 +326,7 @@ public class RegisterUserFragment extends Fragment {
                         enableFieldsStatementGiven();
                         break;
                     case R.id.statementNo:
+                        convicted = 2;
                         disableFieldsNoStatement();
                         break;
                 }
@@ -263,6 +343,7 @@ public class RegisterUserFragment extends Fragment {
                         pps = true;
                         break;
                     case R.id.ppsNo:
+                        convicted = 2;
                         pps = false;
                         break;
 
@@ -278,7 +359,7 @@ public class RegisterUserFragment extends Fragment {
                     case R.id.trailNo:
                         enableTrailFields();
                         rgConviction.setVisibility(View.GONE);
-                        convicted = 2;
+                        convicted = 2;                      //nothing selected
                         break;
                     case R.id.trailYes:
                         disableTrailFields();
@@ -318,63 +399,63 @@ public class RegisterUserFragment extends Fragment {
 
                 uidEntered = userToEdit.getText().toString();
 
-                final DatabaseReference databaseReference = firebaseDatabase.getReference(uidEntered);
+                final DatabaseReference databaseReference = firebaseDatabase.getReference("victims/" + uidEntered);
 
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                         showSaveButton();
+                        VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
 
-                        UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
-                        tiFirstName.setText(userProfile.getfName());
-                        tiSurname.setText(userProfile.getsName());
-                        tiEmail.setText(userProfile.getEmail());
-                        tiPhoneNum.setText(userProfile.getPhoneNum());
-                        tiAddress.setText(userProfile.getAddress());
-                        tiCity.setText(userProfile.getCity());
-                        tiCounty.setText(userProfile.getCounty());
-                        tiPostcode.setText(userProfile.getPostcode());
-                        tiDOB.setText(userProfile.getDOB());
-                        tiDateOfCrime.setText(userProfile.getCrimeDate());
-                        tiDateReported.setText(userProfile.getReportDate());
+                        tiFirstName.setText(victimProfile.getfName());
+                        tiSurname.setText(victimProfile.getsName());
+                        tiEmail.setText(victimProfile.getEmail());
+                        tiPhoneNum.setText(victimProfile.getPhoneNum());
+                        tiAddress.setText(victimProfile.getAddress());
+                        tiCity.setText(victimProfile.getCity());
+                        tiCounty.setText(victimProfile.getCounty());
+                        tiPostcode.setText(victimProfile.getPostcode());
+                        tiDOB.setText(victimProfile.getDOB());
+                        tiDateOfCrime.setText(victimProfile.getCrimeDate());
+                        tiDateReported.setText(victimProfile.getReportDate());
 
-                        if (userProfile.getDateSubmitted().isEmpty()) {
+                        if (victimProfile.getDateSubmitted().isEmpty()) {
                             //do nothing
                             tiDateSubmitted.setText("");
                         }else {
                             enableFieldsStatementGiven();
-                            tiDateSubmitted.setText(userProfile.getDateSubmitted());
+                            tiDateSubmitted.setText(victimProfile.getDateSubmitted());
                             tvFileName.setText(generateFileName());
                         }
 
-                        if (userProfile.getMessage().isEmpty()) {
+                        if (victimProfile.getMessage().isEmpty()) {
                             //do nothing
                             tiMsg.setText("");
                         }else {
                             enableFieldsStatementGiven();
-                            tiMsg.setText(userProfile.getMessage());
+                            tiMsg.setText(victimProfile.getMessage());
                         }
 
-                        if(userProfile.isPps()) {
+                        if(victimProfile.isPps()) {
                             rgPPS.check(R.id.ppsYes);
                         }else {
                             rgPPS.check(R.id.ppsNo);
                         }
 
-                        if (userProfile.getConvicted() == 1) {
+                        if (victimProfile.getConvicted() == 1) {
                             rgConviction.check(R.id.convicted);
                         }else {
                             rgConviction.check(R.id.notConvicted);
                         }
 
-                        if (userProfile.getCourtDate().isEmpty()) {
+                        if (victimProfile.getCourtDate().isEmpty()) {
                             //do nothing
                             tiCourtDate.setText("");
                         }else {
                             enableFieldsStatementGiven();
-                            tiCourtDate.setText(userProfile.getCourtDate());
-                            spinCourthouse.setSelection(userProfile.getCourtHouse().getId());
+                            tiCourtDate.setText(victimProfile.getCourtDate());
+                            spinCourthouse.setSelection(victimProfile.getCourtHouse().getId());
                         }
 
                     }
@@ -404,11 +485,12 @@ public class RegisterUserFragment extends Fragment {
     private void setupUIViews() {
 
         //TextInputLayouts for
+        tvTitle = view.findViewById(R.id.tvTitle);
+
+        userCard = view.findViewById(R.id.userCard);
         tiFirstName = view.findViewById(R.id.etFirstName);
         tiSurname = view.findViewById(R.id.etSurname);
         tiEmail = view.findViewById(R.id.etEmail);
-        tiPassword = view.findViewById(R.id.etPassword);
-        tiPasswordCon = view.findViewById(R.id.etPasswordConfirm);
         tiPhoneNum = view.findViewById(R.id.etPhoneNum);
         tiAddress = view.findViewById(R.id.etAddress);
         tiCity = view.findViewById(R.id.etCity);
@@ -418,6 +500,7 @@ public class RegisterUserFragment extends Fragment {
 
         tiDateOfCrime = view.findViewById(R.id.etDateOfCrime);
         tiDateReported = view.findViewById(R.id.etDateReported);
+        spinOfficer = view.findViewById(R.id.spinOfficer);
 
         rgStatement = view.findViewById(R.id.rgStatement);
         tiDateSubmitted = view.findViewById(R.id.etDateSubmitted);
@@ -437,6 +520,11 @@ public class RegisterUserFragment extends Fragment {
         spinCourthouse = view.findViewById(R.id.spinCourtHouse);
         rgConviction = view.findViewById(R.id.rgConviction);
 
+        officerCard = view.findViewById(R.id.officerCard);
+        tiFirstNameOfficer = view.findViewById(R.id.etFirstNameOfficer);
+        tiSurnameOfficer = view.findViewById(R.id.etSurnameOfficer);
+        tiEmailOfficer = view.findViewById(R.id.etEmailOfficer);
+
         mRegButton = view.findViewById(R.id.regBtn);
         mBackButton = view.findViewById(R.id.backBtn);
         mEditButton = view.findViewById(R.id.editBtn);
@@ -450,30 +538,42 @@ public class RegisterUserFragment extends Fragment {
 
         returnFieldValues();
 
-        if(fName.isEmpty() || sName.isEmpty() || eMail.isEmpty()) {
-            Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
-        }
-        else {
-            result = true;
+        if(formState == UserType.VICTIM) {
+
+            if (fName.isEmpty() || sName.isEmpty() || eMail.isEmpty()) {
+                Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
+            } else {
+                result = true;
+            }
+        }else if(formState == UserType.OFFICER) {
+            if (fNameOfficer.isEmpty() || surnameOfficer.isEmpty() || emailOfficer.isEmpty()) {
+                Toast.makeText(getActivity(), "Please complete all fields.", Toast.LENGTH_SHORT).show();
+            }else {
+                result = true;
+            }
         }
 
         return result;
     }
 
     private String generateFileName () {
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
+        VictimProfile victimProfile = new VictimProfile(uIDVictim, fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, officerProfile, dateSubmitted, message, pps, courtDate, courtHouse, convicted, userType);
         StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
         fileName = docReference.getName();
         return fileName;
     }
 
 
-    private void sendUserData() {
+    private void sendVictimData() {
 
-        DatabaseReference myRef = firebaseDatabase.getReference(firebaseAuth.getUid());
-        UserProfile userProfile = new UserProfile(fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, dateSubmitted, message, pps, courtDate, courtHouse, convicted);
+        DatabaseReference myRef = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
+        uIDVictim = firebaseAuth.getUid();
+        final VictimProfile victimProfile = new VictimProfile(uIDVictim, fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, officerProfile, dateSubmitted, message, pps, courtDate, courtHouse, convicted, userType);
+
+        //addVictimToOfficerList(officerProfile, victimProfile);
+
         if (clicked){
-            StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
+            StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + victimProfile.getsName() + victimProfile.getfName());      //can create more children for additional file types
             UploadTask uploadTask = docReference.putFile(docPath);
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -482,7 +582,61 @@ public class RegisterUserFragment extends Fragment {
                 }
             });
         }
-        myRef.setValue(userProfile);
+        myRef.setValue(victimProfile);
+
+        //memory leak doing it this way
+
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("officers/" + officerProfile.getuID());
+        officerProfile.getVictimIds().add(victimProfile.getuID());
+        ref.setValue(officerProfile);
+
+        /*ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                OfficerProfile officerProfile1 = dataSnapshot.getValue(OfficerProfile.class);
+
+                System.out.println("OFFICER TO HAVE VICTIM ADDED....." + officerProfile1.getmFirstName() + officerProfile1.getmSurname());
+
+                System.out.println("VICTIM TO BE ADDED....." + victimProfile.getfName() + victimProfile.getsName());
+
+                officerProfile1.getVictimProfiles().add(victimProfile);
+
+                //infinite loop of victimprofiles being added
+                //ref.setValue(officerProfile1);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });*/
+    }
+
+    private void sendOfficerData() {
+        DatabaseReference myRef = firebaseDatabase.getReference("officers/" + firebaseAuth.getUid());
+        uIDOfficer = firebaseAuth.getUid();
+        //add empty entry to create the arraylist for first victim to be added
+        victimIds.add("aaaaa");
+        OfficerProfile officerProfile = new OfficerProfile(uIDOfficer, fNameOfficer, surnameOfficer, emailOfficer, userType, victimIds);
+        myRef.setValue(officerProfile);
+    }
+
+    private void addVictimToOfficerList(OfficerProfile officerProfile, final VictimProfile victimProfile) {
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("officers/" + officerProfile.getuID());
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                OfficerProfile officerProfile1 = dataSnapshot.getValue(OfficerProfile.class);
+                officerProfile1.getVictimIds().add(victimProfile.getuID());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void returnFieldValues() {
@@ -490,8 +644,6 @@ public class RegisterUserFragment extends Fragment {
         fName = tiFirstName.getText().toString();
         sName = tiSurname.getText().toString();
         eMail = tiEmail.getText().toString();
-        pWord1 = tiPassword.getText().toString();
-        pWord2 = tiPasswordCon.getText().toString();
         eMail = tiEmail.getText().toString();
         pNum = tiPhoneNum.getText().toString();
         address = tiAddress.getText().toString();
@@ -504,6 +656,10 @@ public class RegisterUserFragment extends Fragment {
         dateSubmitted = tiDateSubmitted.getText().toString();
         message = tiMsg.getText().toString();
         courtDate = tiCourtDate.getText().toString();
+
+        fNameOfficer = tiFirstNameOfficer.getText().toString();
+        surnameOfficer = tiSurnameOfficer.getText().toString();
+        emailOfficer = tiEmailOfficer.getText().toString();
     }
 
     private boolean isNotEmpty(TextInputEditText etText) {
@@ -527,8 +683,6 @@ public class RegisterUserFragment extends Fragment {
         tiFirstName.setText("");
         tiSurname.setText("");
         tiEmail.setText("");
-        tiPassword.setText("");
-        tiPasswordCon.setText("");
         tiPhoneNum.setText("");
         tiAddress.setText("");
         tiCity.setText("");
@@ -541,6 +695,10 @@ public class RegisterUserFragment extends Fragment {
         tiDateSubmitted.setText("");
         tiMsg.setText("");
         tiCourtDate.setText("");
+
+        tiFirstNameOfficer.setText("");
+        tiSurnameOfficer.setText("");
+        tiEmailOfficer.setText("");
 
     }
 
@@ -628,16 +786,21 @@ public class RegisterUserFragment extends Fragment {
         return result;
     }
 
-    public Uri getDocPath() {
-        return docPath;
-    }
+    public static OfficerProfile matchOfficerWithName(String officer, ArrayList<OfficerProfile> arrayList) {
 
-    public void setDocPath(Uri docPath) {
-        this.docPath = docPath;
-    }
+        OfficerProfile officerProfile = new OfficerProfile();
 
-    private void setScrollBottom() {
+        for(int i = 0; i<arrayList.size(); i++) {
 
+            String nameToTest = arrayList.get(i).getmFirstName() + " " + arrayList.get(i).getmSurname();
+            System.out.println("Name pulled from OfficerProfile ArrayList....." + nameToTest);
+
+            if(officer.equals(nameToTest)) {
+
+                officerProfile = arrayList.get(i);
+            }
+        }
+        return officerProfile;
     }
 
 

@@ -20,559 +20,653 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="25dp"
             android:text="@string/new_user_text"
-            android:textSize="30sp" />
+            android:textSize="24sp" />
 
 
-        <!-- ******************** 1. Personal Details ******************** -->
+<!--
+        **************************** USER SIGNUP FORM ****************************
+-->
 
-
-        <TextView
-            android:id="@+id/tvDetailsHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:text="1. Personal Details"
-            android:textSize="20sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiFirstName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="160dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDetailsHeading"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFirstName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/first_name" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiSurname"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="195dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDetailsHeading"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etSurname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/surname" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiPhoneNum"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="230dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiFirstName"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPhoneNum"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Phone number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiAddress"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiPhoneNum"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Address" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiCity"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiAddress"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="City" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiCounty"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiCity"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCounty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="County" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiPostcode"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiCity"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="50dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPostcode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Postcode" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiDOB"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiCounty"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDOB"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="DOB (dd/mm/yyy)" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiEmail"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiDOB"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/email" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiPassword"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiEmail"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiPasswordConfirm"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiPassword"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etPasswordConfirm"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Confirm password" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- ******************** 2. Crime Details ******************** -->
-
-        <TextView
-            android:id="@+id/tvCrimeHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tiPasswordConfirm"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="2. Crime Details"
-            android:textSize="20sp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiDateOfCrime"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvCrimeHeading"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etDateOfCrime"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/userCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Date of crime (dd/mm/yyyy)" />
+            android:layout_below="@id/tvTitle"
+            android:visibility="visible">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiDateReported"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiDateOfCrime"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDateReported"
+            <RelativeLayout
+                android:id="@+id/userCardLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Date reported to PSNI (dd/mm/yyyy)" />
+                android:layout_height="match_parent">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <!-- ******************** 1. Personal Details ******************** -->
+
+                <TextView
+                    android:id="@+id/tvDetailsHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="1. Personal Details"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiFirstName"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDetailsHeading"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFirstName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/first_name" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiSurname"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDetailsHeading"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/surname" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiPhoneNum"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="230dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiFirstName"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPhoneNum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Phone number" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiAddress"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiPhoneNum"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Address" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiCity"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiAddress"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="City" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiCounty"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiCity"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCounty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="County" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiPostcode"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiCity"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="50dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etPostcode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Postcode" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiDOB"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="180dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiCounty"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDOB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="DOB (dd/mm/yyy)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiEmail"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiDOB"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
 
 
-        <!-- ******************** 3. Statement Information ******************** -->
+                <!-- ******************** 2. Crime Details ******************** -->
+
+                <TextView
+                    android:id="@+id/tvCrimeHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tiEmail"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="2. Crime Details"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiDateOfCrime"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCrimeHeading"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etDateOfCrime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date of crime (dd/mm/yyyy)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiDateReported"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiDateOfCrime"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateReported"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date reported to PSNI (dd/mm/yyyy)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvSelectOfficer"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tiDateReported"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Select the investigating officer for the case:"
+                    android:textSize="16sp" />
+
+                <Spinner
+                    android:id="@+id/spinOfficer"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvSelectOfficer"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    app:boxStrokeColor="@color/colorPrimary"/>
 
 
-        <TextView
-            android:id="@+id/tvStatementHeading"
-            android:layout_width="wrap_content"
+
+                <!-- ******************** 3. Statement Information ******************** -->
+
+
+                <TextView
+                    android:id="@+id/tvStatementHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/spinOfficer"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="3. Statement Infomation"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tvStatementConfirm"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tvStatementHeading"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Has the victim already given their statement?"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgStatement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvStatementHeading"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginRight="30dp"
+                    android:checkedButton="@id/statementNo"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/statementNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+
+                    <RadioButton
+                        android:id="@+id/statementYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes" />
+                </RadioGroup>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiDateSubmitted"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvStatementConfirm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateSubmitted"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Date submitted (dd/mm/yyyy)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/browseBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tiDateSubmitted"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Browse for file"/>
+
+                <TextView
+                    android:id="@+id/fileName"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiDateSubmitted"
+                    android:layout_marginRight="25dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_alignParentRight="true"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiMsgField"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="270dp"
+                    android:layout_height="180dp"
+                    android:layout_below="@+id/browseBtn"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMsgField"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Enter a message for the user" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <TextView
+                    android:id="@+id/tvPPSConfirm"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tiMsgField"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Statement submitted to the public prosecution service?"
+                    android:textSize="16sp" />
+
+
+                <RadioGroup
+                    android:id="@+id/rgPPS"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiMsgField"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginRight="30dp"
+                    android:checkedButton="@id/ppsNo"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/ppsNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+
+                    <RadioButton
+                        android:id="@+id/ppsYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes" />
+                </RadioGroup>
+
+                <!-- ******************** 4. Court Proceedings ******************** -->
+
+                <TextView
+                    android:id="@+id/tvCourtHeading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvPPSConfirm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="4. Court Proceedings"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:id="@+id/tvCourtConfirm"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tvCourtHeading"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Has the trial taken place already?"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgTrail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCourtHeading"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="22dp"
+                    android:layout_marginRight="30dp"
+                    android:checkedButton="@id/trailNo"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/trailNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No" />
+
+                    <RadioButton
+                        android:id="@+id/trailYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yes" />
+                </RadioGroup>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiCourtDate"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvCourtConfirm"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etCourtDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Court date (dd/mm/yyyy)" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tvSelectCourthouse"
+                    android:layout_width="250dp"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tiCourtDate"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Select a courthouse from the dropdown:"
+                    android:textSize="16sp" />
+
+
+                <Spinner
+                    android:id="@+id/spinCourtHouse"
+                    android:layout_width="270dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvSelectCourthouse"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    app:boxStrokeColor="@color/colorPrimary"/>
+
+                <RadioGroup
+                    android:id="@+id/rgConviction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/spinCourtHouse"
+                    android:layout_marginTop="22dp"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal"
+                    android:visibility="invisible">
+
+                    <RadioButton
+                        android:id="@+id/notConvicted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Not convicted" />
+
+                    <RadioButton
+                        android:id="@+id/convicted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Convicted" />
+                </RadioGroup>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
+
+<!--
+        **************************** OFFICER SIGNUP FORM ****************************
+-->
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/officerCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tiDateReported"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="3. Statement Infomation"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tvStatementConfirm"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/tvStatementHeading"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Has the victim already given their statement?"
-            android:textSize="16sp" />
-
-        <RadioGroup
-            android:id="@+id/rgStatement"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvStatementHeading"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="22dp"
-            android:layout_marginRight="30dp"
-            android:checkedButton="@id/statementNo"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/statementNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No" />
-
-            <RadioButton
-                android:id="@+id/statementYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes" />
-        </RadioGroup>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiDateSubmitted"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvStatementConfirm"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDateSubmitted"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Date submitted (dd/mm/yyyy)" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            android:id="@+id/browseBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tiDateSubmitted"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:text="Browse for file"/>
-
-        <TextView
-            android:id="@+id/fileName"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiDateSubmitted"
-            android:layout_marginRight="25dp"
-            android:layout_marginTop="40dp"
-            android:layout_alignParentRight="true"/>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiMsgField"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="270dp"
-            android:layout_height="180dp"
-            android:layout_below="@+id/browseBtn"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etMsgField"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Enter a message for the user" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <TextView
-            android:id="@+id/tvPPSConfirm"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/tiMsgField"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Statement submitted to the public prosecution service?"
-            android:textSize="16sp" />
-
-
-        <RadioGroup
-            android:id="@+id/rgPPS"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tiMsgField"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="22dp"
-            android:layout_marginRight="30dp"
-            android:checkedButton="@id/ppsNo"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/ppsNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No" />
-
-            <RadioButton
-                android:id="@+id/ppsYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes" />
-        </RadioGroup>
-
-        <!-- ******************** 4. Court Proceedings ******************** -->
-
-        <TextView
-            android:id="@+id/tvCourtHeading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tvPPSConfirm"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="4. Court Proceedings"
-            android:textSize="20sp" />
-
-
-        <TextView
-            android:id="@+id/tvCourtConfirm"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/tvCourtHeading"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Has the trial taken place already?"
-            android:textSize="16sp" />
-
-        <RadioGroup
-            android:id="@+id/rgTrail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvCourtHeading"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="22dp"
-            android:layout_marginRight="30dp"
-            android:checkedButton="@id/trailNo"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/trailNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No" />
-
-            <RadioButton
-                android:id="@+id/trailYes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Yes" />
-        </RadioGroup>
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tiCourtDate"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvCourtConfirm"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            app:boxStrokeColor="@color/colorPrimary">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCourtDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Court date (dd/mm/yyyy)" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <TextView
-            android:id="@+id/tvSelectCourthouse"
-            android:layout_width="250dp"
-            android:layout_height="40dp"
-            android:layout_below="@id/tiCourtDate"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Select a courthouse from the dropdown:"
-            android:textSize="16sp" />
-
-
-        <Spinner
-            android:id="@+id/spinCourtHouse"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvSelectCourthouse"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            app:boxStrokeColor="@color/colorPrimary"/>
-
-        <RadioGroup
-            android:id="@+id/rgConviction"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/spinCourtHouse"
-            android:layout_marginTop="22dp"
-            android:layout_centerHorizontal="true"
-            android:checkedButton="@id/notConvicted"
-            android:orientation="horizontal"
+            android:layout_below="@id/tvTitle"
             android:visibility="invisible">
 
-            <RadioButton
-                android:id="@+id/notConvicted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Not convicted" />
+            <RelativeLayout
+                android:id="@+id/officerCardLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <RadioButton
-                android:id="@+id/convicted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Convicted" />
-        </RadioGroup>
+
+                <TextView
+                    android:id="@+id/tvDetailsHeading1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="1. Personal Details"
+                    android:textSize="20sp" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiFirstNameOfficer"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDetailsHeading1"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etFirstNameOfficer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/first_name" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiSurnameOfficer"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="195dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDetailsHeading1"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etSurnameOfficer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/surname" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tiEmailOfficer"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tiFirstNameOfficer"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    app:boxStrokeColor="@color/colorPrimary">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etEmailOfficer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/email" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+
 
         <Button
             android:id="@+id/saveBtn"
@@ -580,8 +674,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/rgConviction"
             android:layout_marginTop="23dp"
+            android:layout_below="@id/userCard"
             android:visibility="invisible"
             android:text="Save" />
 
@@ -591,7 +685,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/rgConviction"
             android:layout_marginTop="23dp"
             android:text="@string/reg_button" />
 
@@ -610,6 +703,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="Edit" />
+
 
 
     </RelativeLayout>

@@ -18,19 +18,19 @@
 
         <menu>
 
-            <!-- ********** Victim ********** -->
+            <!-- ********** Victim Support ********** -->
 
             <item
                 android:id="@+id/victim_support"
                 android:icon="@drawable/ic_victim"
                 android:title="Victim Support " />
 
-            <!-- ********** Witness ********** -->
+            <!-- ********** PPANI ********** -->
 
             <item
-                android:id="@+id/nav_journey"
-                android:icon="@drawable/ic_journey"
-                android:title="My Journey" />
+                android:id="@+id/PPANI"
+                android:icon="@drawable/ic_witness"
+                android:title="PPANI"/>
 
         </menu>
 
@@ -41,9 +41,15 @@
 
         <menu>
             <item
-                android:id="@+id/PPANI"
-                android:icon="@drawable/ic_witness"
-                android:title="PPANI" ></item>
+                android:id="@+id/nav_journey"
+                android:icon="@drawable/ic_journey"
+                android:title="My Journey" />
+
+            <item
+                android:id="@+id/nav_messages"
+                android:icon="@drawable/ic_journey"
+                android:title="Messages" />
+
         </menu>
     </item>
 

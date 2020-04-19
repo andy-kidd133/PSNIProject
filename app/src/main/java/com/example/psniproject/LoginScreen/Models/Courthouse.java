@@ -1,4 +1,4 @@
-package com.example.psniproject.LoginScreen;
+package com.example.psniproject.LoginScreen.Models;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +16,7 @@ public class Courthouse {
     public Courthouse() {
     }
 
-    public Courthouse(int id, String name,String address, GoogleMap googleMap, double latitude, double longitude) {
+    public Courthouse(int id, String name, String address, GoogleMap googleMap, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.googleMap = googleMap;

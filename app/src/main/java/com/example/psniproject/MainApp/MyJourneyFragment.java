@@ -3,33 +3,26 @@ package com.example.psniproject.MainApp;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.psniproject.LoginScreen.Courthouse;
-import com.example.psniproject.LoginScreen.RegisterUserFragment;
-import com.example.psniproject.LoginScreen.UserProfile;
+import com.example.psniproject.LoginScreen.Models.Courthouse;
+import com.example.psniproject.LoginScreen.Models.VictimProfile;
+import com.example.psniproject.LoginScreen.Models.UserType;
 import com.example.psniproject.R;
-import com.example.psniproject.SplashScreen.SplashScreenActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -45,8 +38,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -75,6 +66,7 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
     public static int courthouseIndex;
 
+
     public static ArrayList<Courthouse> courthouses = new ArrayList<>();
 
     @Override
@@ -86,31 +78,36 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
             hideMap();
         }else {
 
-            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+            if (MainActivity.userType == UserType.VICTIM) {
+                DatabaseReference databaseReference = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    final UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
 
-                    mapToBeLoaded = googleMap;
-                    googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-                    googleMap.addMarker(new MarkerOptions().position(new LatLng(
-                            courthouses.get(userProfile.getCourtHouse().getId()).getLatitude(),
-                            courthouses.get(userProfile.getCourtHouse().getId()).getLongitude()))
-                            .title(courthouses.get(userProfile.getCourtHouse().getId()).getName()));
+                        mapToBeLoaded = googleMap;
+                        googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                        googleMap.addMarker(new MarkerOptions().position(new LatLng(
+                                courthouses.get(victimProfile.getCourtHouse().getId()).getLatitude(),
+                                courthouses.get(victimProfile.getCourtHouse().getId()).getLongitude()))
+                                .title(courthouses.get(victimProfile.getCourtHouse().getId()).getName()));
 
-                    CameraPosition Liberty = CameraPosition.builder().target(new LatLng(courthouses.get(userProfile.getCourtHouse().getId()).getLatitude(), courthouses.get(userProfile.getCourtHouse().getId()).getLongitude())).zoom(16).bearing(0).build();
-                    googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
+                        CameraPosition Liberty = CameraPosition.builder().target(new LatLng(courthouses.get(victimProfile.getCourtHouse().getId()).getLatitude(), courthouses.get(victimProfile.getCourtHouse().getId()).getLongitude())).zoom(16).bearing(0).build();
+                        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(Liberty));
 
-                }
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
+            }
+            else {
+                //no nothing ( no map to be shown for any user other than a victim
+            }
         }
     }
 
@@ -152,7 +149,6 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         tvJVerdictResult = view.findViewById(R.id.tvJVerdictResult);
         ivGreenTick3 = view.findViewById(R.id.ivGreenTick3);
 
-
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
@@ -174,125 +170,133 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         }
         else {
 
-            DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+            if (MainActivity.userType == UserType.VICTIM) {
 
-            databaseReference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    final UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                DatabaseReference databaseReference = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
 
-                    //********** DETAILS **********//
+                databaseReference.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        final VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
 
-                    tvName.setText("Hi " + userProfile.getfName() + ",");
-                    tvCrimeDate.setText("We have record of the crime which took place on " +
-                                                    userProfile.getCrimeDate() + ". Below you will find immediate updates on your case as they happen.");
-                    tvReportDate.setText("You reported the crime to the PSNI on " + userProfile.getReportDate() + ".");
+                        //********** DETAILS **********//
 
-                    //********** STATEMENT INFO **********//
+                        tvName.setText("Hi " + victimProfile.getfName() + ",");
+                        tvCrimeDate.setText("We have record of the crime which took place on " +
+                                victimProfile.getCrimeDate() + ". Below you will find immediate updates on your case as they happen.");
+                        tvReportDate.setText("You reported the crime to the PSNI on " + victimProfile.getReportDate() + ".");
 
-                    if (userProfile.getDateSubmitted().isEmpty()) {
+                        //********** STATEMENT INFO **********//
 
-                        //remove these statements into sep method taking away other subsequent
-                        //details from Journey
-                        tvStatementHeading.setVisibility(View.VISIBLE);
-                        ivGreenTick.setVisibility(View.GONE);
-                        ivGreenTick1.setVisibility(View.GONE);
-                        ivGreenTick2.setVisibility(View.GONE);
-                        ivGreenTick3.setVisibility(View.GONE);
-                        btnDownload.setVisibility(View.GONE);
-                        tvJFileName.setVisibility(View.GONE);
-                        tvDateSubmitted.setText("The PSNI will be in contact to arrange a date and time for giving your statement");
+                        if (victimProfile.getDateSubmitted().isEmpty()) {
+
+                            //remove these statements into sep method taking away other subsequent
+                            //details from Journey
+                            tvStatementHeading.setVisibility(View.VISIBLE);
+                            ivGreenTick.setVisibility(View.GONE);
+                            ivGreenTick1.setVisibility(View.GONE);
+                            ivGreenTick2.setVisibility(View.GONE);
+                            ivGreenTick3.setVisibility(View.GONE);
+                            btnDownload.setVisibility(View.GONE);
+                            tvJFileName.setVisibility(View.GONE);
+                            tvJVerdict.setVisibility(View.GONE);
+                            tvJVerdictResult.setVisibility(View.GONE);
+                            tvDateSubmitted.setText("The PSNI will be in contact to arrange a date and time for giving your statement");
+                        } else {
+                            ivGreenTick.setVisibility(View.VISIBLE);
+                            tvDateSubmitted.setText("Your statement was given to the PSNI on " + victimProfile.getDateSubmitted() + ". You can view it here:");
+                            btnDownload.setVisibility(View.VISIBLE);
+
+                            final String statementFileName = storageReference.child(firebaseAuth.getUid()).child("statement" + victimProfile.getsName() + victimProfile.getfName()).toString();
+
+                            storageReference.child(firebaseAuth.getUid()).child("statement" + victimProfile.getsName() + victimProfile.getfName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    tvJFileName.setText("statement" + victimProfile.getsName() + victimProfile.getfName());
+                                }
+                            });
+
+                            btnDownload.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + victimProfile.getsName() + victimProfile.getfName());      //can create more children for additional file types
+                                    docReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            String url = uri.toString();
+                                            downloadFile(getActivity(), statementFileName, ".pdf,", DIRECTORY_DOWNLOADS, url);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+
+                        //********** PPS **********//
+
+                        if (victimProfile.isPps()) {
+                            tvJPPSUpdate.setText("Your statement has been submitted to the Public Prosecution Service NI.");
+                            ivGreenTick1.setVisibility(View.VISIBLE);
+                        } else {
+                            tvJPPSUpdate.setText("Enquiries are still ongoing within your case.");
+                            ivGreenTick1.setVisibility(View.GONE);
+                            ivGreenTick2.setVisibility(View.GONE);
+                        }
+
+                        //********** COURT INFO **********//
+
+                        if (victimProfile.getCourtDate().isEmpty()) {
+                            tvJCourtDate.setVisibility(View.GONE);
+                            tvJCourtDate.setText("Any court arrangements will appear here and you will be notified.");
+
+                            //also set map to invisible
+                            mapView.setVisibility(View.GONE);
+                        } else {
+                            tvJCourtDate.setVisibility(View.VISIBLE);
+                            tvJCourtDate.setText("Your court date has been set for " + victimProfile.getCourtDate() + ".");
+                            ivGreenTick2.setVisibility(View.VISIBLE);
+                            tvJVerdictHeading.setVisibility(View.VISIBLE);
+
+                            //******** DISPLAY COURTHOUSE INFO *********
+
+                            tvJCourtName.setText(victimProfile.getCourtHouse().getName());
+                            tvJCourtAddress.setText(victimProfile.getCourtHouse().getAddress());
+                            mapToBeLoaded = victimProfile.getCourtHouse().getGoogleMap();
+                            courthouseIndex = victimProfile.getCourtHouse().getId();
+                        }
+
+
+                        //********** CONVICTION INFO **********//
+
+                        if (victimProfile.getConvicted() == 1) {
+                            ivGreenTick3.setVisibility(View.VISIBLE);
+                            tvJVerdict.setVisibility(View.VISIBLE);
+                            tvJVerdictResult.setText("CONVICTED");
+                        } else if (victimProfile.getConvicted() == 0) {
+                            ivGreenTick3.setVisibility(View.VISIBLE);
+                            tvJVerdict.setVisibility(View.VISIBLE);
+                            tvJVerdictResult.setText("NOT CONVICTED");
+                        }
+
                     }
-                    else {
-                        ivGreenTick.setVisibility(View.VISIBLE);
-                        tvDateSubmitted.setText("Your statement was given to the PSNI on " + userProfile.getDateSubmitted() + ". You can view it here:");
-                        btnDownload.setVisibility(View.VISIBLE);
 
-                        final String statementFileName = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName()).toString();
-
-                        storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                tvJFileName.setText("statement" + userProfile.getsName() + userProfile.getfName());
-                            }
-                        });
-
-                        btnDownload.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                StorageReference docReference = storageReference.child(firebaseAuth.getUid()).child("statement" + userProfile.getsName() + userProfile.getfName());      //can create more children for additional file types
-                                docReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        String url = uri.toString();
-                                        downloadFile(getActivity(), statementFileName, ".pdf,", DIRECTORY_DOWNLOADS, url);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-
-                                    }
-                                });
-                            }
-                        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
                     }
+                });
+            }
+            else if(MainActivity.userType == UserType.OFFICER) {
 
 
-                    //********** PPS **********//
-
-                    if (userProfile.isPps()) {
-                        tvJPPSUpdate.setText("Your statement has been submitted to the Public Prosecution Service NI.");
-                        ivGreenTick1.setVisibility(View.VISIBLE);
-                    }else {
-                        tvJPPSUpdate.setText("Enquiries are still ongoing within your case.");
-                        ivGreenTick1.setVisibility(View.GONE);
-                        ivGreenTick2.setVisibility(View.GONE);
-                    }
-
-                    //********** COURT INFO **********//
-
-                    if (userProfile.getCourtDate().isEmpty()) {
-                        tvJCourtDate.setVisibility(View.GONE);
-                        tvJCourtDate.setText("Any court arrangements will appear here and you will be notified.");
-
-                        //also set map to invisible
-                        mapView.setVisibility(View.GONE);
-                    }
-                    else {
-                        tvJCourtDate.setVisibility(View.VISIBLE);
-                        tvJCourtDate.setText("Your court date has been set for " + userProfile.getCourtDate() + ".");
-                        ivGreenTick2.setVisibility(View.VISIBLE);
-                        tvJVerdictHeading.setVisibility(View.VISIBLE);
-
-                        //******** DISPLAY COURTHOUSE INFO *********
-
-                        tvJCourtName.setText(userProfile.getCourtHouse().getName());
-                        tvJCourtAddress.setText(userProfile.getCourtHouse().getAddress());
-                        mapToBeLoaded = userProfile.getCourtHouse().getGoogleMap();
-                        courthouseIndex = userProfile.getCourtHouse().getId();
-                    }
-
-
-                    //********** CONVICTION INFO **********//
-
-                    if (userProfile.getConvicted() == 1) {
-                        ivGreenTick3.setVisibility(View.VISIBLE);
-                        tvJVerdict.setVisibility(View.VISIBLE);
-                        tvJVerdictResult.setText("CONVICTED");
-                    }
-                    else if(userProfile.getConvicted() == 0){
-                        ivGreenTick3.setVisibility(View.VISIBLE);
-                        tvJVerdict.setVisibility(View.VISIBLE);
-                        tvJVerdictResult.setText("NOT CONVICTED");
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getActivity(), databaseError.getCode(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                //set everything to invisible with methods/abstract methods?
+                //
+            }
         }
 
         return view;

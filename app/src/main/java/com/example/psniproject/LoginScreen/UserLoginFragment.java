@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.psniproject.LoginScreen.Models.Courthouse;
+import com.example.psniproject.LoginScreen.Models.OfficerProfile;
+import com.example.psniproject.LoginScreen.Models.VictimProfile;
 import com.example.psniproject.MainApp.MainActivity;
 import com.example.psniproject.MainApp.MyJourneyFragment;
 import com.example.psniproject.R;
@@ -24,12 +26,16 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 
 public class UserLoginFragment extends Fragment {
@@ -37,38 +43,34 @@ public class UserLoginFragment extends Fragment {
     private Button loginButton;
     private TextInputLayout username, password;
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
     private ProgressDialog progressDialog;
     private int counter = 5;
+    private static int profileCountOfficer, profileCountVictim;
     public static boolean alreadyExecuted = false;
+    public static boolean officerArrayCreated = false;
+
+    public static ArrayList<String> victimIDs = new ArrayList<>();
+    public static ArrayList<String> officerIDs = new ArrayList<>();
+
+    public static ArrayList<VictimProfile> victimProfiles = new ArrayList<>();
+    public static ArrayList<OfficerProfile> officerProfiles = new ArrayList<>();
+
+    public static ArrayList<String> officerNames = new ArrayList<>();
 
     public UserLoginFragment() {
         // Required empty public constructor
     }
 
-    //method to remove duplicate courthouses if Activity is restarted and
-    //courthouses are recreated
-
-    public static ArrayList<Courthouse> removeDuplicates(ArrayList<Courthouse> list) {
-
-        ArrayList<Courthouse> newList = new ArrayList<>();
-
-        for (Courthouse courthouse : list) {
-            if(!newList.contains(courthouse)) {
-                newList.add(courthouse);
-            }
-        }
-        list = newList;
-        return list;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view  = inflater.inflate(R.layout.fragment_user_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_user_login, container, false);
         getActivity().getWindow().setStatusBarColor(getResources().getColor(R.color.background));
 
         //add courthouses to ArrayList only once
-        if(!alreadyExecuted) {
+        if (!alreadyExecuted) {
             MyJourneyFragment.setCourthouseData();
             MyJourneyFragment.courthouses = removeDuplicates(MyJourneyFragment.courthouses);
             alreadyExecuted = true;
@@ -81,6 +83,13 @@ public class UserLoginFragment extends Fragment {
         Button skipButton = view.findViewById(R.id.skip);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
+
+        officerNames.clear();
+        getVictimIDsandProfiles();
+        getOfficerIDsandProfiles();
+
         progressDialog = new ProgressDialog(getActivity());
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -92,7 +101,7 @@ public class UserLoginFragment extends Fragment {
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((LoginActivity)getActivity()).setViewPager(1);
+                ((LoginActivity) getActivity()).setViewPager(1);
             }
         });
 
@@ -123,19 +132,19 @@ public class UserLoginFragment extends Fragment {
         firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
+                if (task.isSuccessful()) {
                     progressDialog.dismiss();
                     pushDeviceToken();
                     Toast.makeText(getActivity(), "Login Successful.", Toast.LENGTH_SHORT).show();
                     resetEditTexts();
                     startActivity(new Intent(getActivity(), MainActivity.class));
 
-                }else {
+                } else {
                     counter--;
                     Toast.makeText(getActivity(), "You have: " + counter + " attempts remaining", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
                     Toast.makeText(getActivity(), "Username or Password incorrect.", Toast.LENGTH_SHORT).show();
-                    if(counter==0) {
+                    if (counter == 0) {
                         loginButton.setEnabled(false);
                     }
                 }
@@ -164,7 +173,7 @@ public class UserLoginFragment extends Fragment {
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
-                        DatabaseReference ref=FirebaseDatabase.getInstance().getReference().child("Tokens");
+                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Tokens");
                         ref.child(firebaseAuth.getCurrentUser().getUid()).setValue(token);
 
                         //DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(firebaseAuth.getUid());
@@ -178,4 +187,125 @@ public class UserLoginFragment extends Fragment {
 
     }
 
+
+    //method to remove duplicate courthouses if Activity is restarted and
+    //courthouses are recreated
+
+    public static ArrayList<Courthouse> removeDuplicates(ArrayList<Courthouse> list) {
+
+        ArrayList<Courthouse> newList = new ArrayList<>();
+
+        for (Courthouse courthouse : list) {
+            if (!newList.contains(courthouse)) {
+                newList.add(courthouse);
+            }
+        }
+        list = newList;
+        return list;
+    }
+
+    public static ArrayList<String> removeStringDuplicates(ArrayList<String> list) {
+
+        ArrayList<String> newList = new ArrayList<>();
+
+        for (String string : list) {
+            if (!newList.contains(string)) {
+                newList.add(string);
+            }
+        }
+        list = newList;
+        return list;
+    }
+
+
+    /*public void getVictimIDs() {
+
+        System.out.println("Before attaching listener");
+        databaseReference.child("victims").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("Getting victim profile and adding ID");
+                    victimIDs.add(snapshot.getKey());
+                    victimIDs = removeStringDuplicates(victimIDs);
+                    Log.e("VictimIDS.....", victimIDs.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The read failed");
+            }
+        });
+    }*/
+
+    public void getVictimIDsandProfiles() {
+
+        System.out.println("Before attaching listener");
+        databaseReference.child("victims").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("Adding ID to VictimArray");
+                    victimIDs.add(snapshot.getKey());
+
+                    VictimProfile victimProfile = snapshot.getValue(VictimProfile.class);
+
+                    //logic to stop duplicating VictimProfileDataSnapshots
+                    if (profileCountVictim < dataSnapshot.getChildrenCount()) {
+                        victimProfiles.add(victimProfile);
+                        profileCountVictim++;
+                        System.out.println("Profile Count....." + profileCountVictim);
+                    }
+                    System.out.println("Number of victims to be retrieved: " + dataSnapshot.getChildrenCount());
+
+                    victimIDs = removeStringDuplicates(victimIDs);
+                    Log.e("VictimIDS.....", victimIDs.toString());
+                    Log.e("Victim profiles.....", victimProfiles.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The read failed");
+            }
+        });
+    }
+
+
+    public void getOfficerIDsandProfiles() {
+
+        System.out.println("Before attaching listener");
+        databaseReference.child("officers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    System.out.println("Adding ID to OfficerArray");
+                    officerIDs.add(snapshot.getKey());
+
+                    OfficerProfile officerProfile = snapshot.getValue(OfficerProfile.class);
+                    officerNames.add(officerProfile.getmFirstName() + " " + officerProfile.getmSurname());
+
+                    //logic to stop duplicating OfficerProfileDataSnapshots into Officer array for spinner
+                    if (profileCountOfficer < dataSnapshot.getChildrenCount()) {
+                        officerProfiles.add(officerProfile);
+                        profileCountOfficer++;
+                        System.out.println("Profile Count....." + profileCountOfficer);
+                    }
+                    System.out.println("Number of officers to be retrieved: " + dataSnapshot.getChildrenCount());
+
+                    officerNames = removeStringDuplicates(officerNames);
+                    officerIDs = removeStringDuplicates(officerIDs);
+                    Log.e("OfficerIDS.....", officerIDs.toString());
+                    Log.e("Officer profiles.....", officerProfiles.toString());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                System.out.println("The read failed");
+            }
+        });
+
+    }
 }

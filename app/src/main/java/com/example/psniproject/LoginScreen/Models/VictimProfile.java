@@ -1,22 +1,26 @@
-package com.example.psniproject.LoginScreen;
+package com.example.psniproject.LoginScreen.Models;
 
-public class UserProfile {
+public class VictimProfile {
 
-    private String First, Surname, Email, phoneNum, Address, City,
+    private String uID, First, Surname, Email, phoneNum, Address, City,
                     County, Postcode, DOB, crimeDate, reportDate, dateSubmitted, message, courtDate;
     private boolean pps;
     private int convicted;
     private Courthouse courtHouse;
+    private OfficerProfile officerProfile;
+    private UserType userType;
 
-    public UserProfile() {
+    public VictimProfile() {
 
     }
 
-    public UserProfile(String First, String Surname, String Email, String phoneNum,
-                       String Address, String City, String County, String Postcode,
-                       String DOB, String crimeDate, String reportDate,
-                       String dateSubmitted, String message, boolean pps, String courtDate,
-                       Courthouse courtHouse, int convicted) {
+    public VictimProfile(String uID,
+                         String First, String Surname, String Email, String phoneNum,
+                         String Address, String City, String County, String Postcode,
+                         String DOB, String crimeDate, String reportDate, OfficerProfile officerProfile,
+                         String dateSubmitted, String message, boolean pps, String courtDate,
+                         Courthouse courtHouse, int convicted, UserType userType) {
+        this.uID = uID;
         this.First = First;
         this.Surname = Surname;
         this.Email = Email;
@@ -28,12 +32,22 @@ public class UserProfile {
         this.DOB = DOB;
         this.crimeDate = crimeDate;
         this.reportDate = reportDate;
+        this.officerProfile = officerProfile;
         this.dateSubmitted = dateSubmitted;
         this.message = message;
         this.pps = pps;
         this.courtDate = courtDate;
         this.courtHouse = courtHouse;
         this.convicted = convicted;
+        this.userType = userType;
+    }
+
+    public String getuID() {
+        return uID;
+    }
+
+    public void setuID(String uID) {
+        this.uID = uID;
     }
 
     public String getfName() {
@@ -124,6 +138,14 @@ public class UserProfile {
         this.reportDate = reportDate;
     }
 
+    public OfficerProfile getOfficerProfile() {
+        return officerProfile;
+    }
+
+    public void setOfficerProfile(OfficerProfile officerProfile) {
+        this.officerProfile = officerProfile;
+    }
+
     public boolean isPps() {
         return pps;
     }
@@ -172,6 +194,12 @@ public class UserProfile {
         this.convicted = convicted;
     }
 
+    public UserType getUserType() {
+        return userType;
+    }
 
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
 }
 

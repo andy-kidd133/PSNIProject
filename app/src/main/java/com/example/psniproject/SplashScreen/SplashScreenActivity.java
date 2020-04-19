@@ -5,15 +5,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.psniproject.LoginScreen.LoginActivity;
-import com.example.psniproject.LoginScreen.UserProfile;
+import com.example.psniproject.LoginScreen.Models.VictimProfile;
 import com.example.psniproject.MainApp.MainActivity;
 import com.example.psniproject.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,9 +80,9 @@ public class SplashScreenActivity extends AppCompatActivity {
                 databaseReference.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        UserProfile userProfile = dataSnapshot.getValue(UserProfile.class);
+                        VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
 
-                        Toast.makeText(SplashScreenActivity.this, "Welcome back " + userProfile.getfName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SplashScreenActivity.this, "Welcome back " + victimProfile.getfName(), Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
