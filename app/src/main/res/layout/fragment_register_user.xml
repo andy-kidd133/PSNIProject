@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/scrollView"
-        tools:context=".LoginScreen.LoginActivity">
+        tools:context="psni.example.psniproject.LoginScreen.LoginActivity">
 
         <TextView
             android:id="@+id/tvTitle"
@@ -400,32 +400,12 @@
                     android:layout_marginTop="40dp"
                     android:layout_alignParentRight="true"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tiMsgField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="270dp"
-                    android:layout_height="180dp"
-                    android:layout_below="@+id/browseBtn"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="10dp"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    app:boxStrokeColor="@color/colorPrimary">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etMsgField"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="Enter a message for the user" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
 
                 <TextView
                     android:id="@+id/tvPPSConfirm"
                     android:layout_width="250dp"
                     android:layout_height="40dp"
-                    android:layout_below="@id/tiMsgField"
+                    android:layout_below="@id/fileName"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     android:text="Statement submitted to the public prosecution service?"
@@ -436,7 +416,7 @@
                     android:id="@+id/rgPPS"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tiMsgField"
+                    android:layout_below="@+id/fileName"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="22dp"
                     android:layout_marginRight="30dp"

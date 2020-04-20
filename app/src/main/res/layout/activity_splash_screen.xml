@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".SplashScreen.SplashScreenActivity">
+    tools:context="psni.example.psniproject.SplashScreen.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/vsLogo"

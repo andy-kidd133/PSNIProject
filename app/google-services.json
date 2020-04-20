@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:347893186046:android:bf69d3c756cceb813414af",
         "android_client_info": {
-          "package_name": "com.example.psniproject"
+          "package_name": "psni.example.psniproject"
         }
       },
       "oauth_client": [

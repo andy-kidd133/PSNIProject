@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFEDB3"
-    tools:context=".MainApp.HomePageFragment">
+    tools:context="psni.example.psniproject.MainApp.HomePageFragment">
 
     <ImageView
         android:id="@+id/vsLogo"

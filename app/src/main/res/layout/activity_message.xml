@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".MainApp.Messages.MessageActivity">
+    tools:context="psni.example.psniproject.MainApp.Messages.MessageActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/barLayout"
@@ -27,13 +27,15 @@
                 android:layout_height="60dp"
                 android:layout_gravity="start"
                 app:civ_border_width="2dp"
-                app:civ_border_color="#80ffffff"/>
+                app:civ_border_color="#80ffffff"
+                android:background="@android:color/transparent"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="username"
                 android:id="@+id/username"
+                android:paddingLeft="15dp"
                 android:layout_toRightOf="@id/profileImage"
                 android:layout_toEndOf="@id/profileImage"
                 android:layout_marginLeft="10dp"

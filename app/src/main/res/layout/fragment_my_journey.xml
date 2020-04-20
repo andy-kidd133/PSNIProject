@@ -11,7 +11,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainApp.MyJourneyFragment">
+        tools:context="psni.example.psniproject.MainApp.MyJourneyFragment">
 
 
         <!--*************** DETAILS **************-->
@@ -200,7 +200,7 @@
             android:textSize="18sp"
             android:text=""/>
 
-        <com.example.psniproject.MainApp.CustomMapView
+        <psni.example.psniproject.MainApp.CustomMapView
             android:id="@+id/mapViewHolder"
             android:layout_width="150dp"
             android:layout_height="225dp"

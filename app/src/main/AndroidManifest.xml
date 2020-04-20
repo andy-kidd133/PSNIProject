@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.psniproject">
+    package="psni.example.psniproject">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -18,10 +18,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainApp.Messages.MessageActivity"></activity>
+        <activity android:name="psni.example.psniproject.MainApp.Messages.MessageActivity"></activity>
         <!-- Initial splash activity -->
         <activity
-            android:name=".SplashScreen.SplashScreenActivity"
+            android:name="psni.example.psniproject.SplashScreen.SplashScreenActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,19 +30,19 @@
             </intent-filter>
         </activity> <!-- Login activity -->
         <activity
-            android:name=".LoginScreen.LoginActivity"
+            android:name="psni.example.psniproject.LoginScreen.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
 
         <service
-            android:name=".LoginScreen.Notifications.MyFirebaseMessagingService"
+            android:name="psni.example.psniproject.LoginScreen.Notifications.MyFirebaseMessagingService"
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service> <!-- Main app activity -->
         <activity
-            android:name=".MainApp.MainActivity"
+            android:name="psni.example.psniproject.MainApp.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" /> <!-- Maps Android Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
