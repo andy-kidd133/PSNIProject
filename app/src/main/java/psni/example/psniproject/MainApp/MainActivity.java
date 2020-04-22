@@ -121,14 +121,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this.setViewPager(3);
                 break;
 
+      //********** niDirect **********//
+            case R.id.niDirect:
+                this.setViewPager(4);
+                break;
+
       //********** Journey **********//
             case R.id.nav_journey:
                 this.setViewPager(1);
                 break;
 
-      //********** Journey **********//
+      //********** Messages **********//
             case R.id.nav_messages:
-                this.setViewPager(4);
+                this.setViewPager(5);
+                break;
+
+      //********** Messages **********//
+            case R.id.nav_contact:
+                this.setViewPager(6);
                 break;
         }
 
@@ -154,7 +164,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         adapter.addFragment(new MyJourneyFragment(), "MyJourneyFragment");      //1
         adapter.addFragment(new VictimSupport(), "VictimSupport");              //2
         adapter.addFragment(new PPANI(), "PPANI");                              //3
-        adapter.addFragment(new MessagesFragment(), "Messages");                //4
+        adapter.addFragment(new NIDirect(), "NIDirectFragment");                //4
+        adapter.addFragment(new MessagesFragment(), "Messages");                //5
+        adapter.addFragment(new ContactUs(), "Contact Us");                     //6
         viewPager.setAdapter(adapter);
     }
 

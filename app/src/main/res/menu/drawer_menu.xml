@@ -32,12 +32,18 @@
                 android:icon="@drawable/ic_witness"
                 android:title="PPANI"/>
 
+            <!-- ********** NIDIRECT ********** -->
+
+            <item
+                android:id="@+id/niDirect"
+                android:icon="@drawable/ic_nidirect"
+                android:title="NI Direct"/>
+
         </menu>
 
     </item>
 
-            <!--new section exmaple code, items here can only be pressed once rather than staying selected-->
-    <item android:title="Other Links">
+    <item android:title="Personal">
 
         <menu>
             <item
@@ -47,8 +53,19 @@
 
             <item
                 android:id="@+id/nav_messages"
-                android:icon="@drawable/ic_journey"
+                android:icon="@drawable/ic_message"
                 android:title="Messages" />
+
+        </menu>
+    </item>
+
+    <item android:title="Other">
+
+        <menu>
+            <item
+                android:id="@+id/nav_contact"
+                android:icon="@drawable/ic_contact"
+                android:title="Contact Us" />
 
         </menu>
     </item>

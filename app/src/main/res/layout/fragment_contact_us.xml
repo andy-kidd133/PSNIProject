@@ -3,19 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="psni.example.psniproject.MainApp.Messages.ChatsFragment">
+    tools:context=".MainApp.ContactUs">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <TextView
-        android:id="@+id/signIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="invisible"
-        android:text=""/>
-
-
-
-
+    <WebView
+        android:id="@+id/webView3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

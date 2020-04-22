@@ -131,7 +131,7 @@ public class MessageActivity extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     VictimProfile victimProfile = dataSnapshot.getValue(VictimProfile.class);
                     username.setText(victimProfile.getfName() + " " + victimProfile.getsName());
-                    profileImage.setImageResource(R.mipmap.ic_launcher);
+                    profileImage.setImageResource(R.drawable.user_icon);
 
                     readMessages(firebaseUser.getUid(), userid);
                 }

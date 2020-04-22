@@ -30,7 +30,9 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="23dp"
         android:layout_below="@+id/etPassword"
-        android:text="@string/login_button"/>
+        android:text="@string/login_button"
+        android:background="#170C14"
+        android:textColor="#FFFFFF"/>
 
     <Button
         android:id="@+id/backBtn"
@@ -38,7 +40,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="@string/back_button" />
+        android:text="@string/back_button"
+        android:background="#170C14"
+        android:textColor="#FFFFFF"/>
 
     <EditText
         android:id="@+id/etUsername"

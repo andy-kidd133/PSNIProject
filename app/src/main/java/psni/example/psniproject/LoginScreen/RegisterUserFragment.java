@@ -705,7 +705,6 @@ public class RegisterUserFragment extends Fragment {
 
         etDateSubmitted.setAlpha(0.4f);
         mBrowse.setAlpha(0.4f);
-        etMsg.setAlpha(0.4f);
         tvPPS.setAlpha(0.4f);
         rgPPS.setAlpha(0.4f);
         tvTrail.setAlpha(0.4f);

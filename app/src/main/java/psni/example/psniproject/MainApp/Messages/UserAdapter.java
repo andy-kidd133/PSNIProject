@@ -61,7 +61,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         else if(MainActivity.userType == UserType.OFFICER) {
             final VictimProfile victimProfile = victimProfiles.get(position);
             holder.username.setText(victimProfile.getfName() + " " + victimProfile.getsName());
-            holder.profileImage.setImageResource(R.mipmap.ic_launcher);
+            holder.profileImage.setImageResource(R.drawable.user_icon);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

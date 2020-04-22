@@ -27,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -126,13 +127,17 @@ public class UsersFragment extends Fragment {
                     final OfficerProfile officerProfile = dataSnapshot.getValue(OfficerProfile.class);
                     victimIDs = officerProfile.getVictimIds();
                     System.out.println("victimIDs that have been treieved for officer..." + victimIDs);
-                    //Collections.sort(victimIDs);
+                    Collections.sort(victimIDs);
                     //Collections.reverse(victimIDs);
                     System.out.println("victimIDs SORTED that have been treieved for officer..." + victimIDs);
 
+                    /*for(int i = 1;i < victimIDs.size(); i++) {
+                        victimProfiles.add(matchVictimwithVictimID(victimIDs.get(i), UserLoginFragment.victimProfiles));
+                    }*/
+
                     for (String ID : victimIDs) {
                         if (ID.equals("aaaaa")) {
-                            
+
                         }
                         else if (!ID.equals("aaaaa")){
                             victimProfiles.add(matchVictimwithVictimID(ID, UserLoginFragment.victimProfiles));
