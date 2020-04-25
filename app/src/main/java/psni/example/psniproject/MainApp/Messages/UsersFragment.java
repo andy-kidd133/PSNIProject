@@ -122,7 +122,9 @@ public class UsersFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     victimProfiles.clear();
 
-                    ArrayList<String> victimIDs;
+                    ArrayList<String> victimIDs = new ArrayList<>();
+
+                    victimIDs.clear();
 
                     final OfficerProfile officerProfile = dataSnapshot.getValue(OfficerProfile.class);
                     victimIDs = officerProfile.getVictimIds();
@@ -134,6 +136,7 @@ public class UsersFragment extends Fragment {
                     /*for(int i = 1;i < victimIDs.size(); i++) {
                         victimProfiles.add(matchVictimwithVictimID(victimIDs.get(i), UserLoginFragment.victimProfiles));
                     }*/
+
 
                     for (String ID : victimIDs) {
                         if (ID.equals("aaaaa")) {

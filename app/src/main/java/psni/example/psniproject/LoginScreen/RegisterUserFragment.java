@@ -58,7 +58,7 @@ public class RegisterUserFragment extends Fragment {
             tiAddress, tiCity, tiCounty, tiPostcode, tiDOB,
             tiDateOfCrime, tiDateReported, tiDateSubmitted, tiCourtDate;
     private TextInputEditText tiFirstNameOfficer, tiSurnameOfficer, tiEmailOfficer;
-    private TextInputLayout etDateSubmitted, etMsg, etCourtDate;
+    private TextInputLayout etDateSubmitted, etCourtDate;
     private TextView tvTitle, tvPPS, tvTrail, tvFileName, tvSelectCourthouse;
     private CardView userCard, officerCard;
     private RadioGroup rgStatement, rgPPS, rgTrail,rgConviction;
@@ -178,7 +178,7 @@ public class RegisterUserFragment extends Fragment {
                                     resetEditTexts();
                                     ((LoginActivity) getActivity()).setViewPager(0);
                                 } else {
-                                    Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Registration Failed. Email already exists.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -200,7 +200,7 @@ public class RegisterUserFragment extends Fragment {
                                     resetEditTexts();
                                     ((LoginActivity) getActivity()).setViewPager(0);
                                 }else {
-                                    Toast.makeText(getActivity(), "Registration Failed.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity(), "Registration Failed. EMail already exists.", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
@@ -728,7 +728,6 @@ public class RegisterUserFragment extends Fragment {
 
         etDateSubmitted.setAlpha(1f);
         mBrowse.setAlpha(1f);
-        etMsg.setAlpha(1f);
         tvPPS.setAlpha(1f);
         rgPPS.setAlpha(1f);
         tvTrail.setAlpha(1f);

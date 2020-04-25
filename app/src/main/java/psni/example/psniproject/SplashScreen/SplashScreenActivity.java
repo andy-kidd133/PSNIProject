@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private int SLEEP_TIMER = 4;
+    private int SLEEP_TIMER = 3;
     ImageView vsLogo;
     Animation fadeIn;
     private FirebaseAuth firebaseAuth;
