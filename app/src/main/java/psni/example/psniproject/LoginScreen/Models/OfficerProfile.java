@@ -17,6 +17,7 @@ public class OfficerProfile {
 
     public OfficerProfile(String uID, String mFirstName, String mSurname, String mEmail,
                           UserType userType, ArrayList<String> victimIds, int messageCountO) {
+
         this.uID = uID;
         this.mFirstName = mFirstName;
         this.mSurname = mSurname;

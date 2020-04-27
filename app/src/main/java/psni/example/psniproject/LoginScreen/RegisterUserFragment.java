@@ -80,8 +80,7 @@ public class RegisterUserFragment extends Fragment {
     Uri docPath;
     private StorageReference storageReference;
     private boolean clicked = false;
-    private boolean statementGiven = false;
-    private UserType formState = UserType.VICTIM;
+    private UserType formState;
     private UserType userType;
     private Spinner spinCourthouse, spinOfficer;
     private int messageCountO = 0;
@@ -107,6 +106,7 @@ public class RegisterUserFragment extends Fragment {
         view  = inflater.inflate(R.layout.fragment_register_user, container, false);
         setupUIViews();
         userType = UserType.VICTIM;
+        formState = UserType.VICTIM;
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -260,6 +260,9 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
+        final TextRemover textRemover = new TextRemover();
+
+
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,16 +286,14 @@ public class RegisterUserFragment extends Fragment {
                     });
                 }
                 databaseReference.setValue(victimProfile);
-                resetEditTexts();
-
                 showRegButton();
+                textRemover.run();
                 Toast.makeText(getActivity(), "Details updated for " + victimProfile.getfName() + " " + victimProfile.getsName(), Toast.LENGTH_SHORT).show();
+                resetEditTexts();
             }
         });
 
-        if(!statementGiven) {
-            disableFieldsNoStatement();
-        }
+        disableFieldsNoStatement();
 
         return view;
     }
@@ -617,7 +618,7 @@ public class RegisterUserFragment extends Fragment {
         DatabaseReference myRef = firebaseDatabase.getReference("officers/" + firebaseAuth.getUid());
         uIDOfficer = firebaseAuth.getUid();
         //add empty entry to create the arraylist for first victim to be added
-        victimIds.add("aaaaa");
+        victimIds.add("a");
         OfficerProfile officerProfile = new OfficerProfile(uIDOfficer, fNameOfficer, surnameOfficer, emailOfficer, userType, victimIds, messageCountO);
         myRef.setValue(officerProfile);
     }
@@ -796,6 +797,13 @@ public class RegisterUserFragment extends Fragment {
             }
         }
         return officerProfile;
+    }
+
+    private class TextRemover extends Thread {
+
+        public void run() {
+            resetEditTexts();
+        }
     }
 
 

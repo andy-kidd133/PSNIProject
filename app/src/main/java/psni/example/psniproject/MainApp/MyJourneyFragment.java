@@ -169,8 +169,7 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
             tvJVerdict.setVisibility(View.GONE);
         }
         else {
-
-            if (MainActivity.userType == UserType.VICTIM) {
+                if (MainActivity.userType == UserType.VICTIM) {
 
                 DatabaseReference databaseReference = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
 

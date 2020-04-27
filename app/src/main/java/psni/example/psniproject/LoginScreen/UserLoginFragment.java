@@ -48,11 +48,9 @@ public class UserLoginFragment extends Fragment {
     private int counter = 5;
     private static int profileCountOfficer, profileCountVictim;
     public static boolean alreadyExecuted = false;
-    public static boolean officerArrayCreated = false;
 
     public static ArrayList<String> victimIDs = new ArrayList<>();
     public static ArrayList<String> officerIDs = new ArrayList<>();
-
     public static ArrayList<VictimProfile> victimProfiles = new ArrayList<>();
     public static ArrayList<OfficerProfile> officerProfiles = new ArrayList<>();
 
@@ -265,7 +263,7 @@ public class UserLoginFragment extends Fragment {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {;
                 System.out.println("The read failed");
             }
         });

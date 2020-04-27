@@ -21,6 +21,7 @@ public class VictimProfile {
                          String DOB, String crimeDate, String reportDate, OfficerProfile officerProfile,
                          String dateSubmitted, boolean pps, String courtDate,
                          Courthouse courtHouse, int convicted, UserType userType, int messageCountV) {
+
         this.uID = uID;
         this.First = First;
         this.Surname = Surname;

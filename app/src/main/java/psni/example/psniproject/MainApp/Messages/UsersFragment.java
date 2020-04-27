@@ -128,21 +128,14 @@ public class UsersFragment extends Fragment {
 
                     final OfficerProfile officerProfile = dataSnapshot.getValue(OfficerProfile.class);
                     victimIDs = officerProfile.getVictimIds();
-                    System.out.println("victimIDs that have been treieved for officer..." + victimIDs);
-                    Collections.sort(victimIDs);
-                    //Collections.reverse(victimIDs);
+                    System.out.println("victimIDs that have been retrieved for matching..." + victimIDs);
+                    //Collections.sort(victimIDs);
                     System.out.println("victimIDs SORTED that have been treieved for officer..." + victimIDs);
 
-                    /*for(int i = 1;i < victimIDs.size(); i++) {
-                        victimProfiles.add(matchVictimwithVictimID(victimIDs.get(i), UserLoginFragment.victimProfiles));
-                    }*/
-
-
                     for (String ID : victimIDs) {
-                        if (ID.equals("aaaaa")) {
-
-                        }
-                        else if (!ID.equals("aaaaa")){
+                        if(ID.length() < 10) {
+                            //do nothing
+                        }else {
                             victimProfiles.add(matchVictimwithVictimID(ID, UserLoginFragment.victimProfiles));
                         }
                     }
@@ -158,14 +151,13 @@ public class UsersFragment extends Fragment {
         }
     }
 
-    private VictimProfile matchVictimwithVictimID(String ID, ArrayList<VictimProfile> victimProfiles) {
+    private VictimProfile matchVictimwithVictimID(String ID,
+                            ArrayList<VictimProfile> victimProfiles) {
 
         VictimProfile victimProfile = new VictimProfile();
 
         for(int i =0; i<victimProfiles.size(); i++) {
-
             String idToTest = victimProfiles.get(i).getuID();
-
             if(ID.equals(idToTest)) {
                 victimProfile = victimProfiles.get(i);
             }

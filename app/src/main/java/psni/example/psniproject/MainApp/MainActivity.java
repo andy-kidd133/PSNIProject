@@ -274,7 +274,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             userType = UserType.OFFICER;
             Log.e("Usertype....", userType.toString());
         }
-
     }
 }
 

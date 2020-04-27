@@ -101,7 +101,7 @@ public class MessageActivity extends AppCompatActivity {
 
         if (MainActivity.userType == UserType.VICTIM) {
 
-            //IF VICTIM = GO TO OFFICER REFERENCE TO GET THE LINKING PROFILE/
+            //IF VICTIM : GO TO OFFICER REFERENCE TO GET THE LINKING PROFILE/
 
             reference = FirebaseDatabase.getInstance().getReference("officers/" ).child(userid);
             reference.addValueEventListener(new ValueEventListener() {
@@ -123,7 +123,7 @@ public class MessageActivity extends AppCompatActivity {
 
         else if (MainActivity.userType == UserType.OFFICER) {
 
-            //IF OFFICER = GO TO VICTIM REFERENCE TO GET THE LINKING PROFILE/
+            //IF OFFICER : GO TO VICTIM REFERENCE TO GET THE LINKING PROFILE/
 
             reference = FirebaseDatabase.getInstance().getReference("victims").child(userid);
             reference.addValueEventListener(new ValueEventListener() {
