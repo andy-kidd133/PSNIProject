@@ -66,6 +66,7 @@ public class UsersFragment extends Fragment {
         officerProfiles = new ArrayList<>();
         victimProfiles = new ArrayList<>();
 
+        //determining UserType from login
         if(MainActivity.userType == UserType.VICTIM) {
             readOfficer();
         }
@@ -76,6 +77,11 @@ public class UsersFragment extends Fragment {
         return view;
     }
 
+
+    /**
+     * if the user is a VICTIM
+     * retrieve the assigned officer and send to the adapter
+     */
     private void readOfficer() {
 
         if(firebaseAuth.getCurrentUser() == null) {
@@ -106,6 +112,11 @@ public class UsersFragment extends Fragment {
         }
     }
 
+    /**
+     * if the user is an OFFICER
+     * retrieve the assigned victims by matching IDs with profiles
+     * and send to adapter
+     */
     private void readVictims() {
 
         if(firebaseAuth.getCurrentUser() == null) {
@@ -151,6 +162,12 @@ public class UsersFragment extends Fragment {
         }
     }
 
+    /**
+     * take the input ID and search the ArrayList of IDs generated in UserLoginFragment
+     * @param ID
+     * @param victimProfiles
+     * @return
+     */
     private VictimProfile matchVictimwithVictimID(String ID,
                             ArrayList<VictimProfile> victimProfiles) {
 

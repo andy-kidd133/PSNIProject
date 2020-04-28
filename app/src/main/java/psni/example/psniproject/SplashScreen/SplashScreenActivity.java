@@ -47,6 +47,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         SplashLauncher splashLauncher = new SplashLauncher();
         splashLauncher.start();
         splashLauncher.logoLauncher();
+        firebaseAuth.signOut();
 
     }
 

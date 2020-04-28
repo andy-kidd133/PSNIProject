@@ -69,6 +69,14 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
     public static ArrayList<Courthouse> courthouses = new ArrayList<>();
 
+    /**
+     * display map for the currently signed in victim
+     *
+     * retrieves the Courthouse object which is assigned to the VictimProfile
+     * sets the attributes for the GoogleMap object from the Courthouse object
+     *
+     * @param googleMap
+     */
     @Override
     public void onMapReady(final GoogleMap googleMap) {
         MapsInitializer.initialize(getContext());
@@ -106,7 +114,7 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
             }
             else {
-                //no nothing ( no map to be shown for any user other than a victim
+                //do nothing (no map to be shown for any user other than a victim)
             }
         }
     }
@@ -121,39 +129,14 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_my_journey, container, false);
 
-        mapView = view.findViewById(R.id.mapViewHolder);
-        if (mapView != null) {
-            mapView.onCreate(null);
-            mapView.onResume();
-            mapView.getMapAsync(this);
-        }
+        setupPageViews();
 
-        tvName = view.findViewById(R.id.tvName);
-        tvCrimeDate = view.findViewById(R.id.tvCrimeDate);
-        tvReportDate = view.findViewById(R.id.tvReportDate);
-        tvStatementHeading = view.findViewById(R.id.tvJStatementHeading);
-        ivGreenTick = view.findViewById(R.id.ivGreenTick);
-        tvDateSubmitted = view.findViewById(R.id.tvJDateSubmitted);
-        tvJFileName = view.findViewById(R.id.tvJFileName);
-        btnDownload = view.findViewById(R.id.btnDownload);
-        tvJPPSHeading = view.findViewById(R.id.tvJPPSHeading);
-        ivGreenTick1 = view.findViewById(R.id.ivGreenTick1);
-        tvJPPSUpdate = view.findViewById(R.id.tvJPPSUpdate);
-        tvJCourtHeading = view.findViewById(R.id.tvJCourtHeading);
-        ivGreenTick2 = view.findViewById(R.id.ivGreenTick2);
-        tvJCourtName = view.findViewById(R.id.tvJCourtName);
-        tvJCourtDate = view.findViewById(R.id.tvJCourtDate);
-        tvJCourtAddress = view.findViewById(R.id.tvJCourtAddress);
-        tvJVerdictHeading = view.findViewById(R.id.tvJVerdictHeading);
-        tvJVerdict = view.findViewById(R.id.tvJVerdict);
-        tvJVerdictResult = view.findViewById(R.id.tvJVerdictResult);
-        ivGreenTick3 = view.findViewById(R.id.ivGreenTick3);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        firebaseStorage = FirebaseStorage.getInstance();
-
-        storageReference = firebaseStorage.getReference();
+        //
+        //setting views and retrieving data
+        //based on the logged in user
+        //
+        //
 
         if (firebaseAuth.getCurrentUser() == null) {
             tvName.setText("Please log in to use this feature");
@@ -223,7 +206,7 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                                         @Override
                                         public void onSuccess(Uri uri) {
                                             String url = uri.toString();
-                                            downloadFile(getActivity(), statementFileName, ".pdf,", DIRECTORY_DOWNLOADS, url);
+                                            downloadFile(getActivity(), statementFileName,"", DIRECTORY_DOWNLOADS, url);
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
@@ -234,7 +217,6 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                                 }
                             });
                         }
-
 
                         //********** PPS **********//
 
@@ -304,12 +286,52 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
                 tvJCourtHeading.setVisibility(View.GONE);
                 mapView.setVisibility(View.GONE);
 
-                //set everything to invisible with methods/abstract methods?
-
             }
         }
 
         return view;
+    }
+
+
+    /**
+     * instantiate all views and set Firebase object for the page
+     * to keep onCreateView() smaller
+     */
+    private void setupPageViews() {
+
+        mapView = view.findViewById(R.id.mapViewHolder);
+        if (mapView != null) {
+            mapView.onCreate(null);
+            mapView.onResume();
+            mapView.getMapAsync(this);
+        }
+
+        tvName = view.findViewById(R.id.tvName);
+        tvCrimeDate = view.findViewById(R.id.tvCrimeDate);
+        tvReportDate = view.findViewById(R.id.tvReportDate);
+        tvStatementHeading = view.findViewById(R.id.tvJStatementHeading);
+        ivGreenTick = view.findViewById(R.id.ivGreenTick);
+        tvDateSubmitted = view.findViewById(R.id.tvJDateSubmitted);
+        tvJFileName = view.findViewById(R.id.tvJFileName);
+        btnDownload = view.findViewById(R.id.btnDownload);
+        tvJPPSHeading = view.findViewById(R.id.tvJPPSHeading);
+        ivGreenTick1 = view.findViewById(R.id.ivGreenTick1);
+        tvJPPSUpdate = view.findViewById(R.id.tvJPPSUpdate);
+        tvJCourtHeading = view.findViewById(R.id.tvJCourtHeading);
+        ivGreenTick2 = view.findViewById(R.id.ivGreenTick2);
+        tvJCourtName = view.findViewById(R.id.tvJCourtName);
+        tvJCourtDate = view.findViewById(R.id.tvJCourtDate);
+        tvJCourtAddress = view.findViewById(R.id.tvJCourtAddress);
+        tvJVerdictHeading = view.findViewById(R.id.tvJVerdictHeading);
+        tvJVerdict = view.findViewById(R.id.tvJVerdict);
+        tvJVerdictResult = view.findViewById(R.id.tvJVerdictResult);
+        ivGreenTick3 = view.findViewById(R.id.ivGreenTick3);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
+
     }
 
     public void downloadFile(Context context, String fileName, String fileExtension,
@@ -325,6 +347,10 @@ public class MyJourneyFragment extends Fragment implements OnMapReadyCallback{
 
     }
 
+    /**
+     * create all 18 Courthouse objects and add them to ArrayList for
+     * populating spinner
+     */
     public static void setCourthouseData() {
 
         courthouses.add(new Courthouse(0, "Antrim Courthouse", "The Courthouse\n30 Castle Way\nAntrim\nVT41 4AQ\n\nPhone: 0300 200 7812", antrimMap, 54.715206, -6.214654));

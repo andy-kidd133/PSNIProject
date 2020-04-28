@@ -40,6 +40,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         return new UserAdapter.ViewHolder(view);
     }
 
+
+    /**
+     * take assigned users and create 'Users' for them in fragment_users.xml
+     * onClickListener() sends ID of selected user to MessageActivity
+     * @param holder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 

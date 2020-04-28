@@ -22,36 +22,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_login_screen);
-
-
         mMyFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
-
         mViewPager = findViewById(R.id.containter);
         setupViewPager(mViewPager);
-
         mViewPager.beginFakeDrag();
-
-       /* FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("tag", "getInstanceId failed", task.getException());
-                            return;
-                        }
-
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-
-                        // Log and toast
-                        Log.d("FCMToken", token);
-                        //Toast.makeText(LoginActivity.this, token, Toast.LENGTH_LONG).show();
-                    }
-                });*/
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -71,6 +46,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Fragments created and added to ArrayList ready to be inflated
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager){
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new UserLoginFragment(), "UserLoginFragment");          //0
@@ -80,6 +59,9 @@ public class LoginActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * @param fragmentNumber
+     */
     public void setViewPager(int fragmentNumber){
         mViewPager.setCurrentItem(fragmentNumber);
     }

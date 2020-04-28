@@ -21,6 +21,9 @@ import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ *
+ * Class which load in tab view
+ * Chats & Users
  */
 public class MessagesFragment extends Fragment {
 

@@ -91,10 +91,6 @@ public class UserLoginFragment extends Fragment {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
-        /*if (user != null) {
-            startActivity(new Intent(getActivity(), MainActivity.class));
-        }*/
-
         adminButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -121,6 +117,11 @@ public class UserLoginFragment extends Fragment {
     }
 
 
+    /**
+     * validate login details against Firebase Authentication list
+     * @param userEmail
+     * @param userPassword
+     */
     private void validateCredentials(String userEmail, String userPassword) {
 
         progressDialog.setMessage("Signing In..");
@@ -156,6 +157,9 @@ public class UserLoginFragment extends Fragment {
 
     }
 
+    /**
+     * push token to database refernce for later use in notifications
+     */
     private void pushDeviceToken() {
 
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -166,19 +170,14 @@ public class UserLoginFragment extends Fragment {
                             Log.w("tag", "getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
 
                         DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child("Tokens");
                         ref.child(firebaseAuth.getCurrentUser().getUid()).setValue(token);
 
-                        //DatabaseReference myRef = FirebaseDatabase.getInstance().getReference(firebaseAuth.getUid());
-                        //myRef.child("Token").setValue(token);
-
-                        // Log and toast
+                        // Log token
                         Log.d("FCMToken", token);
-                        //Toast.makeText(LoginActivity.this, token, Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -215,27 +214,10 @@ public class UserLoginFragment extends Fragment {
     }
 
 
-    /*public void getVictimIDs() {
-
-        System.out.println("Before attaching listener");
-        databaseReference.child("victims").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    System.out.println("Getting victim profile and adding ID");
-                    victimIDs.add(snapshot.getKey());
-                    victimIDs = removeStringDuplicates(victimIDs);
-                    Log.e("VictimIDS.....", victimIDs.toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed");
-            }
-        });
-    }*/
-
+    /**
+     * populate ArrayLists of Ids and profiles for later use
+     *
+     */
     public void getVictimIDsandProfiles() {
 
         System.out.println("Before attaching listener");
@@ -270,6 +252,9 @@ public class UserLoginFragment extends Fragment {
     }
 
 
+    /**
+     * populate ArrayLists of Ids and profiles for later use
+     */
     public void getOfficerIDsandProfiles() {
 
         System.out.println("Before attaching listener");

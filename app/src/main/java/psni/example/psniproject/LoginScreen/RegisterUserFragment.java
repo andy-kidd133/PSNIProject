@@ -91,6 +91,12 @@ public class RegisterUserFragment extends Fragment {
 
     }
 
+    /**
+     * retrieve filePath for statement
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == PICK_DOC && resultCode == RESULT_OK && data.getData() != null) {
@@ -124,6 +130,54 @@ public class RegisterUserFragment extends Fragment {
         final ArrayAdapter<String> officerProfileArrayAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, UserLoginFragment.officerNames);
         spinOfficer.setAdapter(officerProfileArrayAdapter);
 
+        setButtonListeners();
+        setRadioGroupListeners();
+
+        disableFieldsNoStatement();
+
+        return view;
+    }
+
+    /**
+     * generate random password of letters, numbers and special characters
+     * @param length
+     * @return stringBuilder.toString()
+     */
+    private String generatePassword(int length) {
+
+        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789£/@#%".toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+        for(int i =0; i< length; i++) {
+            char c = chars[random.nextInt(chars.length)];
+            stringBuilder.append(c);
+        }
+        return stringBuilder.toString();
+    }
+
+    /**
+     * email sent from personal email address
+     * @param recipient
+     */
+    private void sendLoginDetailsEmail(String recipient) {
+
+        try {
+            GMailSender sender = new GMailSender("andrew-kidd@outlook.com", "Newpc180");
+            sender.sendMail("VictimSupport Login Details",
+                    "Hi,\n\nHere are your details:\n\nUsername: " + eMail + "\nPassword: " + pWord1 + "\n\nPlease log in to the Victim Support App now to activate your account.\n\nMany thanks.\n\nVictim Support Team",
+                    "andrewkidd21234@gmail.com",
+                    recipient);
+        } catch (Exception e) {
+            Log.e("SendMail", e.getMessage(), e);
+        }
+    }
+
+    /**
+     * all button and spinner listeners set here and
+     * called in onCreateView() to clean up onCreateView()
+     */
+    private void setButtonListeners() {
+
         tvTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,7 +194,6 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
-
         mBrowse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,8 +204,6 @@ public class RegisterUserFragment extends Fragment {
                 clicked = true;
             }
         });
-
-        setRadioGroupListeners();
 
         //registering user
         mRegButton.setOnClickListener(new View.OnClickListener() {
@@ -231,20 +282,6 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
-        spinCourthouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Courthouse courthouse = (Courthouse) parent.getSelectedItem();
-                courtHouse = courthouse;
-                //Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
         //back to admin login screen
         mBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -260,8 +297,19 @@ public class RegisterUserFragment extends Fragment {
             }
         });
 
-        final TextRemover textRemover = new TextRemover();
+        spinCourthouse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Courthouse courthouse = (Courthouse) parent.getSelectedItem();
+                courtHouse = courthouse;
+                //Toast.makeText(getContext(), "ID: " + courthouse.getId() + ", CourtHouse: " + courthouse.getName(),Toast.LENGTH_LONG).show();
+            }
 
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         mSaveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,42 +335,17 @@ public class RegisterUserFragment extends Fragment {
                 }
                 databaseReference.setValue(victimProfile);
                 showRegButton();
-                textRemover.run();
                 Toast.makeText(getActivity(), "Details updated for " + victimProfile.getfName() + " " + victimProfile.getsName(), Toast.LENGTH_SHORT).show();
                 resetEditTexts();
             }
         });
 
-        disableFieldsNoStatement();
-
-        return view;
     }
 
-    private String generatePassword(int length) {
-
-        char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789£/@#%".toCharArray();
-        StringBuilder stringBuilder = new StringBuilder();
-        Random random = new Random();
-        for(int i =0; i< length; i++) {
-            char c = chars[random.nextInt(chars.length)];
-            stringBuilder.append(c);
-        }
-        return stringBuilder.toString();
-    }
-
-    private void sendLoginDetailsEmail(String recipient) {
-
-        try {
-            GMailSender sender = new GMailSender("andrew-kidd@outlook.com", "Newpc180");
-            sender.sendMail("VictimSupport Login Details",
-                    "Hi,\n\nHere are your details:\n\nUsername: " + eMail + "\nPassword: " + pWord1 + "\n\nPlease log in to the Victim Support App now to activate your account.\n\nMany thanks.\n\nVictim Support Team",
-                    "andrewkidd21234@gmail.com",
-                    recipient);
-        } catch (Exception e) {
-            Log.e("SendMail", e.getMessage(), e);
-        }
-    }
-
+    /**
+     * all RadioButton listeners called here and
+     * called in onCreateView()
+     */
     private void setRadioGroupListeners() {
 
         rgStatement.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -396,6 +419,11 @@ public class RegisterUserFragment extends Fragment {
         });
     }
 
+    /**
+     * method is called when the "EDIT USER" button is pressed:
+     * retrieves user profile
+     * fills fields with data from DataSnapshot
+     */
     public void displayEditAlert() {
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
@@ -475,17 +503,16 @@ public class RegisterUserFragment extends Fragment {
 
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
-                // what ever you want to do with No option.
-
-                //close AlertDialog
             }
         });
 
         alert.show();
     }
 
-    //String fName, sName, eMail, pWord,pNum, address, city, county, postcode, DOB;
 
+    /**
+     *  all views instantiated hin this method and called in onCreateView()
+     */
     private void setupUIViews() {
 
         //TextInputLayouts for
@@ -535,6 +562,11 @@ public class RegisterUserFragment extends Fragment {
 
     }
 
+    /**
+     * makes sure all required fields are populated for each type of user
+     * if false, registration unsuccessful
+     * @return result;
+     */
     private Boolean validateRegistration() {
         Boolean result = false;
 
@@ -558,6 +590,10 @@ public class RegisterUserFragment extends Fragment {
         return result;
     }
 
+    /**
+     * renames the file uploaded to "firstName+Surname+Statement"
+     * @return fileName;
+     */
     private String generateFileName () {
         VictimProfile victimProfile = new VictimProfile(uIDVictim, fName, sName, eMail, pNum, address, city, county, postcode, DOB, dateOfCrime, dateReported, officerProfile, dateSubmitted, pps, courtDate, courtHouse, convicted, userType, messageCountV);
         StorageReference docReference = storageReference.child("statement"+ tiFirstName.getText()+ tiSurname.getText());      //can create more children for additional file types
@@ -566,6 +602,10 @@ public class RegisterUserFragment extends Fragment {
     }
 
 
+    /**
+     * creates VictimProfile with the data in the fields and
+     * sets the value database reference with that data
+     */
     private void sendVictimData() {
 
         DatabaseReference myRef = firebaseDatabase.getReference("victims/" + firebaseAuth.getUid());
@@ -586,34 +626,17 @@ public class RegisterUserFragment extends Fragment {
         }
         myRef.setValue(victimProfile);
 
-        //memory leak doing it this way
-
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference("officers/" + officerProfile.getuID());
         officerProfile.getVictimIds().add(victimProfile.getuID());
         ref.setValue(officerProfile);
 
-        /*ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                OfficerProfile officerProfile1 = dataSnapshot.getValue(OfficerProfile.class);
-
-                System.out.println("OFFICER TO HAVE VICTIM ADDED....." + officerProfile1.getmFirstName() + officerProfile1.getmSurname());
-
-                System.out.println("VICTIM TO BE ADDED....." + victimProfile.getfName() + victimProfile.getsName());
-
-                officerProfile1.getVictimProfiles().add(victimProfile);
-
-                //infinite loop of victimprofiles being added
-                //ref.setValue(officerProfile1);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
     }
 
+    /**
+     * Creates Officer profile with data in fields and
+     * pushes this data to database reference
+     * also adds 'initialiser' String to victimIDs ArrayLists so it is created on DB
+     */
     private void sendOfficerData() {
         DatabaseReference myRef = firebaseDatabase.getReference("officers/" + firebaseAuth.getUid());
         uIDOfficer = firebaseAuth.getUid();
@@ -623,24 +646,10 @@ public class RegisterUserFragment extends Fragment {
         myRef.setValue(officerProfile);
     }
 
-    private void addVictimToOfficerList(OfficerProfile officerProfile, final VictimProfile victimProfile) {
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("officers/" + officerProfile.getuID());
-
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                OfficerProfile officerProfile1 = dataSnapshot.getValue(OfficerProfile.class);
-                officerProfile1.getVictimIds().add(victimProfile.getuID());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
+    /**
+     * set all local variables with data in form fields
+     */
     private void returnFieldValues() {
 
         fName = tiFirstName.getText().toString();
@@ -663,22 +672,26 @@ public class RegisterUserFragment extends Fragment {
         emailOfficer = tiEmailOfficer.getText().toString();
     }
 
-    private boolean isNotEmpty(TextInputEditText etText) {
-        if (etText.getText().toString().trim().length() > 0)
-            return true;
-        return false;
-    }
 
+    /**
+     * switch buttons for editing
+     */
     private void showSaveButton() {
         mSaveButton.setVisibility(View.VISIBLE);
         mRegButton.setVisibility(View.GONE);
     }
 
+    /**
+     * switch buttons when editing done
+     */
     private void showRegButton() {
         mRegButton.setVisibility(View.VISIBLE);
         mSaveButton.setVisibility(View.GONE);
     }
 
+    /**
+     * reset fields when registration/editing complete
+     */
     public void resetEditTexts() {
 
         tiFirstName.setText("");
@@ -702,6 +715,9 @@ public class RegisterUserFragment extends Fragment {
 
     }
 
+    /**
+     * disable the rest of the form when statement has not been given
+     */
     private void disableFieldsNoStatement() {
 
         etDateSubmitted.setAlpha(0.4f);
@@ -725,6 +741,9 @@ public class RegisterUserFragment extends Fragment {
         spinCourthouse.setEnabled(false);
     }
 
+    /**
+     * enable rest of form when statement has been given
+     */
     private void enableFieldsStatementGiven() {
 
         etDateSubmitted.setAlpha(1f);
@@ -770,6 +789,12 @@ public class RegisterUserFragment extends Fragment {
         spinCourthouse.setEnabled(true);
     }
 
+    /**
+     * Check passwords are consistent when resgitering a user
+     * @param password1
+     * @param password2
+     * @return
+     */
     private boolean checkPasswordMatch(String password1, String password2) {
 
         boolean result = false;
@@ -782,6 +807,15 @@ public class RegisterUserFragment extends Fragment {
         return result;
     }
 
+    /**
+     * used for populated the Officer spinner
+     * an officer's name (String) is selected on the form
+     * this method matches the name to the profile and aset the local variable officerProfile
+     * which is assigned to the new victim
+     * @param officer
+     * @param arrayList
+     * @return officerProfile
+     */
     public static OfficerProfile matchOfficerWithName(String officer, ArrayList<OfficerProfile> arrayList) {
 
         OfficerProfile officerProfile = new OfficerProfile();
@@ -798,13 +832,5 @@ public class RegisterUserFragment extends Fragment {
         }
         return officerProfile;
     }
-
-    private class TextRemover extends Thread {
-
-        public void run() {
-            resetEditTexts();
-        }
-    }
-
 
 }

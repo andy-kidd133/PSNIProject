@@ -73,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * set up toolbar and navigation drawer
+     */
     private void setupMainPage() {
 
         navigationView = findViewById(R.id.nav_view);
@@ -146,10 +149,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * back button pressed within app, closes drawer or returns to HomePageFragment.xml
+     */
     @Override
     public void onBackPressed() {
 
-        //firebaseAuth.signOut();
+        startActivity(new Intent(this, MainActivity.class));
 
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -158,6 +164,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * create all fragments for mainActivity and add to ArrayList
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         MyFragmentPagerAdapter adapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new HomePageFragment(), "HomePageFragment");        //0
@@ -212,6 +222,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    /**
+     * method controls name and email display in the header of the navigation drawer
+     *
+     */
     private void checkUserSignedIn() {
 
         if (firebaseAuth.getCurrentUser() == null) {
@@ -264,6 +278,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    /**
+     * set the UserType enum upon login (which acts as a flag for the rest of the pages
+     * @param firebaseAuthUID
+     */
     private void retrieveUserType(String firebaseAuthUID) {
 
         if(UserLoginFragment.victimIDs.contains(firebaseAuthUID)) {

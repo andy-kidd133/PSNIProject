@@ -17,6 +17,10 @@ public class MyFragmentPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
     }
 
+    /**
+     * @param fragment
+     * @param title
+     */
     public void addFragment(Fragment fragment, String title){
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);

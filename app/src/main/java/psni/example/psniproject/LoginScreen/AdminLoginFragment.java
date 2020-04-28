@@ -50,6 +50,12 @@ public class AdminLoginFragment extends Fragment {
     }
 
 
+    /**
+     * method to validate admin login details. If wrong:
+     * decrement counter. If counter = 0, disable login button.
+     * @param adminUsername
+     * @param adminPassword
+     */
     private void validateCredentials(String adminUsername, String adminPassword) {
         if((adminUsername.equals("Admin")) && (adminPassword.equals("admin1234"))) {
             ((LoginActivity)getActivity()).setViewPager(2);

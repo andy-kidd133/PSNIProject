@@ -160,6 +160,12 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * go to "/chats/ database reference and search for chats with matched sender and receiver ID
+     * if found, send to adapter for display in activity_message.xml
+     * @param myid
+     * @param userid
+     */
     private void readMessages (final String myid, final String userid) {
 
         chats = new ArrayList<>();
